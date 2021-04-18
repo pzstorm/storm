@@ -1,0 +1,20 @@
+# User-specific stuff
+/dictionaries/
+/shelf/
+workspace.xml
+tasks.xml
+usage.statistics.xml
+
+# Generated files
+contentModel.xml
+
+# Gradle
+/libraries/
+gradle.xml
+
+# Other stuff
+/artifacts/
+/modules/
+compiler.xml
+jarRepositories.xml
+modules.xml
