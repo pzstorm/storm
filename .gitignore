@@ -1,3 +1,7 @@
+### User specific ###
+local.properties
+zdoc.version
+
 ### Intellij ###
 
 # File-based project format
