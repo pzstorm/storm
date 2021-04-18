@@ -4,6 +4,17 @@ plugins {
 	// Plugin that keeps your code spotless with Gradle
 	// https://plugins.gradle.org/plugin/com.diffplug.spotless
 	id "com.diffplug.spotless" version "5.12.1"
+
+	// https://plugins.gradle.org/plugin/net.ltgt.errorprone
+	id 'net.ltgt.errorprone' version '2.0.1'
 }
 apply plugin: 'com.diffplug.spotless'
 apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+
+dependencies {
+	// https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
+	errorprone 'com.google.errorprone:error_prone_core:2.6.0'
+
+	// https://mvnrepository.com/artifact/com.google.errorprone/javac
+	errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
+}
