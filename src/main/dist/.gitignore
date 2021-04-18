@@ -1,0 +1,85 @@
+# User data
+local.properties
+zdoc.version
+
+# Temporary
+serialize.lua
+
+# Libraries
+/lib/
+
+# Documentation
+/docs/template/
+/docs/zmod/
+
+### IntelliJ ###
+
+# Project file-based format
+*.ipr
+*.iws
+*.iml
+
+### Java ###
+
+# Compiled class file
+*.class
+
+# Package Files #
+*.jar
+*.zip
+*.rar
+
+# Log files
+logs/
+*.log
+
+### Gradle ###
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build/
+
+# Exclude gradle-wrapper.jar from rules
+!**/wrapper/gradle-wrapper.jar
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex

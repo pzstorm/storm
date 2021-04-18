@@ -1,0 +1,19 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Run configurations
+/runConfigurations/Run_Zomboid*.xml
+/runConfigurations/Debug_Zomboid*.xml
+
+# Other files
+/.name
+/libraries/
+/modules/
+/modules.xml
+/compiler.xml
+/gradle.xml
+/discord.xml
+/encodings.xml
+/jarRepositories.xml
+/misc.xml
