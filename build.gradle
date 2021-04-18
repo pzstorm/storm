@@ -12,6 +12,11 @@ apply plugin: 'com.diffplug.spotless'
 apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
 
 dependencies {
+	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+
+	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
 	// https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
 	errorprone 'com.google.errorprone:error_prone_core:2.6.0'
 
