@@ -11,6 +11,8 @@ plugins {
 apply plugin: 'com.diffplug.spotless'
 apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
 
+version '0.1.0'
+
 dependencies {
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
