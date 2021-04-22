@@ -74,27 +74,35 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	void shouldProperlyRecognizeWhitelistedClassNames() throws ReflectiveOperationException {
 
-		Field field = StormClassLoader.class.getDeclaredField("CLASS_WHITELIST");
-		field.setAccessible(true);
-
-		Set<String> whitelist = (Set<String>) field.get(null);
-		for (String className : whitelist) {
+		for (String className : getWhitelistedClasses()) {
 			Assertions.assertTrue(isWhitelistedClass(className));
 		}
 		Random rand = new Random();
 		for (int i1 = 10; i1 > 0; i1--)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.append(UUID.randomUUID().toString().replaceAll("-", ""));
+			sb.append(getRandomString());
 
 			// random number of package directories
 			for (int i2 = rand.nextInt(5) + 1; i2 > 0; i2--) {
-				sb.append(".").append(UUID.randomUUID().toString().replaceAll("-", ""));
+				sb.append(".").append(getRandomString());
 			}
 			Assertions.assertFalse(isWhitelistedClass(sb.toString()));
 		}
+	}
+
+	private static String getRandomString() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Set<String> getWhitelistedClasses() throws ReflectiveOperationException {
+
+		Field field = StormClassLoader.class.getDeclaredField("CLASS_WHITELIST");
+		field.setAccessible(true);
+
+		return (Set<String>) field.get(null);
 	}
 }
