@@ -133,7 +133,7 @@ public class StormClassLoader extends ClassLoader {
 				DebugLog.General.debugln("STORM: Loading with StormClassLoader");
 				try {
 					byte[] input = getRawClassByteArray(name);
-					if (input != null)
+					if (input.length > 0)
 					{
 						// package has to be created before we define the class
 						definePackageForName(name);
