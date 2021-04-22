@@ -7,6 +7,10 @@ import java.util.Objects;
 import java.util.Set;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.ImmutableSet;
+
+import zombie.debug.DebugLog;
+
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.
  * It is initially invoked by {@link StormLauncher} when launching the game.
@@ -72,9 +76,90 @@ public class StormClassLoader extends ClassLoader {
 	protected @Nullable URL findResource(String name) {
 		return urlClassLoader.findResource(name);
 	}
+
+	/**
+	 * Defines and returns a package by name in this {@code ClassLoader}.
+	 *
+	 * @param name name of the package to define.
+	 * @return instance of {@link Package} defined or {@code null} if no package defined.
+	 *
+	 * @throws IllegalArgumentException if package name duplicates an existing
+	 * 		package either in this class loader or one of its ancestors
+	 */
+	@Contract("null -> fail")
+	protected @Nullable Package definePackageForName(String name) {
+
+		int pkgDelimiterPos = name.lastIndexOf('.');
+		if (pkgDelimiterPos > 0)
+		{
+			String pkgString = name.substring(0, pkgDelimiterPos);
+			if (getPackage(pkgString) == null) {
+				return definePackage(pkgString, null, null,
+						null, null, null, null, null);
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 
+		// make sure our loading is not interrupted by other operations
+		synchronized (getClassLoadingLock(name)) {
+			return loadClassInternal(name, resolve);
+		}
+	}
+
+	/**
+	 * Loads the class with the specified binary name. This method will get called every time
+	 * a class is about to be loaded by this {@code ClassLoader}. It is called before the class
+	 * is defined or loaded into JVM, which allows us to manipulate the class to our desire.
+	 *
+	 * @param name the binary name of the class.
+	 * @param resolve if {@code true} then resolve the class.
+	 * @return the resulting {@code Class} object.
+	 *
+	 * @throws ClassNotFoundException if the class could not be found.
+	 */
+	private Class<?> loadClassInternal(String name, boolean resolve) throws ClassNotFoundException {
+
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz == null)
+		{
+			DebugLog.General.debugln("STORM: Preparing to load class " + name);
+			if (isWhitelistedClass(name))
+			{
+				DebugLog.General.debugln("STORM: Loading with StormClassLoader");
+				try {
+					byte[] input = getRawClassByteArray(name);
+					if (input != null)
+					{
+						// package has to be created before we define the class
+						definePackageForName(name);
+
+						clazz = defineClass(name, input, 0, input.length);
+						if (clazz.getClassLoader() == this) {
+							DebugLog.General.debugln("STORM: Successfully loaded class with StormClassLoader");
+						}
+						else throw new RuntimeException("Unable to load class with StormClassLoader");
+					}
+				}
+				catch (IOException e) {
+					throw new RuntimeException("I/O exception occurred while transforming class to byte array");
+				}
+			}
+		}
+		// if the class is not whitelisted delegate loading to parent class loader
+		if (clazz == null)
+		{
+			DebugLog.General.debugln("STORM: Loading with application class loader");
+			clazz = parentClassLoader.loadClass(name);
+		}
+		if (resolve) {
+			resolveClass(clazz);
+		}
+		return clazz;
+	}
 
 	@Override
 	public @Nullable InputStream getResourceAsStream(String name) {
