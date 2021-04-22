@@ -1,3 +1,6 @@
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import org.jetbrains.annotations.Contract;
 /**
@@ -51,5 +54,44 @@ public class StormClassLoader extends ClassLoader {
 
 	@Override
 	public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+
+	/**
+	 * Converts the given class name to a file name.
+	 */
+	@Contract(pure = true, value = "null -> fail")
+	private String getClassFileName(String name) {
+		return name.replace('.', '/') + ".class";
+	}
+
+	/**
+	 * Reads the {@code Class} with given name into a {@code byte} array and return the result.
+	 *
+	 * @param name name of the {@code Class} to read.
+	 * @return {@code byte} array read from {@code Class} or an empty array
+	 * 		if the {@code Class} with the given name could not be found.
+	 *
+	 * @throws IOException if an I/O error occurred while reading or writing to stream.
+	 */
+	@Contract("null -> fail")
+	protected byte[] getRawClassByteArray(String name) throws IOException {
+
+		// opens an input stream to read the class for given name
+		InputStream inputStream = getResourceAsStream(getClassFileName(name));
+		if (inputStream == null) {
+			return new byte[0];
+		}
+		int a = inputStream.available();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(a < 32 ? 32768 : a);
+		/*
+		 * read from input stream and write to output stream
+		 * a maximum of 8192 bytes per write operation
+		 */
+		int len;
+		byte[] buffer = new byte[8192];
+		while ((len = inputStream.read(buffer)) > 0) {
+			outputStream.write(buffer, 0, len);
+		}
+		inputStream.close();
+		return outputStream.toByteArray();
 	}
 }
