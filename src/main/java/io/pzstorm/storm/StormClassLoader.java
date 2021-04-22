@@ -49,7 +49,17 @@ public class StormClassLoader extends ClassLoader {
 	private final ClassLoader parentClassLoader;
 	protected final URLClassLoader resourceClassLoader;
 
-	StormClassLoader() {
+	/**
+	 * Create {@code StormClassLoader} with additional locations to search for resources.
+	 *
+	 * @param resourceLocations the URLs from which to load classes and resources.
+	 */
+	protected StormClassLoader(URL[] resourceLocations) {
+		parentClassLoader = getClass().getClassLoader();
+		resourceClassLoader = new URLClassLoader(resourceLocations, getParent());
+	}
+
+	protected StormClassLoader() {
 		parentClassLoader = getClass().getClassLoader();
 		resourceClassLoader = (URLClassLoader) getParent();
 	}
