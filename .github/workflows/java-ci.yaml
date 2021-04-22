@@ -42,7 +42,7 @@ jobs:
       - name: Run Unit Tests
         uses: burrunan/gradle-cache-action@v1
         with:
-          arguments: runTests -s
+          arguments: test -s
       # Upload test reports as run artifact
       - name: Upload test reports
         if: always()
