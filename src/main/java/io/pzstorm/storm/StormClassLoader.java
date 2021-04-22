@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Objects;
-import java.util.Set;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableSet;
@@ -30,7 +29,7 @@ public class StormClassLoader extends ClassLoader {
 	 * If the native libraries are loaded using a different class loader they
 	 * will not be accessible to game classes.
 	 */
-	private static final Set<String> CLASS_WHITELIST = ImmutableSet.of(
+	private static final ImmutableSet<String> CLASS_WHITELIST = ImmutableSet.of(
 			// zomboid library classes
 			"org.lwjgl.", "net.java.games.", "jassimp.",
 			// zomboid main classes
