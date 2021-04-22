@@ -32,3 +32,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.errorprone/javac
 	errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
 }
+
+test {
+	useJUnitPlatform()
+	testLogging.events "passed", "skipped", "failed"
+}
