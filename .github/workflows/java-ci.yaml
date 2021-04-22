@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.java'
+  pull_request:
+    paths:
+      - '**.java'
+
+# Continuous integration
+name: build
+
+jobs:
+  build:
+    name: Unit test on platforms
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest, ubuntu-latest ]
+    steps:
+      # Checkout repository
+      - uses: actions/checkout@v2
+      # Setup Java environment
+      - name: Setup JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      # Cache gradle temporary files
+      - name: Cache gradle files
+        uses: actions/cache@v2
+        with:
+          path: ./.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # Assemble main classes with gradle
+      - name: Assemble classes
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: classes -s
+      # Run unit tests with gradle
+      - name: Run Unit Tests
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: runTests -s
+      # Upload test reports as run artifact
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report-${{ runner.os }}
+          path: ./build/reports/tests/
