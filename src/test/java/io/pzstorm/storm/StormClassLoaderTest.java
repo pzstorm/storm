@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,24 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 
 	StormClassLoaderTest() {
 		super(new URL[] { CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
+	}
+
+	@Test
+	void shouldLoadWhitelistedClassesWithStormClassLoader() throws ReflectiveOperationException {
+
+		for (String whitelistedClass : getWhitelistedClasses()) {
+			Assertions.assertNull(findLoadedClass(whitelistedClass));
+		}
+		ImmutableSet<String> dummyGameClasses = ImmutableSet.of(
+				"fmod.FmodClass", "jassimp.JassimpLibraryClass", "javax.vecmath.MathClass",
+				"org.lwjgl.LwjglLibraryClass", "zombie.ZombieClass"
+		);
+		for (String dummyGameClass : dummyGameClasses)
+		{
+			Class<?> loadedClass = loadClass(dummyGameClass, true);
+			Assertions.assertEquals(loadedClass, findLoadedClass(dummyGameClass));
+			Assertions.assertEquals(this, loadedClass.getClassLoader());
+		}
 	}
 
 	@Test
