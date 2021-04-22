@@ -1,8 +1,12 @@
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Objects;
+import java.util.Set;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.
  * It is initially invoked by {@link StormLauncher} when launching the game.
@@ -53,7 +57,34 @@ public class StormClassLoader extends ClassLoader {
 	}
 
 	@Override
+	@Contract("null -> fail")
+	public @Nullable URL getResource(String name) {
+		Objects.requireNonNull(name);
+
+		URL url = urlClassLoader.getResource(name);
+		if (url == null) {
+			url = parentClassLoader.getResource(name);
+		}
+		return url;
+	}
+
+	@Override
+	protected @Nullable URL findResource(String name) {
+		return urlClassLoader.findResource(name);
+	}
+	@Override
 	public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+
+
+	@Override
+	public @Nullable InputStream getResourceAsStream(String name) {
+
+		InputStream inputStream = urlClassLoader.getResourceAsStream(name);
+		if (inputStream == null) {
+			inputStream = parentClassLoader.getResourceAsStream(name);
+		}
+		return inputStream;
+	}
 
 	/**
 	 * Converts the given class name to a file name.
