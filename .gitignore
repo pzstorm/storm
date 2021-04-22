@@ -1,6 +1,6 @@
 ### User specific ###
 local.properties
-zdoc.version
+version.properties
 
 ### Intellij ###
 
