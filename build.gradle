@@ -13,6 +13,12 @@ apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spo
 
 version '0.1.0'
 
+capsid {
+	isModProject = false
+	setRepositoryOwner("pzstorm")
+	setRepositoryName("storm")
+}
+
 dependencies {
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
