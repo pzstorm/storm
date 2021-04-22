@@ -47,11 +47,11 @@ public class StormClassLoader extends ClassLoader {
 	 * their loading process delegated to this {@code ClassLoader}.
 	 */
 	private final ClassLoader parentClassLoader;
-	private final URLClassLoader urlClassLoader;
+	protected final URLClassLoader resourceClassLoader;
 
 	StormClassLoader() {
 		parentClassLoader = getClass().getClassLoader();
-		urlClassLoader = (URLClassLoader) getParent();
+		resourceClassLoader = (URLClassLoader) getParent();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class StormClassLoader extends ClassLoader {
 	public @Nullable URL getResource(String name) {
 		Objects.requireNonNull(name);
 
-		URL url = urlClassLoader.getResource(name);
+		URL url = resourceClassLoader.getResource(name);
 		if (url == null) {
 			url = parentClassLoader.getResource(name);
 		}
@@ -77,7 +77,7 @@ public class StormClassLoader extends ClassLoader {
 
 	@Override
 	protected @Nullable URL findResource(String name) {
-		return urlClassLoader.findResource(name);
+		return resourceClassLoader.findResource(name);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class StormClassLoader extends ClassLoader {
 	@Override
 	public @Nullable InputStream getResourceAsStream(String name) {
 
-		InputStream inputStream = urlClassLoader.getResourceAsStream(name);
+		InputStream inputStream = resourceClassLoader.getResourceAsStream(name);
 		if (inputStream == null) {
 			inputStream = parentClassLoader.getResourceAsStream(name);
 		}
