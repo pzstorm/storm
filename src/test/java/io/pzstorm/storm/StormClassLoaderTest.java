@@ -3,6 +3,7 @@ package io.pzstorm.storm;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -39,6 +40,23 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 			Class<?> loadedClass = loadClass(dummyGameClass, true);
 			Assertions.assertEquals(loadedClass, findLoadedClass(dummyGameClass));
 			Assertions.assertEquals(this, loadedClass.getClassLoader());
+		}
+	}
+
+	@Test
+	void shouldDelegateLoadingNonWhitelistedClassesToParentClassLoader() throws ReflectiveOperationException {
+
+		Method method = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
+		method.setAccessible(true);
+
+		ImmutableSet<String> dummyClasses = ImmutableSet.of(
+				"com.dummy.PancakeClass", "com.dummy.PineappleClass", "com.dummy.StrawberryClass"
+		);
+		for (String dummyClass : dummyClasses)
+		{
+			Class<?> loadedClass = loadClass(dummyClass, true);
+			Assertions.assertEquals(loadedClass, method.invoke(getParent(), dummyClass));
+			Assertions.assertEquals(this.getParent(), loadedClass.getClassLoader());
 		}
 	}
 
