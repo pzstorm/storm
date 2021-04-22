@@ -14,7 +14,7 @@ class StormLauncher {
 
 	/**
 	 * Name of the method that is the entry point to Project Zomboid execution.
-	 * This will be invoked through reflection from {@link #launch(String[])} to launch the game
+	 * This will be invoked through reflection from {@link #main(String[])} to launch the game
 	 */
 	private static final String ZOMBOID_ENTRY_POINT = "main";
 
@@ -25,7 +25,7 @@ class StormLauncher {
 	 *
 	 * @throws ReflectiveOperationException if loading or invoking entry point failed.
 	 */
-	static void launch(String[] args) throws ReflectiveOperationException {
+	public static void main(String[] args) throws ReflectiveOperationException {
 
 		StormClassLoader stormLoader = new StormClassLoader();
 		Class<?> entryPointClass = stormLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
