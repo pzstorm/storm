@@ -1,3 +1,6 @@
+import io.pzstorm.capsid.setup.xml.LaunchRunConfig
+import io.pzstorm.capsid.setup.VmParameter
+
 plugins {
 	id 'io.pzstorm.capsid' version '0.2.0'
 
@@ -41,4 +44,18 @@ dependencies {
 test {
 	useJUnitPlatform()
 	testLogging.events "passed", "skipped", "failed"
+}
+
+tasks.createLaunchRunConfigs.configure {
+	actions.clear()
+	doLast {
+		//@formatter:off
+		LaunchRunConfig launchStorm = new LaunchRunConfig(
+				"Launch Storm", "io.pzstorm.storm.StormLauncher",
+				new VmParameter.Builder().build(), [
+						Main: new File((gameDir as File), "logs/main.log").toPath() ,
+						Debug: new File((gameDir as File), "logs/debug.log").toPath()] as Map
+		)//@formatter:on
+		launchStorm.configure(getProject()).writeToFile()
+	}
 }
