@@ -1,6 +1,7 @@
 # User-specific stuff
 /dictionaries/
 /shelf/
+/scopes/
 workspace.xml
 tasks.xml
 usage.statistics.xml
