@@ -5,9 +5,9 @@ version.properties
 ### Intellij ###
 
 # File-based project format
- *.iml
- *.ipr
- *.iws
+**/*.iml
+**/*.ipr
+**/*.iws
 
 # IntelliJ
 out/

@@ -16,5 +16,6 @@ gradle.xml
 /artifacts/
 /modules/
 compiler.xml
+libraries-with-intellij-classes.xml
 jarRepositories.xml
 modules.xml
