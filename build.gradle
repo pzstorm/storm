@@ -53,8 +53,8 @@ tasks.createLaunchRunConfigs.configure {
 		LaunchRunConfig launchStorm = new LaunchRunConfig(
 				"Launch Storm", "io.pzstorm.storm.StormLauncher",
 				new VmParameter.Builder().build(), [
-						Main: new File((gameDir as File), "logs/main.log").toPath() ,
-						Debug: new File((gameDir as File), "logs/debug.log").toPath()] as Map
+						Main: new File((gameDir as File), "logs/storm/main.log").toPath() ,
+						Debug: new File((gameDir as File), "logs/storm/debug.log").toPath()] as Map
 		)//@formatter:on
 		launchStorm.configure(getProject()).writeToFile()
 	}
