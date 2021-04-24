@@ -50,7 +50,8 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 		method.setAccessible(true);
 
 		ImmutableSet<String> dummyClasses = ImmutableSet.of(
-				"com.dummy.PancakeClass", "com.dummy.PineappleClass", "com.dummy.StrawberryClass"
+				"com.google.common.io.Files", "com.google.common.util.concurrent.Atomics",
+				"org.apache.logging.log4j.Logger", "org.apache.logging.log4j.Level"
 		);
 		for (String dummyClass : dummyClasses)
 		{
