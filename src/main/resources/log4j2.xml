@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="logLevelPattern">
+            %level{VERBOSE=INFO}
+        </Property>
+        <Property name="logFilePattern">
+            logs/storm/$${date:yyyy-MM}/pz-storm-%d{MM-dd-yyyy}
+        </Property>
+    </Properties>
+    <CustomLevels>
+        <CustomLevel name="VERBOSE" intLevel="450" />
+    </CustomLevels>
+    <Appenders>
+        <!-- Console for use in production environment -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{[HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+        </Console>
+        <!-- Log file for standard use in development environment -->
+        <RollingFile name="MainFile" fileName="logs/storm/main.log" filePattern="${logFilePattern}-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <!-- Log file for debugging use in development environment -->
+        <RollingFile name="DebugFile" fileName="logs/storm/debug.log" filePattern="${logFilePattern}-debug-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console" level="verbose"/>
+            <AppenderRef ref="MainFile" level="verbose"/>
+            <AppenderRef ref="DebugFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
