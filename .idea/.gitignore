@@ -16,6 +16,7 @@ gradle.xml
 # Other stuff
 /artifacts/
 /modules/
+/runConfigurations/
 compiler.xml
 libraries-with-intellij-classes.xml
 jarRepositories.xml
