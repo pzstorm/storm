@@ -2,8 +2,6 @@ package io.pzstorm.storm;
 
 import java.lang.reflect.Method;
 
-import zombie.debug.DebugLog;
-
 class StormLauncher {
 
 	/**
@@ -27,18 +25,21 @@ class StormLauncher {
 	 */
 	public static void main(String[] args) throws ReflectiveOperationException {
 
+		StormLogger.debug("Preparing to launch Project Zomboid");
 		StormClassLoader stormLoader = new StormClassLoader();
+
 		Class<?> entryPointClass = stormLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
 		Method entryPoint = entryPointClass.getMethod(ZOMBOID_ENTRY_POINT, String[].class);
 		try {
 			/* we invoke the entry point using reflection because we don't want to reference
 			 * the entry point class which would to the class being loaded by application class loader
 			 */
+			StormLogger.debug("Launching Project Zomboid...");
 			entryPoint.invoke(null, (Object) args);
 		}
 		catch (Throwable e)
 		{
-			DebugLog.General.error("An unhandled exception occurred while running Project Zomboid");
+			StormLogger.error("An unhandled exception occurred while running Project Zomboid");
 			throw new RuntimeException(e);
 		}
 	}

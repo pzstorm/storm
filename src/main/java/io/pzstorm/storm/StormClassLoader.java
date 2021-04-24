@@ -12,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 
-import zombie.debug.DebugLog;
-
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.
  * It is initially invoked by {@link StormLauncher} when launching the game.
@@ -60,6 +58,7 @@ public class StormClassLoader extends ClassLoader {
 	}
 
 	protected StormClassLoader() {
+		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
 		resourceClassLoader = (URLClassLoader) getParent();
 	}
@@ -139,10 +138,10 @@ public class StormClassLoader extends ClassLoader {
 		Class<?> clazz = findLoadedClass(name);
 		if (clazz == null)
 		{
-			DebugLog.General.debugln("STORM: Preparing to load class " + name);
+			StormLogger.debug("Preparing to load class " + name);
 			if (isWhitelistedClass(name))
 			{
-				DebugLog.General.debugln("STORM: Loading with StormClassLoader");
+				StormLogger.debug("Loading with StormClassLoader");
 				try {
 					byte[] input = getRawClassByteArray(name);
 					if (input.length > 0)
@@ -152,7 +151,7 @@ public class StormClassLoader extends ClassLoader {
 
 						clazz = defineClass(name, input, 0, input.length);
 						if (clazz.getClassLoader() == this) {
-							DebugLog.General.debugln("STORM: Successfully loaded class with StormClassLoader");
+							StormLogger.debug("STORM: Successfully loaded class with StormClassLoader");
 						}
 						else throw new RuntimeException("Unable to load class with StormClassLoader");
 					}
@@ -165,7 +164,7 @@ public class StormClassLoader extends ClassLoader {
 		// if the class is not whitelisted delegate loading to parent class loader
 		if (clazz == null)
 		{
-			DebugLog.General.debugln("STORM: Loading with application class loader");
+			StormLogger.debug("Loading with application class loader");
 			clazz = parentClassLoader.loadClass(name);
 		}
 		if (resolve) {
