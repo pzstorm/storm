@@ -20,14 +20,13 @@ import org.apache.logging.log4j.core.config.Configurator;
 public class StormLogger {
 
 	public static final Level VERBOSE = Level.forName("VERBOSE", 450);
-	private static final String JVM_PROPERTY = "storm.logger";
 	private static final org.apache.logging.log4j.Logger LOGGER;
 
 	static
 	{
 		LOGGER = LogManager.getLogger("Storm");
 		String sLevel = System.getProperty("storm.logger");
-		if (sLevel != null && sLevel.isEmpty())
+		if (sLevel != null && !sLevel.isEmpty())
 		{
 			Level level = Level.getLevel(sLevel);
 			if (level != null)
