@@ -21,3 +21,4 @@ compiler.xml
 libraries-with-intellij-classes.xml
 jarRepositories.xml
 modules.xml
+.name
