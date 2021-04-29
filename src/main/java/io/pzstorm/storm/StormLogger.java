@@ -3,11 +3,14 @@ package io.pzstorm.storm;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 /**
  * <p>Simple wrapper class for logging with Log4j 2 logger.
- * To configure root logger level launch Storm with {@code JVM_PROPERTY} set to a custom logger level.
+ * To configure console logging level launch Storm with {@code JVM_PROPERTY}
+ * set to a custom logger level. The level will be matched with {@link Logger#getLevel()}.
  * </p><p>
  * Logs will automatically be printed to console and configured log files.
  * Check {@code log4j2.xml} for log file locations.
@@ -31,8 +34,17 @@ public class StormLogger {
 			Level level = Level.getLevel(sLevel);
 			if (level != null)
 			{
-				Configurator.setLevel("Storm", level);
-				LOGGER.debug("Setting custom level for Storm logger '" + sLevel + '\'');
+				LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+				Configuration config = ctx.getConfiguration();
+
+				LoggerConfig rootLoggerConfig = config.getLoggers().get("");
+				for (String appender : new String[]{ "Console", "ManFile" })
+				{
+					rootLoggerConfig.removeAppender(appender);
+					rootLoggerConfig.addAppender(config.getAppender(appender), level, null);
+				}
+				ctx.updateLoggers();
+				LOGGER.info("Setting custom level for Storm logger '" + sLevel + '\'');
 			}
 			else LOGGER.error("Unable to resolve logging level '" + sLevel + '\'');
 		}
