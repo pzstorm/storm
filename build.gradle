@@ -52,12 +52,19 @@ test {
 tasks.createLaunchRunConfigs.configure {
 	actions.clear()
 	doLast {
+		def vmParameterBuilder = new VmParameter.Builder()
+		def os = org.gradle.internal.os.OperatingSystem.current()
+		if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
+			vmParameterBuilder = vmParameterBuilder
+					.withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
+					.withLwjglLibraryPaths(gameDir)
+		}
 		//@formatter:off
 		LaunchRunConfig launchStorm = new LaunchRunConfig(
 				"Launch Storm", "io.pzstorm.storm.StormLauncher",
-				new VmParameter.Builder().build(), [
-						Main: new File((gameDir as File), "logs/storm/main.log").toPath() ,
-						Debug: new File((gameDir as File), "logs/storm/debug.log").toPath()] as Map
+				vmParameterBuilder.build(), [
+						Main: new File(file(gameDir), "logs/storm/main.log").toPath() ,
+						Debug: new File(file(gameDir), "logs/storm/debug.log").toPath()] as Map
 		)//@formatter:on
 		launchStorm.configure(getProject()).writeToFile()
 	}
