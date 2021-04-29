@@ -67,13 +67,11 @@ public class StormClassLoader extends ClassLoader {
 	 * Returns {@code true} if at least one prefix pattern in whitelist matches the given name.
 	 * When a class name is considered whitelisted it will be loaded by this {@code ClassLoader}.
 	 */
-	@Contract("null -> fail")
 	protected static boolean isWhitelistedClass(String name) {
 		return CLASS_WHITELIST.stream().anyMatch(name::startsWith);
 	}
 
 	@Override
-	@Contract("null -> fail")
 	public @Nullable URL getResource(String name) {
 		Objects.requireNonNull(name);
 
@@ -98,7 +96,6 @@ public class StormClassLoader extends ClassLoader {
 	 * @throws IllegalArgumentException if package name duplicates an existing
 	 * 		package either in this class loader or one of its ancestors
 	 */
-	@Contract("null -> fail")
 	protected @Nullable Package definePackageForName(String name) {
 
 		int pkgDelimiterPos = name.lastIndexOf('.');
@@ -186,7 +183,7 @@ public class StormClassLoader extends ClassLoader {
 	/**
 	 * Converts the given class name to a file name.
 	 */
-	@Contract(pure = true, value = "null -> fail")
+	@Contract(pure = true)
 	private String getClassFileName(String name) {
 		return name.replace('.', '/') + ".class";
 	}
@@ -200,7 +197,6 @@ public class StormClassLoader extends ClassLoader {
 	 *
 	 * @throws IOException if an I/O error occurred while reading or writing to stream.
 	 */
-	@Contract("null -> fail")
 	protected byte[] getRawClassByteArray(String name) throws IOException {
 
 		// opens an input stream to read the class for given name
