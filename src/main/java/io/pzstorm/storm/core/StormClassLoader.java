@@ -71,6 +71,7 @@ class StormClassLoader extends ClassLoader {
 	 * Returns {@code true} if at least one prefix pattern in whitelist matches the given name.
 	 * When a class name is considered whitelisted it will be loaded by this {@code ClassLoader}.
 	 */
+	@Contract(pure = true)
 	protected static boolean isWhitelistedClass(String name) {
 		return CLASS_WHITELIST.stream().anyMatch(name::startsWith);
 	}
@@ -148,7 +149,7 @@ class StormClassLoader extends ClassLoader {
 
 					StormClassTransformer transformer = StormClassTransformer.getRegistered(name);
 					if (transformer != null) {
-						input = transformer.read(input).visit().transform();
+						input = transformer.transform(input);
 					}
 					if (input.length > 0)
 					{
