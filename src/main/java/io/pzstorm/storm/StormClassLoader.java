@@ -29,6 +29,7 @@ public class StormClassLoader extends ClassLoader {
 	 * If the native libraries are loaded using a different class loader they
 	 * will not be accessible to game classes.
 	 */
+	@SuppressWarnings("SpellCheckingInspection")
 	private static final ImmutableSet<String> CLASS_WHITELIST = ImmutableSet.of(
 			// zomboid library classes
 			"org.lwjgl.", "net.java.games.", "jassimp.",
