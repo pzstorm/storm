@@ -1,4 +1,4 @@
-package io.pzstorm.storm;
+package io.pzstorm.storm.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +9,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import io.pzstorm.storm.UnitTest;
 
 class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 

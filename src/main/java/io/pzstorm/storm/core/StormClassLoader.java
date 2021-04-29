@@ -1,4 +1,4 @@
-package io.pzstorm.storm;
+package io.pzstorm.storm.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,12 +12,14 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 
+import io.pzstorm.storm.StormLogger;
+
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.
  * It is initially invoked by {@link StormLauncher} when launching the game.
  */
 @SuppressWarnings("WeakerAccess")
-public class StormClassLoader extends ClassLoader {
+class StormClassLoader extends ClassLoader {
 
 	/**
 	 * <p>{@code Set} of class prefixes that mark classes to be loaded with this class loader.
@@ -39,14 +41,13 @@ public class StormClassLoader extends ClassLoader {
 			"javax.vecmath.", "org.joml.", "org.luaj.kahluafork.compiler.",
 			"org.mindrot.jbcrypt.", "se.krka.kahlua.", "zombie."
 	);
-
+	protected final URLClassLoader resourceClassLoader;
 	/**
 	 * {@code ClassLoader} that is the parent of this {@code ClassLoader}.
 	 * When loading classes, those classes not matching the whitelist pattern will have
 	 * their loading process delegated to this {@code ClassLoader}.
 	 */
 	private final ClassLoader parentClassLoader;
-	protected final URLClassLoader resourceClassLoader;
 
 	/**
 	 * Create {@code StormClassLoader} with additional locations to search for resources.
@@ -54,11 +55,13 @@ public class StormClassLoader extends ClassLoader {
 	 * @param resourceLocations the URLs from which to load classes and resources.
 	 */
 	protected StormClassLoader(URL[] resourceLocations) {
+
 		parentClassLoader = getClass().getClassLoader();
 		resourceClassLoader = new URLClassLoader(resourceLocations, getParent());
 	}
 
 	protected StormClassLoader() {
+
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
 		resourceClassLoader = (URLClassLoader) getParent();
@@ -142,6 +145,11 @@ public class StormClassLoader extends ClassLoader {
 				StormLogger.debug("Loading with StormClassLoader");
 				try {
 					byte[] input = getRawClassByteArray(name);
+
+					StormClassTransformer transformer = StormClassTransformer.getRegistered(name);
+					if (transformer != null) {
+						input = transformer.read(input).visit().transform();
+					}
 					if (input.length > 0)
 					{
 						// package has to be created before we define the class
@@ -155,7 +163,8 @@ public class StormClassLoader extends ClassLoader {
 					}
 				}
 				catch (IOException e) {
-					throw new RuntimeException("I/O exception occurred while transforming class to byte array");
+					throw new RuntimeException("I/O exception occurred while transforming class to byte " +
+							"array");
 				}
 			}
 		}
