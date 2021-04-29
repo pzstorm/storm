@@ -1,9 +1,10 @@
 package io.pzstorm.storm;
 
+import java.lang.annotation.*;
+
 import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
 import javax.annotation.meta.TypeQualifierNickname;
-import java.lang.annotation.*;
 
 @Documented
 @TypeQualifierNickname
