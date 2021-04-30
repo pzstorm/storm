@@ -22,24 +22,17 @@ import io.pzstorm.storm.StormLogger;
 class StormClassLoader extends ClassLoader {
 
 	/**
-	 * <p>{@code Set} of class prefixes that mark classes to be loaded with this class loader.
-	 * If a class does not match this patter it's loading will be delegated to the parent loader.
+	 * <p>
+	 * {@code Set} of class prefixes that mark classes to not load with this {@code ClassLoader}.
+	 * If a class matches this patter it's loading will be delegated to the parent loader.
 	 * </p>
-	 * This {@code Set} includes both Java libraries and main classes. Java Libraries have to be
-	 * loaded by the same class loader loading the game so that native libraries loaded from
-	 * those Java libraries become associated with the class loader loading the game.
-	 * If the native libraries are loaded using a different class loader they
-	 * will not be accessible to game classes.
+	 * Classes matching this prefix are causing exceptions when loaded with this {@code ClassLoader},
+	 * and they also do not need to be loaded with this {@code ClassLoader}.
 	 */
 	@SuppressWarnings("SpellCheckingInspection")
-	private static final ImmutableSet<String> CLASS_WHITELIST = ImmutableSet.of(
-			// zomboid library classes
-			"org.lwjgl.", "net.java.games.", "jassimp.",
-			// zomboid main classes
-			"astar.", "com.evildevil.engines.bubble.texture.",
-			"com.jcraft.", "com.sixlegs.png.", "de.jarnbjo.", "fmod.",
-			"javax.vecmath.", "org.joml.", "org.luaj.kahluafork.compiler.",
-			"org.mindrot.jbcrypt.", "se.krka.kahlua.", "zombie."
+	private static final ImmutableSet<String> CLASS_BLACKLIST = ImmutableSet.of(
+			"java.", "org.objectweb.asm.", "sun.", "com.sun.",
+			"javax.imageio.", "javax.xml.", "org.w3c."
 	);
 	protected final URLClassLoader resourceClassLoader;
 	/**
@@ -70,12 +63,12 @@ class StormClassLoader extends ClassLoader {
 	}
 
 	/**
-	 * Returns {@code true} if at least one prefix pattern in whitelist matches the given name.
-	 * When a class name is considered whitelisted it will be loaded by this {@code ClassLoader}.
+	 * Returns {@code true} if at least one prefix pattern in blacklist matches the given name.
+	 * When a class name is considered <i>blacklisted</i> it will not be loaded by this {@code ClassLoader}.
 	 */
 	@Contract(pure = true)
-	protected static boolean isWhitelistedClass(String name) {
-		return CLASS_WHITELIST.stream().anyMatch(name::startsWith);
+	protected static boolean isBlacklistedClass(String name) {
+		return CLASS_BLACKLIST.stream().anyMatch(name::startsWith);
 	}
 
 	@Override
@@ -143,7 +136,7 @@ class StormClassLoader extends ClassLoader {
 		if (clazz == null)
 		{
 			StormLogger.debug("Preparing to load class " + name);
-			if (isWhitelistedClass(name))
+			if (!isBlacklistedClass(name))
 			{
 				StormLogger.debug("Loading with StormClassLoader");
 				try {

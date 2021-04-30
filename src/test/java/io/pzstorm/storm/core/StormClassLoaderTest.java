@@ -28,10 +28,10 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	}
 
 	@Test
-	void shouldLoadWhitelistedClassesWithStormClassLoader() throws ReflectiveOperationException {
+	void shouldLoadNonBlacklistedClassesWithStormClassLoader() throws ReflectiveOperationException {
 
-		for (String whitelistedClass : getWhitelistedClasses()) {
-			Assertions.assertNull(findLoadedClass(whitelistedClass));
+		for (String blacklistedClasses : getBlacklistedClasses()) {
+			Assertions.assertNull(findLoadedClass(blacklistedClasses));
 		}
 		ImmutableSet<String> dummyGameClasses = ImmutableSet.of(
 				"fmod.FmodClass", "jassimp.JassimpLibraryClass", "javax.vecmath.MathClass",
@@ -46,20 +46,24 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	}
 
 	@Test
-	void shouldDelegateLoadingNonWhitelistedClassesToParentClassLoader() throws ReflectiveOperationException {
+	void shouldDelegateLoadingBlacklistedClassesToParentClassLoader() throws ReflectiveOperationException {
 
 		Method method = ClassLoader.class.getDeclaredMethod("findLoadedClass", String.class);
 		method.setAccessible(true);
 
 		ImmutableSet<String> dummyClasses = ImmutableSet.of(
-				"com.google.common.io.Files", "com.google.common.util.concurrent.Atomics",
-				"org.apache.logging.log4j.Logger", "org.apache.logging.log4j.Level"
+				"java.util.concurrent.CountDownLatch",
+				"org.objectweb.asm.ClassWriter",
+				"sun.reflect.FieldInfo",
+				"com.sun.java.util.jar.pack.DriverResource",
+				"javax.imageio.IIOImage",
+				"javax.xml.XMLConstants",
+				"org.w3c.dom.Attr"
 		);
 		for (String dummyClass : dummyClasses)
 		{
-			Class<?> loadedClass = loadClass(dummyClass, true);
-			Assertions.assertEquals(loadedClass, method.invoke(getParent(), dummyClass));
-			Assertions.assertEquals(this.getParent(), loadedClass.getClassLoader());
+			ClassLoader classLoader = loadClass(dummyClass, true).getClassLoader();
+			Assertions.assertTrue(classLoader == null || !classLoader.equals(this));
 		}
 	}
 
@@ -114,10 +118,10 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	}
 
 	@Test
-	void shouldProperlyRecognizeWhitelistedClassNames() throws ReflectiveOperationException {
+	void shouldProperlyRecognizeBlacklistedClassNames() throws ReflectiveOperationException {
 
-		for (String className : getWhitelistedClasses()) {
-			Assertions.assertTrue(isWhitelistedClass(className));
+		for (String className : getBlacklistedClasses()) {
+			Assertions.assertTrue(isBlacklistedClass(className));
 		}
 		Random rand = new Random();
 		for (int i1 = 10; i1 > 0; i1--)
@@ -129,7 +133,7 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 			for (int i2 = rand.nextInt(5) + 1; i2 > 0; i2--) {
 				sb.append(".").append(getRandomString());
 			}
-			Assertions.assertFalse(isWhitelistedClass(sb.toString()));
+			Assertions.assertFalse(isBlacklistedClass(sb.toString()));
 		}
 	}
 
@@ -138,9 +142,9 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Set<String> getWhitelistedClasses() throws ReflectiveOperationException {
+	private static Set<String> getBlacklistedClasses() throws ReflectiveOperationException {
 
-		Field field = StormClassLoader.class.getDeclaredField("CLASS_WHITELIST");
+		Field field = StormClassLoader.class.getDeclaredField("CLASS_BLACKLIST");
 		field.setAccessible(true);
 
 		return (Set<String>) field.get(null);
