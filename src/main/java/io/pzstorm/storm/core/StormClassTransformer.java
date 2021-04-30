@@ -99,12 +99,16 @@ abstract class StormClassTransformer {
 	 * @param rawClass array of bytes to read.
 	 * @return {@code this} instance of {@link StormClassTransformer}.
 	 *
+	 * @throws ClassTransformationException if given byte array is empty.
 	 * @see <a href="https://asm.ow2.io/asm4-guide.pdf#subsection.2.2.2">
 	 * 		ASM User Guide - Parsing classes</a>
 	 */
 	@Contract("_ -> this")
 	StormClassTransformer read(byte[] rawClass) {
 
+		if (rawClass.length == 0) {
+			throw new ClassTransformationException("Tried to read empty byte array");
+		}
 		classReader = new ClassReader(rawClass);
 		return this;
 	}
@@ -149,6 +153,8 @@ abstract class StormClassTransformer {
 	 * Calls method chain to transform the given {@code Class} byte array.
 	 *
 	 * @param rawClass byte array representing the {@code Class} to transform.
+	 *
+	 * @throws ClassTransformationException if given byte array is empty.
 	 * @return byte array representing transformed class.
 	 */
 	final byte[] transform(byte[] rawClass) {
