@@ -57,7 +57,9 @@ class StormClassLoader extends ClassLoader {
 	protected StormClassLoader(URL[] resourceLocations) {
 
 		parentClassLoader = getClass().getClassLoader();
-		resourceClassLoader = new URLClassLoader(resourceLocations, getParent());
+		resourceClassLoader = new URLClassLoader(
+				Objects.requireNonNull(resourceLocations), getParent()
+		);
 	}
 
 	protected StormClassLoader() {
