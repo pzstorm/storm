@@ -38,7 +38,7 @@ public class StormLogger {
 				Configuration config = ctx.getConfiguration();
 
 				LoggerConfig rootLoggerConfig = config.getLoggers().get("");
-				for (String appender : new String[]{ "Console", "ManFile" })
+				for (String appender : new String[]{ "Console", "MainFile" })
 				{
 					rootLoggerConfig.removeAppender(appender);
 					rootLoggerConfig.addAppender(config.getAppender(appender), level, null);
