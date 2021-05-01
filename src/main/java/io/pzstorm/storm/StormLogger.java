@@ -48,7 +48,7 @@ public class StormLogger {
 			}
 			else LOGGER.error("Unable to resolve logging level '" + sLevel + '\'');
 		}
-		LOGGER.debug("Initialized Storm logger");
+		LOGGER.info("Initialized Storm logger");
 	}
 
 	/* Make the constructor private to disable instantiation */
