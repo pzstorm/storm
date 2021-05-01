@@ -29,7 +29,7 @@ import io.pzstorm.storm.StormLogger;
  * </ul>
  */
 @SuppressWarnings("WeakerAccess")
-abstract class StormClassTransformer {
+public abstract class StormClassTransformer {
 
 	/**
 	 * Internal registry of created transformers. This map is checked for entries
@@ -59,12 +59,12 @@ abstract class StormClassTransformer {
 	}
 
 	/**
-	 * Returns registered instance of {@link StormClassTransformer}.
+	 * Returns registered instance of {@link StormClassTransformer} that matches the given name.
 	 *
 	 * @return {@code StormClassTransformer} or {@code null} if no registered instance found.
 	 */
 	@Contract(pure = true)
-	static @Nullable StormClassTransformer getRegistered(String className) {
+	public static @Nullable StormClassTransformer getRegistered(String className) {
 		return TRANSFORMERS.getOrDefault(className, null);
 	}
 

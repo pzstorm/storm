@@ -28,9 +28,11 @@ class StormLauncher {
 	public static void main(String[] args) throws ReflectiveOperationException {
 
 		StormLogger.debug("Preparing to launch Project Zomboid");
-		StormClassLoader stormLoader = new StormClassLoader();
 
-		Class<?> entryPointClass = stormLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
+		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
+		Class.forName("io.pzstorm.storm.core.StormEventHooks", true, classLoader);
+
+		Class<?> entryPointClass = classLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
 		Method entryPoint = entryPointClass.getMethod(ZOMBOID_ENTRY_POINT, String[].class);
 		try {
 			/* we invoke the entry point using reflection because we don't want to reference

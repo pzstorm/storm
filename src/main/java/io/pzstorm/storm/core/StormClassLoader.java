@@ -142,9 +142,13 @@ class StormClassLoader extends ClassLoader {
 				try {
 					byte[] input = getRawClassByteArray(name);
 
-					StormClassTransformer transformer = StormClassTransformer.getRegistered(name);
-					if (transformer != null) {
-						input = transformer.transform(input);
+					Class<?> transformerClass = StormBootstrap.TRANSFORMER_CLASS;
+					if (transformerClass != null)
+					{
+						Object transformer = StormBootstrap.getRegisteredTransformer(name);
+						if (transformer != null) {
+							input = StormBootstrap.invokeTransformer(transformer, input);
+						}
 					}
 					if (input.length > 0)
 					{
@@ -153,14 +157,13 @@ class StormClassLoader extends ClassLoader {
 
 						clazz = defineClass(name, input, 0, input.length);
 						if (clazz.getClassLoader() == this) {
-							StormLogger.debug("STORM: Successfully loaded class with StormClassLoader");
+							StormLogger.debug("Successfully loaded class with StormClassLoader");
 						}
 						else throw new RuntimeException("Unable to load class with StormClassLoader");
 					}
 				}
-				catch (IOException e) {
-					throw new RuntimeException("I/O exception occurred while transforming class to byte " +
-							"array");
+				catch (IOException | ReflectiveOperationException e) {
+					throw new RuntimeException(e);
 				}
 			}
 		}
