@@ -5,7 +5,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 
-public class ZombieHelloTransformer extends StormClassTransformer {
+public class ZombieHelloTransformer extends StormClassTestTransformer {
 
 	public ZombieHelloTransformer() {
 		super("zombie.ZombieHello");
