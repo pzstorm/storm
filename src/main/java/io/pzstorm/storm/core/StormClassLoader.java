@@ -47,7 +47,7 @@ class StormClassLoader extends ClassLoader {
 	 *
 	 * @param resourceLocations the URLs from which to load classes and resources.
 	 */
-	protected StormClassLoader(URL[] resourceLocations) {
+	StormClassLoader(URL[] resourceLocations) {
 
 		parentClassLoader = getClass().getClassLoader();
 		resourceClassLoader = new URLClassLoader(
@@ -55,7 +55,7 @@ class StormClassLoader extends ClassLoader {
 		);
 	}
 
-	protected StormClassLoader() {
+	StormClassLoader() {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
@@ -67,7 +67,7 @@ class StormClassLoader extends ClassLoader {
 	 * When a class name is considered <i>blacklisted</i> it will not be loaded by this {@code ClassLoader}.
 	 */
 	@Contract(pure = true)
-	protected static boolean isBlacklistedClass(String name) {
+	static boolean isBlacklistedClass(String name) {
 		return CLASS_BLACKLIST.stream().anyMatch(name::startsWith);
 	}
 
@@ -96,7 +96,7 @@ class StormClassLoader extends ClassLoader {
 	 * @throws IllegalArgumentException if package name duplicates an existing
 	 * 		package either in this class loader or one of its ancestors
 	 */
-	protected @Nullable Package definePackageForName(String name) {
+	@Nullable Package definePackageForName(String name) {
 
 		int pkgDelimiterPos = name.lastIndexOf('.');
 		if (pkgDelimiterPos > 0)
@@ -203,7 +203,7 @@ class StormClassLoader extends ClassLoader {
 	 *
 	 * @throws IOException if an I/O error occurred while reading or writing to stream.
 	 */
-	protected byte[] getRawClassByteArray(String name) throws IOException {
+	byte[] getRawClassByteArray(String name) throws IOException {
 
 		// opens an input stream to read the class for given name
 		InputStream inputStream = getResourceAsStream(getClassFileName(name));
