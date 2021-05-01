@@ -1,5 +1,9 @@
 package io.pzstorm.storm;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -8,10 +12,6 @@ import org.apache.logging.log4j.core.config.AppenderControlArraySet;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 class StormLoggerTest implements UnitTest {
 

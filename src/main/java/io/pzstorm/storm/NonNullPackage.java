@@ -13,4 +13,5 @@ import javax.annotation.meta.TypeQualifierNickname;
 @Target(ElementType.PACKAGE)
 @Retention(RetentionPolicy.CLASS)
 public @interface NonNullPackage {
+
 }
