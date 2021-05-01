@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 
 import io.pzstorm.storm.UnitTest;
 
+@SuppressWarnings("SpellCheckingInspection")
 class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 
 	private static final ClassLoader CL = StormClassLoaderTest.class.getClassLoader();
