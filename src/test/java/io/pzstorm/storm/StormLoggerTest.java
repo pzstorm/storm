@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.AppenderControl;
 import org.apache.logging.log4j.core.config.AppenderControlArraySet;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,8 @@ class StormLoggerTest implements UnitTest {
 	@Test
 	void shouldSetStormLoggerLevelFromSystemProperties() throws ReflectiveOperationException {
 
-		// assert that key does not exist first
-		Assertions.assertNull(System.getProperty(LOGGER_PROPERTY));
+		// store current level from system properties
+		Level originalLevel = Level.toLevel(System.getProperty(LOGGER_PROPERTY, "INFO"));
 
 		Level expectedLevel = Level.forName("ALL", 1);
 		System.setProperty(LOGGER_PROPERTY, expectedLevel.name());
@@ -35,6 +36,7 @@ class StormLoggerTest implements UnitTest {
 
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		LoggerConfig rootLoggerConfig = ctx.getConfiguration().getLoggers().get("");
+		Configuration config = ctx.getConfiguration();
 
 		Field appendersField = LoggerConfig.class.getDeclaredField("appenders");
 		appendersField.setAccessible(true);
@@ -60,5 +62,12 @@ class StormLoggerTest implements UnitTest {
 		for (Map.Entry<String, Level> entry : actualLevels.entrySet()) {
 			Assertions.assertEquals(expectedLevel, entry.getValue());
 		}
+		// reset the logger levels to original values
+		for (String appender : new String[]{ "Console", "MainFile" })
+		{
+			rootLoggerConfig.removeAppender(appender);
+			rootLoggerConfig.addAppender(config.getAppender(appender), originalLevel, null);
+		}
+		ctx.updateLoggers();
 	}
 }
