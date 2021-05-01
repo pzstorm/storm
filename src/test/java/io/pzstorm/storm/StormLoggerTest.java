@@ -23,7 +23,7 @@ class StormLoggerTest implements UnitTest {
 		// assert that key does not exist first
 		Assertions.assertNull(System.getProperty(LOGGER_PROPERTY));
 
-		Level expectedLevel = Level.forName("CUSTOM_LEVEL", 1);
+		Level expectedLevel = Level.forName("ALL", 1);
 		System.setProperty(LOGGER_PROPERTY, expectedLevel.name());
 
 		// assert that system property was properly set
