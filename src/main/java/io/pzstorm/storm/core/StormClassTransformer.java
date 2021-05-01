@@ -38,7 +38,8 @@ public abstract class StormClassTransformer {
 	 */
 	private static final Map<String, StormClassTransformer> TRANSFORMERS = new HashMap<>();
 
-	private final ClassNode visitor;
+	protected final String className;
+	protected final ClassNode visitor;
 	private @Nullable ClassReader classReader;
 
 	StormClassTransformer(String className, ClassNode visitor) {
@@ -153,11 +154,11 @@ public abstract class StormClassTransformer {
 	 * Calls method chain to transform the given {@code Class} byte array.
 	 *
 	 * @param rawClass byte array representing the {@code Class} to transform.
+	 * @return byte array representing transformed class.
 	 *
 	 * @throws ClassTransformationException if given byte array is empty.
-	 * @return byte array representing transformed class.
 	 */
-	final byte[] transform(byte[] rawClass) {
+	public byte[] transform(byte[] rawClass) {
 		return read(rawClass).visit().transform().write();
 	}
 
