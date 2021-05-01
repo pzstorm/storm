@@ -45,6 +45,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 
+	// https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
+	testImplementation 'io.github.java-diff-utils:java-diff-utils:4.10'
+
 	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
 	implementation 'org.apache.logging.log4j:log4j-core:2.14.0'
 
