@@ -9,7 +9,7 @@
         </Property>
     </Properties>
     <CustomLevels>
-        <CustomLevel name="VERBOSE" intLevel="450" />
+        <CustomLevel name="VERBOSE" intLevel="450"/>
     </CustomLevels>
     <Appenders>
         <!-- Console for use in production environment -->

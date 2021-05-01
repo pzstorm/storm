@@ -44,8 +44,10 @@ public abstract class StormClassTransformer {
 
 	StormClassTransformer(String className, ClassNode visitor) {
 
-		TRANSFORMERS.put(className, this);
+		this.className = className;
 		this.visitor = visitor;
+
+		TRANSFORMERS.put(className, this);
 	}
 
 	StormClassTransformer(String className) {

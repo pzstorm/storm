@@ -25,7 +25,20 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 	private static final URL DELEGATE_RESOURCE_DIR = CL.getResource("./delegate/");
 
 	StormClassLoaderTest() {
-		super(new URL[] { CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
+		super(new URL[]{ CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
+	}
+
+	private static String getRandomString() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Set<String> getBlacklistedClasses() throws ReflectiveOperationException {
+
+		Field field = StormClassLoader.class.getDeclaredField("CLASS_BLACKLIST");
+		field.setAccessible(true);
+
+		return (Set<String>) field.get(null);
 	}
 
 	@Test
@@ -136,18 +149,5 @@ class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 			}
 			Assertions.assertFalse(isBlacklistedClass(sb.toString()));
 		}
-	}
-
-	private static String getRandomString() {
-		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-
-	@SuppressWarnings("unchecked")
-	private static Set<String> getBlacklistedClasses() throws ReflectiveOperationException {
-
-		Field field = StormClassLoader.class.getDeclaredField("CLASS_BLACKLIST");
-		field.setAccessible(true);
-
-		return (Set<String>) field.get(null);
 	}
 }

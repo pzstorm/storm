@@ -1,9 +1,10 @@
 package io.pzstorm.storm.core;
 
-import com.github.difflib.DiffUtils;
-import com.github.difflib.UnifiedDiffUtils;
-import com.github.difflib.patch.Patch;
-import io.pzstorm.storm.StormLogger;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
+
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -11,10 +12,11 @@ import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
+import com.github.difflib.DiffUtils;
+import com.github.difflib.UnifiedDiffUtils;
+import com.github.difflib.patch.Patch;
+
+import io.pzstorm.storm.StormLogger;
 
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}
@@ -30,30 +32,12 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 		super(className);
 	}
 
-	@Override
-	public byte[] transform(byte[] rawClass) {
-
-		read(rawClass).visit();
-		String original = getBytecodeFor(visitor);
-
-		byte[] result = transform().write();
-		String modifier = getBytecodeFor(visitor);
-
-		StormLogger.info("Generating class bytecode diff");
-		String diff = getBytecodeDiff(className, original, modifier);
-		if (!diff.isEmpty()) {
-			StormLogger.info(diff);
-		}
-		else StormLogger.warn("No diff available, class bytecode is identical");
-		return result;
-	}
-
 	/**
 	 * Returns the text constructed from given node's bytecode.
+	 *
 	 * @param insnNode node to construct the text for.
 	 */
 	private static String getBytecodeFor(AbstractInsnNode insnNode) {
-
 		insnNode.accept(METHOD_PRINTER);
 
 		StringWriter stringWriter = new StringWriter();
@@ -65,15 +49,16 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 
 	/**
 	 * Returns the text constructed from given {@link ClassNode} bytecode.
+	 *
 	 * @param classNode node to construct the text for.
 	 */
 	private static String getBytecodeFor(ClassNode classNode) {
 
 		StringBuilder builder = new StringBuilder();
-		for (MethodNode methodNode: classNode.methods)
+		for (MethodNode methodNode : classNode.methods)
 		{
 			builder.append(String.format("Method %s -> %s\n", methodNode.name, methodNode.desc));
-			for (AbstractInsnNode insnNode: methodNode.instructions) {
+			for (AbstractInsnNode insnNode : methodNode.instructions) {
 				builder.append(String.format(".... %s", getBytecodeFor(insnNode)));
 			}
 		}
@@ -87,7 +72,6 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 	 * @param className filename of the original (unrevised file).
 	 * @param originalCode lines of the original file.
 	 * @param modifiedCode lines of the modified file.
-	 *
 	 * @return bytecode difference between two set of code lines.
 	 */
 	private static String getBytecodeDiff(String className, String originalCode, String modifiedCode) {
@@ -106,5 +90,23 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 			builder.append(diffLine).append("\n");
 		}
 		return builder.toString();
+	}
+
+	@Override
+	public byte[] transform(byte[] rawClass) {
+
+		read(rawClass).visit();
+		String original = getBytecodeFor(visitor);
+
+		byte[] result = transform().write();
+		String modifier = getBytecodeFor(visitor);
+
+		StormLogger.info("Generating class bytecode diff");
+		String diff = getBytecodeDiff(className, original, modifier);
+		if (!diff.isEmpty()) {
+			StormLogger.info(diff);
+		}
+		else StormLogger.warn("No diff available, class bytecode is identical");
+		return result;
 	}
 }

@@ -1,7 +1,5 @@
 package zombie;
 
-import java.io.FileNotFoundException;
-
 import org.jetbrains.annotations.TestOnly;
 
 @TestOnly
