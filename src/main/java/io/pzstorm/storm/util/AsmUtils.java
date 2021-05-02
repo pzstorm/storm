@@ -24,6 +24,26 @@ public class AsmUtils {
 		}
 		return result;
 	}
+
+	/**
+	 * Finds and returns the last instructions of a specific {@code Class} in a given list.
+	 *
+	 * @param list list of instructions to search.
+	 * @param node {@link AbstractInsnNode} to match.
+	 * @param <T> type of instruction to match.
+	 */
+	@SuppressWarnings("unchecked")
+	public static @Nullable <T extends AbstractInsnNode> T getLastInstructionOfType(InsnList list, Class<T> node) {
+
+		AbstractInsnNode result = null;
+		for (AbstractInsnNode instruction : list)
+		{
+			if (node.isInstance(instruction)) {
+				result = instruction;
+			}
+		}
+		return (T) result;
+	}
 	/**
 	 * Compare the given nodes and return {@code true} if they are equal.
 	 * Since instances of {@link AbstractInsnNode} do not implement a equality comparison,

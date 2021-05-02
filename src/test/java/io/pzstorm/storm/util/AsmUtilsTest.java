@@ -106,4 +106,19 @@ class AsmUtilsTest implements UnitTest {
 			Assertions.assertEquals(instructions.get(i), actualList.get(i));
 		}
 	}
+
+	@Test
+	@SuppressWarnings("ConstantConditions")
+	void shouldGetLastInstructionOfType() {
+
+		Map<AbstractInsnNode, AbstractInsnNode> instructionsOfType = ImmutableMap.of(
+				LABELS[4], AsmUtils.getLastInstructionOfType(instructions, LabelNode.class),
+				LAST_METHOD_NODE, AsmUtils.getLastInstructionOfType(instructions, MethodInsnNode.class),
+				LAST_LINE_NODE, AsmUtils.getLastInstructionOfType(instructions, LineNumberNode.class),
+				LAST_VAR_NODE, AsmUtils.getLastInstructionOfType(instructions, VarInsnNode.class)
+		);
+		for (Map.Entry<AbstractInsnNode, AbstractInsnNode> entry : instructionsOfType.entrySet()) {
+			Assertions.assertEquals(entry.getKey(), entry.getValue());
+		}
+	}
 }
