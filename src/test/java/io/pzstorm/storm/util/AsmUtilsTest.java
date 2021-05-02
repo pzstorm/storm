@@ -121,4 +121,24 @@ class AsmUtilsTest implements UnitTest {
 			Assertions.assertEquals(entry.getKey(), entry.getValue());
 		}
 	}
+
+	@Test
+	void shouldGetFirstMatchingLabelNodeInstruction() {
+
+		List<Integer[]> labelIndexPairs = ImmutableList.of(
+				new Integer[] { 0, 6 }, new Integer[] { 6, 12 },
+				new Integer[] { 12, 23 }, new Integer[] { 23, 27 }
+		);
+		for (int i1 = 0; i1 < labelIndexPairs.size(); i1++)
+		{
+			List<AbstractInsnNode> insnToMatch = new ArrayList<>();
+			Integer[] labelIndexPair = labelIndexPairs.get(i1);
+			for (int i2 = labelIndexPair[0]; i2 < labelIndexPair[1]; i2++) {
+				insnToMatch.add(instructions.get(i2));
+			}
+			LabelNode expectedLabel = LABELS[i1];
+			LabelNode actualLabel = AsmUtils.getFirstMatchingLabelNode(createInstructionList(), insnToMatch);
+			Assertions.assertEquals(expectedLabel, actualLabel);
+		}
+	}
 }

@@ -44,6 +44,37 @@ public class AsmUtils {
 		}
 		return (T) result;
 	}
+
+	/**
+	 * Find and return first {@link LabelNode} that contains given list of instructions.
+	 *
+	 * @param list list of instructions to search.
+	 * @param match list of instructions to match.
+	 * @return first {@code LabelNode} that was matched or {@code null} if no node was matched.
+	 */
+	public static @Nullable LabelNode getFirstMatchingLabelNode(InsnList list, List<AbstractInsnNode> match) {
+
+		//@formatter:off
+		for (int i1 = 0; i1 < list.size(); i1++)
+		{
+			AbstractInsnNode labelInstruction = list.get(i1);
+			if (labelInstruction instanceof LabelNode)
+			{
+				boolean matchedInstructions = true;
+				for (int i2 = 0; i2 < match.size() && i1 < list.size(); i2++, i1++)
+				{
+					if (!AsmUtils.equalNodes(list.get(i1), match.get(i2))) {
+						matchedInstructions = false; break;
+					}
+				}
+				if (matchedInstructions) {
+					return (LabelNode) labelInstruction;
+				}
+			}
+		}//@formatter:on
+		return null;
+	}
+
 	/**
 	 * Compare the given nodes and return {@code true} if they are equal.
 	 * Since instances of {@link AbstractInsnNode} do not implement a equality comparison,
