@@ -11,4 +11,17 @@ import java.util.List;
  */
 public class AsmUtils {
 
+	/**
+	 * Create a new {@link InsnList} from given array of instructions.
+	 *
+	 * @param instructions array of instructions to use.
+	 */
+	public static InsnList createInsnList(AbstractInsnNode... instructions) {
+
+		InsnList result = new InsnList();
+		for (AbstractInsnNode instruction : instructions) {
+			result.add(instruction);
+		}
+		return result;
+	}
 }
