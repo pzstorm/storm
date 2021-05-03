@@ -39,6 +39,13 @@ class StormBootstrap {
 	 */
 	private static final Method TRANSFORMER_INVOKER;
 
+	/**
+	 * Marks the {@code StormBoostrap} as being fully loaded. This variable will be
+	 * {@code true} when the static block has finished initializing. Required by classes
+	 * that are loaded before {@code StormBoostrap} but still depend on it.
+	 */
+	private static final boolean hasLoaded;
+
 	static
 	{
 		try {
@@ -47,6 +54,9 @@ class StormBootstrap {
 
 			TRANSFORMER_GETTER = TRANSFORMER_CLASS.getDeclaredMethod("getRegistered", String.class);
 			TRANSFORMER_INVOKER = TRANSFORMER_CLASS.getDeclaredMethod("transform", byte[].class);
+
+			// mark StormBootstrap as finished loading
+			hasLoaded = true;
 		}
 		catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
@@ -72,5 +82,14 @@ class StormBootstrap {
 	@SuppressWarnings("RedundantCast")
 	static byte[] invokeTransformer(Object transformer, byte[] rawClass) throws ReflectiveOperationException {
 		return (byte[]) TRANSFORMER_INVOKER.invoke(transformer, (Object) rawClass);
+	}
+
+	/**
+	 * Returns if {@code StormBoostrap} has finished loading.
+	 *
+	 * @return {@code true} if boostrap has been fully loaded.
+	 */
+	static boolean hasLoaded() {
+		return hasLoaded;
 	}
 }

@@ -143,8 +143,7 @@ class StormClassLoader extends ClassLoader {
 				try {
 					byte[] input = getRawClassByteArray(name);
 
-					Class<?> transformerClass = StormBootstrap.TRANSFORMER_CLASS;
-					if (transformerClass != null)
+					if (StormBootstrap.hasLoaded())
 					{
 						Object transformer = StormBootstrap.getRegisteredTransformer(name);
 						if (transformer != null) {
