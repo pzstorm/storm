@@ -1,8 +1,8 @@
 package zombie;
 
-import io.pzstorm.storm.StormLogger;
 import org.jetbrains.annotations.TestOnly;
 
+import io.pzstorm.storm.StormLogger;
 
 @TestOnly
 @SuppressWarnings({ "unused", "WeakerAccess" })

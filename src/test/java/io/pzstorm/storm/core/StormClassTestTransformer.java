@@ -103,7 +103,8 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 
 		StormLogger.info("Generating class bytecode diff");
 		String diff = getBytecodeDiff(className, original, modifier);
-		if (!diff.isEmpty()) {
+		if (!diff.isEmpty())
+		{
 			//noinspection UseOfSystemOutOrSystemErr
 			System.out.println(diff);
 		}

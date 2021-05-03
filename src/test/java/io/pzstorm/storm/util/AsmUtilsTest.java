@@ -1,16 +1,18 @@
 package io.pzstorm.storm.util;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import io.pzstorm.storm.UnitTest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
+import io.pzstorm.storm.UnitTest;
 
 class AsmUtilsTest implements UnitTest {
 
@@ -25,6 +27,7 @@ class AsmUtilsTest implements UnitTest {
 	private static final AbstractInsnNode LAST_VAR_NODE = new VarInsnNode(Opcodes.ALOAD, 1);
 
 	private final InsnList instructions = createInstructionList();
+
 	private static InsnList createInstructionList() {
 
 		InsnList result = new InsnList();
@@ -100,7 +103,7 @@ class AsmUtilsTest implements UnitTest {
 		AbstractInsnNode[] insnList = new AbstractInsnNode[instructions.size()];
 		for (int i = 0; i < instructions.size(); i++) {
 			insnList[i] = instructions.get(i);
- 		}
+		}
 		InsnList actualList = AsmUtils.createInsnList(insnList);
 		for (int i = 0; i < actualList.size(); i++) {
 			Assertions.assertEquals(instructions.get(i), actualList.get(i));
@@ -126,8 +129,8 @@ class AsmUtilsTest implements UnitTest {
 	void shouldGetFirstMatchingLabelNodeInstruction() {
 
 		List<Integer[]> labelIndexPairs = ImmutableList.of(
-				new Integer[] { 0, 6 }, new Integer[] { 6, 12 },
-				new Integer[] { 12, 23 }, new Integer[] { 23, 27 }
+				new Integer[]{ 0, 6 }, new Integer[]{ 6, 12 },
+				new Integer[]{ 12, 23 }, new Integer[]{ 23, 27 }
 		);
 		for (int i1 = 0; i1 < labelIndexPairs.size(); i1++)
 		{
@@ -144,7 +147,6 @@ class AsmUtilsTest implements UnitTest {
 
 	@Test
 	void shouldCompareInstructionNodeFields() {
-
 		// TODO: finish writing this test
 
 		FieldInsnNode fia = new FieldInsnNode(Opcodes.GETSTATIC, "owner", "name", "desc");

@@ -10,10 +10,8 @@ public class ZombieUtils {
 	public static void setZombieProperties(int a, boolean c) {
 
 		zombiePropertyA = a;
-
 		// inject instruction to set zombiePropertyB here
 		//zombiePropertyB = "property";
-
 		zombiePropertyC = c;
 	}
 }

@@ -9,6 +9,14 @@ import io.pzstorm.storm.UnitTest;
 
 class StormClassTransformerTest implements UnitTest {
 
+	private static void createAndLoadTransformer(String transformer) throws ReflectiveOperationException {
+
+		Class<?> transformerClass = Class.forName(transformer, true, StormBootstrap.CLASS_LOADER);
+		Constructor<?> constructor = transformerClass.getConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
+
 	@Test
 	void shouldChangeStackConstantInInstructionList() throws ReflectiveOperationException {
 
@@ -37,13 +45,5 @@ class StormClassTransformerTest implements UnitTest {
 
 		Assertions.assertEquals(21, propertyA);
 		Assertions.assertTrue(propertyC);
-	}
-
-	private static void createAndLoadTransformer(String transformer) throws ReflectiveOperationException{
-
-		Class<?> transformerClass = Class.forName(transformer, true, StormBootstrap.CLASS_LOADER);
-		Constructor<?> constructor = transformerClass.getConstructor();
-		constructor.setAccessible(true);
-		constructor.newInstance();
 	}
 }
