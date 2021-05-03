@@ -104,7 +104,8 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 		StormLogger.info("Generating class bytecode diff");
 		String diff = getBytecodeDiff(className, original, modifier);
 		if (!diff.isEmpty()) {
-			StormLogger.info(diff);
+			//noinspection UseOfSystemOutOrSystemErr
+			System.out.println(diff);
 		}
 		else StormLogger.warn("No diff available, class bytecode is identical");
 		return result;
