@@ -23,10 +23,15 @@ class StormBootstrap {
 	 * to {@code AppClassLoader}. For this reason we have to use bootstrapping and reflection to
 	 * access transformers from {@code StormClassLoader}.
 	 */
-	static final Class<?> TRANSFORMER_CLASS;
+	private static final Class<?> TRANSFORMER_CLASS;
 
 	/**
-	 * Represents {@link StormClassTransformer#getRegistered(String)} method.
+	 * Loaded and initialized {@link StormClassTransformers} {@code Class}.
+	 */
+	private static final Class<?> TRANSFORMERS_CLASS;
+
+	/**
+	 * Represents {@link StormClassTransformers#getRegistered(String)} method.
 	 *
 	 * @see #getRegisteredTransformer(String)
 	 */
@@ -49,10 +54,13 @@ class StormBootstrap {
 	static
 	{
 		try {
-			String transformerClass = "io.pzstorm.storm.core.StormClassTransformer";
-			TRANSFORMER_CLASS = Class.forName(transformerClass, true, CLASS_LOADER);
-
-			TRANSFORMER_GETTER = TRANSFORMER_CLASS.getDeclaredMethod("getRegistered", String.class);
+			TRANSFORMER_CLASS = Class.forName(
+					"io.pzstorm.storm.core.StormClassTransformer", true, CLASS_LOADER
+			);
+			TRANSFORMERS_CLASS = Class.forName(
+					"io.pzstorm.storm.core.StormClassTransformers", true, CLASS_LOADER
+			);
+			TRANSFORMER_GETTER = TRANSFORMERS_CLASS.getDeclaredMethod("getRegistered", String.class);
 			TRANSFORMER_INVOKER = TRANSFORMER_CLASS.getDeclaredMethod("transform", byte[].class);
 
 			// mark StormBootstrap as finished loading
@@ -67,7 +75,7 @@ class StormBootstrap {
 	 * Returns registered instance of {@link StormClassTransformer} that matches the given name.
 	 *
 	 * @throws ReflectiveOperationException if an error occurred while invoking method.
-	 * @see StormClassTransformer#getRegistered(String)
+	 * @see StormClassTransformers#getRegistered(String)
 	 */
 	static Object getRegisteredTransformer(String name) throws ReflectiveOperationException {
 		return TRANSFORMER_GETTER.invoke(null, name);

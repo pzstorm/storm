@@ -1,7 +1,5 @@
 package io.pzstorm.storm.core;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Contract;
@@ -17,10 +15,7 @@ import io.pzstorm.storm.StormLogger;
 
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}
- * bytecode using ASM. When new instance of {@code StormClassTransformer} is created
- * it is automatically mapped in internal registry. To check if transformer is registered
- * use {@link #isRegistered(String)} and to retrieve a mapped instance use {@link #getRegistered(String)}.
- * The transformation process calls the following method in fixed order:
+ * bytecode using ASM. The transformation process calls the following method in fixed order:
  * <ul>
  * <li>{@link #read(byte[])} to read given byte array with {@link ClassReader}.</li>
  * <li>{@link #visit()} to use the visitation system to parse the class with visitor.</li>
@@ -28,15 +23,7 @@ import io.pzstorm.storm.StormLogger;
  * <li>{@link #write()} to write the class using {@link ClassWriter}</li>
  * </ul>
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class StormClassTransformer {
-
-	/**
-	 * Internal registry of created transformers. This map is checked for entries
-	 * by {@link StormClassLoader} when loading classes and invokes the transformation
-	 * chain of methods to transform the class before defining it via JVM.
-	 */
-	private static final Map<String, StormClassTransformer> TRANSFORMERS = new HashMap<>();
 
 	protected final String className;
 	protected final ClassNode visitor;
@@ -46,29 +33,10 @@ public abstract class StormClassTransformer {
 
 		this.className = className;
 		this.visitor = visitor;
-
-		TRANSFORMERS.put(className, this);
 	}
 
 	StormClassTransformer(String className) {
 		this(className, new ClassNode());
-	}
-
-	/**
-	 * Returns {@code true} if transformer with given name is registered.
-	 */
-	static boolean isRegistered(String name) {
-		return TRANSFORMERS.containsKey(name);
-	}
-
-	/**
-	 * Returns registered instance of {@link StormClassTransformer} that matches the given name.
-	 *
-	 * @return {@code StormClassTransformer} or {@code null} if no registered instance found.
-	 */
-	@Contract(pure = true)
-	public static @Nullable StormClassTransformer getRegistered(String className) {
-		return TRANSFORMERS.getOrDefault(className, null);
 	}
 
 	/**
@@ -82,7 +50,7 @@ public abstract class StormClassTransformer {
 	 * 		ASM User Guide - Method descriptors</a>
 	 */
 	@Contract(pure = true)
-	final InsnList getInstructionsForMethod(String name, String descriptor) {
+	public final InsnList getInstructionsForMethod(String name, String descriptor) {
 
 		if (classReader != null)
 		{

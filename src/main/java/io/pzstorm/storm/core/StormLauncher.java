@@ -30,7 +30,7 @@ class StormLauncher {
 		StormLogger.debug("Preparing to launch Project Zomboid");
 
 		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
-		Class.forName("io.pzstorm.storm.core.StormEventHooks", true, classLoader);
+		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
 
 		Class<?> entryPointClass = classLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
 		Method entryPoint = entryPointClass.getMethod(ZOMBOID_ENTRY_POINT, String[].class);
