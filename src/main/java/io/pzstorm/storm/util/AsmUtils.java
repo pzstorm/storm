@@ -47,6 +47,8 @@ public class AsmUtils {
 
 	/**
 	 * Find and return first {@link LabelNode} that contains given list of instructions.
+	 * Note that {@link LineNumberNode} and {@link LabelNode} instructions will be excluded when
+	 * comparing entries which means that these instructions are safe to be included in {@code match} list.
 	 *
 	 * @param list list of instructions to search.
 	 * @param match list of instructions to match.
@@ -57,18 +59,31 @@ public class AsmUtils {
 		//@formatter:off
 		for (int i1 = 0; i1 < list.size(); i1++)
 		{
-			AbstractInsnNode labelInstruction = list.get(i1);
-			if (labelInstruction instanceof LabelNode)
+			AbstractInsnNode instruction = list.get(i1);
+			if (instruction instanceof LabelNode)
 			{
+				int i3 = i1 + 1;
 				boolean matchedInstructions = true;
-				for (int i2 = 0; i2 < match.size() && i1 < list.size(); i2++, i1++)
+				for (int i2 = 0; i2 < match.size() && i3 < list.size(); i2++, i3++)
 				{
-					if (!AsmUtils.equalNodes(list.get(i1), match.get(i2))) {
-						matchedInstructions = false; break;
-					}
+					AbstractInsnNode a = list.get(i3);
+					// ignore line number nodes
+					if (!(a instanceof LineNumberNode))
+					{
+						AbstractInsnNode b = match.get(i2);
+						// ignore label and line number nodes
+						if (!(b instanceof LabelNode) && !(b instanceof LineNumberNode))
+						{
+							if (!AsmUtils.equalNodes(a, b)) {
+								matchedInstructions = false; break;
+							}
+						}
+						else i3 -= 1;	// when ignoring nodes counter variables
+					}					// need to be adjusted to compensate for
+					else i2 -= 1;		// the for-loop auto-incremental operation
 				}
 				if (matchedInstructions) {
-					return (LabelNode) labelInstruction;
+					return (LabelNode) instruction;
 				}
 			}
 		}//@formatter:on
