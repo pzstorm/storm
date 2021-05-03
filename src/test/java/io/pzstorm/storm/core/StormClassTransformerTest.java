@@ -13,20 +13,19 @@ class StormClassTransformerTest implements UnitTest {
 	void shouldChangeStackConstantInInstructionList() throws ReflectiveOperationException {
 
 		String className = "zombie.ZombieHello";
-
-		// create and register transformer
-		Class<?> transformerClass = Class.forName(
-				"io.pzstorm.storm.core.ZombieHelloTransformer",
-				true, StormBootstrap.CLASS_LOADER
-		);
-		Constructor<?> constructor = transformerClass.getConstructor();
-		constructor.setAccessible(true);
-		constructor.newInstance();
+		createAndLoadTransformer("io.pzstorm.storm.core.ZombieHelloTransformer");
 
 		Class<?> zombieHello = StormBootstrap.CLASS_LOADER.loadClass(className, true);
 		String hello = (String) zombieHello.getDeclaredMethod("getHello").invoke(null);
 		Assertions.assertEquals("Zombie says: you die today!", hello);
 
 		zombieHello.getDeclaredMethod("sayHello").invoke(null);
+	}
+	private static void createAndLoadTransformer(String transformer) throws ReflectiveOperationException{
+
+		Class<?> transformerClass = Class.forName(transformer, true, StormBootstrap.CLASS_LOADER);
+		Constructor<?> constructor = transformerClass.getConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
 	}
 }
