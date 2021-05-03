@@ -141,4 +141,14 @@ class AsmUtilsTest implements UnitTest {
 			Assertions.assertEquals(expectedLabel, actualLabel);
 		}
 	}
+
+	@Test
+	void shouldCompareInstructionNodeFields() {
+
+		// TODO: finish writing this test
+
+		FieldInsnNode fia = new FieldInsnNode(Opcodes.GETSTATIC, "owner", "name", "desc");
+		FieldInsnNode fib = new FieldInsnNode(Opcodes.GETSTATIC, "owner", "name", "desc");
+		Assertions.assertTrue((AsmUtils.equalNodes(fia, fib)));
+	}
 }
