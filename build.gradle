@@ -3,7 +3,7 @@ import io.pzstorm.capsid.setup.xml.LaunchRunConfig
 import io.pzstorm.capsid.setup.VmParameter
 
 plugins {
-	id 'io.pzstorm.capsid' version '0.3.0'
+	id 'io.pzstorm.capsid' version '0.4.0'
 
 	// Plugin that keeps your code spotless with Gradle
 	// https://plugins.gradle.org/plugin/com.diffplug.spotless
