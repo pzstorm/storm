@@ -84,7 +84,7 @@ test {
 	testLogging.events "passed", "skipped", "failed"
 }
 
-tasks.createLaunchRunConfigs.configure {
+tasks.createRunConfigurations.configure {
 	actions.clear()
 	doLast {
 		def vmParameterBuilder = new VmParameter.Builder()
@@ -96,11 +96,12 @@ tasks.createLaunchRunConfigs.configure {
 		}
 		//@formatter:off
 		LaunchRunConfig launchStorm = new LaunchRunConfig(
-				"Launch Storm", "io.pzstorm.storm.StormLauncher",
-				vmParameterBuilder.build(), [
+				"Launch Storm", "io.pzstorm.storm.core.StormLauncher",
+				vmParameterBuilder, [
 						Main: new File(file(gameDir), "logs/storm/main.log").toPath() ,
 						Debug: new File(file(gameDir), "logs/storm/debug.log").toPath()] as Map
 		)//@formatter:on
+		launchStorm.vmParamBuilder.build()
 		launchStorm.configure(getProject()).writeToFile()
 	}
 }
