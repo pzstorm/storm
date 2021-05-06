@@ -1,18 +1,18 @@
 package io.pzstorm.storm.core;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+
+import io.pzstorm.storm.hook.StormHook;
+
 /**
  * This class defines, initializes and stores {@link StormClassTransformer} instances.
- * <ul>
- * <li>Check if transformer is registered by calling {@link #isRegistered(String)}.</li>
- * <li>Retrieve a mapped instance of registered transformer by calling {@link #getRegistered(String)}</li>
- * </ul>
+ * To retrieve a mapped instance of registered transformer call {@link #getRegistered(String)}.
  */
+@SuppressWarnings("WeakerAccess")
 public class StormClassTransformers {
 
 	/**
@@ -23,11 +23,6 @@ public class StormClassTransformers {
 	private static final Map<String, StormClassTransformer> TRANSFORMERS = new HashMap<>();
 
 
-	/**
-	 * Returns {@code true} if transformer with given name is registered.
-	 */
-	static boolean isRegistered(String name) {
-		return TRANSFORMERS.containsKey(name);
 	}
 
 	/**
