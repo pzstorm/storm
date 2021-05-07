@@ -30,6 +30,10 @@ class StormLauncher {
 		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
 		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
 
+		// initialize logging system
+		StormLogger.initialize();
+
+		// initialize dispatcher system
 		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
 		Class<?> eventDispatcher = classLoader.loadClass("io.pzstorm.storm.event.StormEventDispatcher");
 		eventDispatcher.getDeclaredMethod("registerEventHandler", Class.class).invoke(null, eventHandler);

@@ -10,25 +10,27 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 /**
  * <p>Simple wrapper class for logging with Log4j 2 logger.
  * To configure console logging level launch Storm with {@code JVM_PROPERTY}
- * set to a custom logger level. The level will be matched with {@link Logger#getLevel()}.
+ * set to a custom logger level and call {@link #initialize()} method.
  * </p><p>
  * Logs will automatically be printed to console and configured log files.
- * Check {@code log4j2.xml} for log file locations.
- * </p>
- * Use the {@code static} methods to print logs with desired log level.
- * If you want to print with a log level not covered by {@code static} methods
- * use {@link #get()} method to get a reference to logger instance.
+ * Check {@code log4j2.xml} for log file locations. Use the {@code static} methods to
+ * print logs with desired log level. If you want to print with a log level not covered
+ * by {@code static} methods use {@link #get()} method to get a reference to logger instance.
  */
 @SuppressWarnings({ "unused", "WeakerAccess" })
 public class StormLogger {
 
 	public static final Level VERBOSE = Level.forName("VERBOSE", 450);
-	private static final org.apache.logging.log4j.Logger LOGGER;
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger("Storm");
+	static final String LOGGER_PROPERTY = "storm.logger";
 
-	static
-	{
-		LOGGER = LogManager.getLogger("Storm");
-		String sLevel = System.getProperty("storm.logger");
+	/**
+	 * Initialize {@link StormLogger} system by setting logging level resolved from system properties.
+	 * To configure console logging level launch Storm with {@code JVM_PROPERTY} set to a custom logger level.
+	 */
+	static void initialize() {
+
+		String sLevel = System.getProperty(LOGGER_PROPERTY);
 		if (sLevel != null && !sLevel.isEmpty())
 		{
 			Level level = Level.getLevel(sLevel);
