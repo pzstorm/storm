@@ -2,11 +2,12 @@ package io.pzstorm.storm.util;
 
 import java.lang.reflect.Method;
 
+import io.pzstorm.storm.UnitTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("unused")
-class StormUtilsTest {
+class StormUtilsTest implements UnitTest {
 
 	private boolean hasInvokedRestrictedMethod = false;
 
