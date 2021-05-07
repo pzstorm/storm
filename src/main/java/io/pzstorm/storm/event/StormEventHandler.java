@@ -15,10 +15,6 @@ import zombie.ui.UIFont;
 public class StormEventHandler {
 
 	@SubscribeEvent
-	public static void handleRenderEvent(OnMainScreenRenderEvent event) {
-	}
-
-	@SubscribeEvent
 	public static void handleUIElementRenderEvent(OnUIElementPreRenderEvent event) {
 
 		if (event.element.Parent != null)
