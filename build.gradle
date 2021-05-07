@@ -23,10 +23,8 @@ capsid {
 }
 
 sourceSets {
-	// this sourceSet is used for testing class transformation
 	zombie {
-		runtimeClasspath += sourceSets.main.output
-		compileClasspath += sourceSets.main.output
+		java.srcDir('src/main/java')
 	}
 	main {
 		// add dummy zomboid classes to classpath when compiling on CI

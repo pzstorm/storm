@@ -2,14 +2,13 @@ package zombie;
 
 import org.jetbrains.annotations.TestOnly;
 
-import io.pzstorm.storm.StormLogger;
-
 @TestOnly
 @SuppressWarnings({ "unused", "WeakerAccess" })
 public class ZombieHello {
 
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	public static void sayHello() {
-		StormLogger.info(getHello());
+		System.out.println(getHello());
 	}
 
 	public static String getHello() {
