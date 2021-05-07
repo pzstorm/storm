@@ -23,9 +23,9 @@ capsid {
 }
 
 sourceSets {
-	zombie {
-		java.srcDir('src/main/java')
-	}
+	// module containing zomboid dummy classes and classes used in testing
+	// this module is only required by tests and CI compiler
+	zombie {}
 	main {
 		// add dummy zomboid classes to classpath when compiling on CI
 		if (System.getenv("CI") != null) {
