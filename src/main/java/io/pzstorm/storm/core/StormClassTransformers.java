@@ -22,7 +22,24 @@ public class StormClassTransformers {
 	 */
 	private static final Map<String, StormClassTransformer> TRANSFORMERS = new HashMap<>();
 
+	/**
+	 * Create and register a new {@link StormClassTransformer} with given name
+	 * that installs a {@link StormHook} designated by method parameter.
+	 *
+	 * @param className name of the target class to transform.
+	 * @param hook {@link StormHook} to install with transformation.
+	 */
+	private static void registerTransformer(String className, StormHook hook) {
 
+		TRANSFORMERS.put(className, new StormClassTransformer(className) {
+
+			@Override
+			StormClassTransformer transform() {
+
+				hook.installHook(this);
+				return this;
+			}
+		});
 	}
 
 	/**
