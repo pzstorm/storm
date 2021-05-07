@@ -6,6 +6,7 @@ import zombie.ZomboidClass;
 import java.util.Map;
 
 @ZomboidClass
+@SuppressWarnings("ALL")
 public class KahluaTableImpl implements KahluaTable {
 
 	public Map<Object, Object> delegate;

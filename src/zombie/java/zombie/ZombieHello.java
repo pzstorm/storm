@@ -3,7 +3,7 @@ package zombie;
 import org.jetbrains.annotations.TestOnly;
 
 @TestOnly
-@SuppressWarnings({ "unused", "WeakerAccess" })
+@SuppressWarnings("ALL")
 public class ZombieHello {
 
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")

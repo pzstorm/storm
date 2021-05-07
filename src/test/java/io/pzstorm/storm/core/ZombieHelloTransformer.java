@@ -5,6 +5,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
 
+@SuppressWarnings("unused")
 public class ZombieHelloTransformer extends StormClassTestTransformer {
 
 	public ZombieHelloTransformer() {

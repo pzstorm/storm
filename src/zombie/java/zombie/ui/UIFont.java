@@ -3,7 +3,7 @@ package zombie.ui;
 import zombie.ZomboidClass;
 
 @ZomboidClass
-@SuppressWarnings("unused")
+@SuppressWarnings("ALL")
 public enum UIFont {
 
 	Small,

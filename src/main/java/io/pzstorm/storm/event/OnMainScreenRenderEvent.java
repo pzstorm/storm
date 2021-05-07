@@ -7,6 +7,7 @@ import zombie.gameStates.MainScreenState;
  *
  * @see MainScreenState#render()
  */
+@SuppressWarnings("unused")
 public class OnMainScreenRenderEvent implements ZomboidEvent {
 
 	@Override

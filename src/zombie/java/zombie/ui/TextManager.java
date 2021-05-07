@@ -3,6 +3,7 @@ package zombie.ui;
 import zombie.ZomboidClass;
 
 @ZomboidClass
+@SuppressWarnings("ALL")
 public class TextManager {
 
 	public static TextManager instance;

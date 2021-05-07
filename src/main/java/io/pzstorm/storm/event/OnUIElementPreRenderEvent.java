@@ -7,7 +7,7 @@ import zombie.ui.UIElement;
  *
  * @see UIElement#render()
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnUIElementPreRenderEvent implements ZomboidEvent {
 
 	public final UIElement element;
