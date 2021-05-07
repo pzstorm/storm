@@ -1,13 +1,20 @@
 package io.pzstorm.storm.util;
 
+import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Method;
 
 class StormUtilsTest {
 
 	private boolean hasInvokedRestrictedMethod = false;
+
+	@Test
+	void shouldGetClassAsCorrectPath() {
+
+		String expected = "io/pzstorm/storm/util/StormUtilsTest";
+		Assertions.assertEquals(expected, StormUtils.getClassAsPath(StormUtilsTest.class));
+	}
 
 	@Test
 	void shouldResetAccessibilityAfterInvokingRestrictedMethod() throws ReflectiveOperationException {

@@ -1,10 +1,20 @@
 package io.pzstorm.storm.util;
 
-import io.pzstorm.storm.StormLogger;
-
 import java.lang.reflect.Method;
 
+import io.pzstorm.storm.StormLogger;
+
 public class StormUtils {
+
+	/**
+	 * Returns a path representation of the name for given {@code Class}.
+	 *
+	 * @param clazz {@code Class} whose name should be converted to path.
+	 * @return {@code String} representing a path.
+	 */
+	public static String getClassAsPath(Class<?> clazz) {
+		return clazz.getName().replace('.', '/');
+	}
 
 	/**
 	 * Invokes the given inaccessible {@code Method} without leaving method accessible.
