@@ -11,8 +11,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
-import io.pzstorm.storm.StormLogger;
-
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}
  * bytecode using ASM. The transformation process calls the following method in fixed order:

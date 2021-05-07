@@ -2,8 +2,6 @@ package io.pzstorm.storm.core;
 
 import java.lang.reflect.Method;
 
-import io.pzstorm.storm.StormLogger;
-
 class StormLauncher {
 
 	/**

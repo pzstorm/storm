@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.pzstorm.storm.core.StormLogger;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -15,8 +16,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import io.pzstorm.storm.hook.StormHook;
 
 import com.google.common.collect.Sets;
-
-import io.pzstorm.storm.StormLogger;
 
 /**
  * This class is responsible for registering event handlers and dispatching {@link ZomboidEvent} instances.

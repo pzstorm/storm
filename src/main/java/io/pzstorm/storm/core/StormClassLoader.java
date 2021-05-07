@@ -12,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 
-import io.pzstorm.storm.StormLogger;
-
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.
  * It is initially invoked by {@link StormLauncher} when launching the game.
@@ -33,7 +31,7 @@ class StormClassLoader extends ClassLoader {
 	private static final ImmutableSet<String> CLASS_BLACKLIST = ImmutableSet.of(
 			"java.", "org.objectweb.asm.", "sun.", "com.sun.", "org.xml.", "org.w3c.",
 			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.",
-			"io.pzstorm.storm.StormLogger"
+			"io.pzstorm.storm.core.StormLogger"
 	);
 	protected final URLClassLoader resourceClassLoader;
 	/**

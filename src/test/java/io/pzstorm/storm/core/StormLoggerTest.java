@@ -1,9 +1,10 @@
-package io.pzstorm.storm;
+package io.pzstorm.storm.core;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pzstorm.storm.UnitTest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -32,7 +33,7 @@ class StormLoggerTest implements UnitTest {
 		Assertions.assertEquals(expectedLevel.name(), systemProperty);
 
 		// initialize StormLogger class
-		Class.forName("io.pzstorm.storm.StormLogger");
+		Class.forName("io.pzstorm.storm.core.StormLogger");
 
 		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
 		LoggerConfig rootLoggerConfig = ctx.getConfiguration().getLoggers().get("");

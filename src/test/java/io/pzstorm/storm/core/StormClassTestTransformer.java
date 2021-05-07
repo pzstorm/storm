@@ -16,8 +16,6 @@ import com.github.difflib.DiffUtils;
 import com.github.difflib.UnifiedDiffUtils;
 import com.github.difflib.patch.Patch;
 
-import io.pzstorm.storm.StormLogger;
-
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}
  * bytecode using ASM when running JUnit tests. When transforming it will print a
