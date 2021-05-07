@@ -28,6 +28,12 @@ sourceSets {
 		runtimeClasspath += sourceSets.main.output
 		compileClasspath += sourceSets.main.output
 	}
+	main {
+		// add dummy zomboid classes to classpath when compiling on CI
+		if (System.getenv("CI") != null) {
+			compileClasspath += sourceSets.zombie.output
+		}
+	}
 	test {
 		// tests need to see classes used in class transformation tests
 		runtimeClasspath += sourceSets.zombie.output
