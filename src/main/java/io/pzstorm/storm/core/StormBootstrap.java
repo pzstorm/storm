@@ -1,5 +1,7 @@
 package io.pzstorm.storm.core;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 
 /**
@@ -77,7 +79,7 @@ class StormBootstrap {
 	 * @throws ReflectiveOperationException if an error occurred while invoking method.
 	 * @see StormClassTransformers#getRegistered(String)
 	 */
-	static Object getRegisteredTransformer(String name) throws ReflectiveOperationException {
+	static @Nullable Object getRegisteredTransformer(String name) throws ReflectiveOperationException {
 		return TRANSFORMER_GETTER.invoke(null, name);
 	}
 

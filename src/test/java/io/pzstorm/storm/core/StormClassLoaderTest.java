@@ -21,8 +21,8 @@ import io.pzstorm.storm.UnitTest;
 class StormClassLoaderTest extends StormClassLoader implements UnitTest {
 
 	private static final ClassLoader CL = StormClassLoaderTest.class.getClassLoader();
-	private static final URL CLASSES_RESOURCE_DIR = CL.getResource("./classes/");
-	private static final URL DELEGATE_RESOURCE_DIR = CL.getResource("./delegate/");
+	private static final URL CLASSES_RESOURCE_DIR = Objects.requireNonNull(CL.getResource("./classes/"));
+	private static final URL DELEGATE_RESOURCE_DIR = Objects.requireNonNull(CL.getResource("./delegate/"));
 
 	StormClassLoaderTest() {
 		super(new URL[]{ CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
