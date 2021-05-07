@@ -14,7 +14,7 @@ import io.pzstorm.storm.hook.StormHook;
  * This class defines, initializes and stores {@link StormClassTransformer} instances.
  * To retrieve a mapped instance of registered transformer call {@link #getRegistered(String)}.
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({ "WeakerAccess", "unused" })
 public class StormClassTransformers {
 
 	/**

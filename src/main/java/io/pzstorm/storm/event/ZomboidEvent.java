@@ -7,6 +7,7 @@ import io.pzstorm.storm.hook.StormHook;
  * {@link StormHook}s and included as a method parameter in a callback to {@link StormEventDispatcher}.
  * They are then dispatched to all methods that subscribe to those specific events.
  */
+@SuppressWarnings("WeakerAccess")
 public interface ZomboidEvent {
 
 	/**

@@ -14,5 +14,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@SuppressWarnings("WeakerAccess")
 public @interface SubscribeEvent {
 }
