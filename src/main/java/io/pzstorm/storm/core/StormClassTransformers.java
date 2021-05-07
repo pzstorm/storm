@@ -31,6 +31,16 @@ public class StormClassTransformers {
 	}
 
 	/**
+	 * Register designated {@link StormClassTransformer} with given name.
+	 *
+	 * @param className name of the target class to transform.
+	 * @param transformer {@code StormClassTransformer} to register.
+	 */
+	private static void registerTransformer(String className, StormClassTransformer transformer) {
+		TRANSFORMERS.put(className, transformer);
+	}
+
+	/**
 	 * Create and register a new {@link StormClassTransformer} with given name
 	 * that installs a {@link StormHook} designated by method parameter.
 	 *
