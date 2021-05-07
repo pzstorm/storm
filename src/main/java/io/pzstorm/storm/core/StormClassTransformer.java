@@ -23,9 +23,9 @@ import org.objectweb.asm.tree.MethodNode;
  */
 public abstract class StormClassTransformer {
 
-	protected final String className;
-	protected final ClassNode visitor;
 	private @Nullable ClassReader classReader;
+	final String className;
+	final ClassNode visitor;
 
 	StormClassTransformer(String className, ClassNode visitor) {
 
