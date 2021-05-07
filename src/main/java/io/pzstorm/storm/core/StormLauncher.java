@@ -32,6 +32,8 @@ class StormLauncher {
 		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
 		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
 
+		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
+		Class<?> eventDispatcher = classLoader.loadClass("io.pzstorm.storm.event.StormEventDispatcher");
 		Class<?> entryPointClass = classLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
 		Method entryPoint = entryPointClass.getMethod(ZOMBOID_ENTRY_POINT, String[].class);
 		try {
