@@ -6,6 +6,8 @@ import java.util.Map;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import io.pzstorm.storm.hook.OnMainScreenRenderHook;
+import io.pzstorm.storm.hook.OnUIElementPreRenderHook;
 import io.pzstorm.storm.hook.StormHook;
 
 /**
@@ -21,6 +23,12 @@ public class StormClassTransformers {
 	 * chain of methods to transform the class before defining it via JVM.
 	 */
 	private static final Map<String, StormClassTransformer> TRANSFORMERS = new HashMap<>();
+
+	static
+	{
+		registerTransformer("zombie.gameStates.MainScreenState", new OnMainScreenRenderHook());
+		registerTransformer("zombie.ui.UIElement", new OnUIElementPreRenderHook());
+	}
 
 	/**
 	 * Create and register a new {@link StormClassTransformer} with given name
