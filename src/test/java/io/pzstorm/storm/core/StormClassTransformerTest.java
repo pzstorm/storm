@@ -1,6 +1,7 @@
 package io.pzstorm.storm.core;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,20 +10,42 @@ import io.pzstorm.storm.UnitTest;
 
 class StormClassTransformerTest implements UnitTest {
 
-	private static void createAndLoadTransformer(String transformer) throws ReflectiveOperationException {
+	private static final Class<?> STORM_CLASS_TRANSFORMER, STORM_CLASS_TRANSFORMERS;
 
-		Class<?> transformerClass = Class.forName(transformer, true, StormBootstrap.CLASS_LOADER);
+	static {
+		try {
+			STORM_CLASS_TRANSFORMER = Class.forName(
+					"io.pzstorm.storm.core.StormClassTransformer",
+					true, StormBootstrap.CLASS_LOADER
+			);
+			STORM_CLASS_TRANSFORMERS = Class.forName(
+					"io.pzstorm.storm.core.StormClassTransformers",
+					true, StormBootstrap.CLASS_LOADER);
+		}
+		catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static void createAndRegisterTransformer(String className, String sTransformerClass) throws ReflectiveOperationException {
+
+		Class<?> transformerClass = Class.forName(sTransformerClass, true, StormBootstrap.CLASS_LOADER);
 		Constructor<?> constructor = transformerClass.getConstructor();
 		constructor.setAccessible(true);
-		constructor.newInstance();
+
+		Object transformer = constructor.newInstance();
+		Method registerTransformer = STORM_CLASS_TRANSFORMERS.getDeclaredMethod(
+				"registerTransformer", String.class, STORM_CLASS_TRANSFORMER
+		);
+		registerTransformer.setAccessible(true);
+		registerTransformer.invoke(null, className, STORM_CLASS_TRANSFORMER.cast(transformer));
 	}
 
 	@Test
 	void shouldChangeStackConstantInInstructionList() throws ReflectiveOperationException {
 
 		String className = "zombie.ZombieHello";
-		createAndLoadTransformer("io.pzstorm.storm.core.ZombieHelloTransformer");
-
+		createAndRegisterTransformer(className, "io.pzstorm.storm.core.ZombieHelloTransformer");
 		Class<?> zombieHello = StormBootstrap.CLASS_LOADER.loadClass(className, true);
 		String hello = (String) zombieHello.getDeclaredMethod("getHello").invoke(null);
 		Assertions.assertEquals("Zombie says: you die today!", hello);
@@ -34,7 +57,7 @@ class StormClassTransformerTest implements UnitTest {
 	void shouldInsertInstructionBeforeMatchedLabel() throws ReflectiveOperationException {
 
 		String className = "zombie.ZombieUtils";
-		createAndLoadTransformer("io.pzstorm.storm.core.ZombieUtilsTransformer");
+		createAndRegisterTransformer(className, "io.pzstorm.storm.core.ZombieUtilsTransformer");
 
 		Class<?> zombieUtils = StormBootstrap.CLASS_LOADER.loadClass(className, true);
 		zombieUtils.getDeclaredMethod("setZombieProperties", int.class, boolean.class)
