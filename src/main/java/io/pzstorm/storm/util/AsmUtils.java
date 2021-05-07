@@ -162,7 +162,7 @@ public class AsmUtils {
 			return ((MethodInsnNode) a).owner.equals(((MethodInsnNode) b).owner) &&
 					((MethodInsnNode) a).name.equals(((MethodInsnNode) b).name) &&
 					((MethodInsnNode) a).desc.equals(((MethodInsnNode) b).desc) &&
-					((MethodInsnNode) a).itf == (((MethodInsnNode) b).itf);
+					((MethodInsnNode) a).itf == ((MethodInsnNode) b).itf;
 		}
 		if (a instanceof MultiANewArrayInsnNode)
 		{
@@ -196,7 +196,7 @@ public class AsmUtils {
 			return ((TypeInsnNode) a).desc.equals(((TypeInsnNode) b).desc);
 		}
 		if (a instanceof VarInsnNode) {
-			return ((VarInsnNode) a).var == (((VarInsnNode) b).var);
+			return ((VarInsnNode) a).var == ((VarInsnNode) b).var;
 		}
 		return true;
 	}

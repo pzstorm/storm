@@ -151,6 +151,6 @@ class AsmUtilsTest implements UnitTest {
 
 		FieldInsnNode fia = new FieldInsnNode(Opcodes.GETSTATIC, "owner", "name", "desc");
 		FieldInsnNode fib = new FieldInsnNode(Opcodes.GETSTATIC, "owner", "name", "desc");
-		Assertions.assertTrue((AsmUtils.equalNodes(fia, fib)));
+		Assertions.assertTrue(AsmUtils.equalNodes(fia, fib));
 	}
 }
