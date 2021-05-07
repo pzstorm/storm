@@ -34,6 +34,8 @@ class StormLauncher {
 
 		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
 		Class<?> eventDispatcher = classLoader.loadClass("io.pzstorm.storm.event.StormEventDispatcher");
+		eventDispatcher.getDeclaredMethod("registerEventHandler", Class.class).invoke(null, eventHandler);
+
 		Class<?> entryPointClass = classLoader.loadClass(ZOMBOID_ENTRY_POINT_CLASS);
 		Method entryPoint = entryPointClass.getMethod(ZOMBOID_ENTRY_POINT, String[].class);
 		try {
