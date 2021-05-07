@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("unused")
 class StormUtilsTest {
 
 	private boolean hasInvokedRestrictedMethod = false;
