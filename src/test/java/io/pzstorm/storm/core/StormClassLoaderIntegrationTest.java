@@ -9,22 +9,21 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 
+import io.pzstorm.storm.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import io.pzstorm.storm.UnitTest;
-
 @SuppressWarnings("SpellCheckingInspection")
-class StormClassLoaderTest extends StormClassLoader implements UnitTest {
+class StormClassLoaderIntegrationTest extends StormClassLoader implements IntegrationTest {
 
-	private static final ClassLoader CL = StormClassLoaderTest.class.getClassLoader();
+	private static final ClassLoader CL = StormClassLoaderIntegrationTest.class.getClassLoader();
 	private static final URL CLASSES_RESOURCE_DIR = Objects.requireNonNull(CL.getResource("./classes/"));
 	private static final URL DELEGATE_RESOURCE_DIR = Objects.requireNonNull(CL.getResource("./delegate/"));
 
-	StormClassLoaderTest() {
+	StormClassLoaderIntegrationTest() {
 		super(new URL[]{ CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
 	}
 
