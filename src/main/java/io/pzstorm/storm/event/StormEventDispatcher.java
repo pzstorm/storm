@@ -1,6 +1,7 @@
 package io.pzstorm.storm.event;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,10 @@ public class StormEventDispatcher {
 	 * @param method {@code Method} to register with event handler.
 	 * @param handler event handler to register along with {@code Method}. It can be either an
 	 * 		instance of an object or a {@code Class} that represents the handler.
-	 * @throws IllegalArgumentException if the given {@code Method} does not have exactly one argument,
+	 *
+	 * @throws IllegalArgumentException if the handler parameter is {@code null} and given method is
+	 * 		<i>not</i> declared as {@code static}, handler is <i>not</i> {@code null} and given method is
+	 * 		declared as {@code static}, if the given {@code Method} does not have exactly one argument
 	 * 		or the argument is not an instance of {@link ZomboidEvent}.
 	 */
 	@SuppressWarnings("unchecked")
@@ -73,6 +77,24 @@ public class StormEventDispatcher {
 				Class<?> cEventClass = parameters[0];
 				if (ZomboidEvent.class.isAssignableFrom(cEventClass))
 				{
+					if (handler == null)
+					{
+						if (!Modifier.isStatic(method.getModifiers()))
+						{
+							throw new IllegalArgumentException("Tried to register INSTANCE event handler method " +
+									"by passing null event handler. Either make the method STATIC or use a " +
+									"different context to register the handler. See StormEventDispatcher class " +
+									"documentation for more information. Method: " + method.getName());
+						}
+					}
+					else if (Modifier.isStatic(method.getModifiers()))
+					{
+						throw new IllegalArgumentException("Tried to register STATIC event handler method " +
+								"by passing an instance of handler class. Either remove the STATIC modifier " +
+								"or use a different context to register the handler. See StormEventDispatcher " +
+								"class documentation for more information. Method: " + method.getName());
+					}
+
 					Class<? extends ZomboidEvent> eventClass = (Class<? extends ZomboidEvent>) cEventClass;
 					EventHandlerMethod eventHandlerMethod = new EventHandlerMethod(method, handler);
 
@@ -108,6 +130,11 @@ public class StormEventDispatcher {
 	 * {@link StormEventDispatcher} class documentation for more information.
 	 *
 	 * @param handlerClass {@code Class} of the event handler to register.
+	 *
+	 * @throws IllegalArgumentException if any subscribing method declared in handler is <i>not</i> declared as
+	 * 		{@code static}, if the any subscribing method does not have exactly one argument
+	 *		or the argument is not an instance of {@link ZomboidEvent}.
+	 *
 	 * @see #registerEventHandler(Object)
 	 */
 	public static void registerEventHandler(Class<?> handlerClass) {
@@ -125,6 +152,11 @@ public class StormEventDispatcher {
 	 * {@link StormEventDispatcher} class documentation for more information.
 	 *
 	 * @param handler instance of the event handler to register.
+	 *
+	 * @throws IllegalArgumentException if any subscribing method declared in handler is declared as
+	 * 		{@code static}, if the any subscribing method does not have exactly one argument
+	 * 		or the argument is not an instance of {@link ZomboidEvent}.
+	 *
 	 * @see #registerEventHandler(Class)
 	 */
 	public static void registerEventHandler(Object handler) {
