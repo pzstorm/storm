@@ -22,7 +22,7 @@ public class StormLogger {
 
 	public static final Level VERBOSE = Level.forName("VERBOSE", 450);
 	static final String LOGGER_PROPERTY = "storm.logger";
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger("Storm");
+	private static final Logger LOGGER = LogManager.getLogger("Storm");
 
 	/* Make the constructor private to disable instantiation */
 	private StormLogger() {
