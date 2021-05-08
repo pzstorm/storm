@@ -1,6 +1,7 @@
 package io.pzstorm.storm.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -143,6 +144,26 @@ class AsmUtilsTest implements UnitTest {
 			LabelNode actualLabel = AsmUtils.getFirstMatchingLabelNode(createInstructionList(), insnToMatch);
 			Assertions.assertEquals(expectedLabel, actualLabel);
 		}
+	}
+
+	@Test
+	void shouldReplaceFirstMatchingLabelNodeInstructions() {
+
+		// String a = String.valueOf(2 + 2);
+		List<AbstractInsnNode> expectedList = ImmutableList.of(
+				new InsnNode(Opcodes.ICONST_4),
+				new MethodInsnNode(Opcodes.INVOKESTATIC,
+						"java/lang/String", "valueOf", "(I)Ljava/lang/String;"),
+				new VarInsnNode(Opcodes.ASTORE, 1)
+		);
+		InsnList instructions = createInstructionList();
+		Assertions.assertTrue(AsmUtils.replaceFirstMatchingLabelNode(instructions, LABELS[1], expectedList));
+
+		Iterator<AbstractInsnNode> iteratorA = instructions.iterator(7);
+		for (AbstractInsnNode expectedNode : expectedList) {
+			Assertions.assertTrue(AsmUtils.equalNodes(iteratorA.next(), expectedNode));
+		}
+		Assertions.assertTrue(iteratorA.next() instanceof LabelNode);
 	}
 
 	@Test
