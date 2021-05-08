@@ -1,8 +1,8 @@
 package io.pzstorm.storm.core;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Method;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class bootstraps everything needed to launch the game with static initialization.

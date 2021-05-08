@@ -23,9 +23,9 @@ import org.objectweb.asm.tree.MethodNode;
  */
 public abstract class StormClassTransformer {
 
-	private @Nullable ClassReader classReader;
 	final String className;
 	final ClassNode visitor;
+	private @Nullable ClassReader classReader;
 
 	StormClassTransformer(String className, ClassNode visitor) {
 
@@ -42,6 +42,7 @@ public abstract class StormClassTransformer {
 	 *
 	 * @param name name of the method to match.
 	 * @param descriptor descriptor of the method to match.
+	 *
 	 * @return list of instructions for matched method or an empty {@link InsnList}.
 	 *
 	 * @see <a href="https://asm.ow2.io/asm4-guide.pdf#subsection.2.1.4">
@@ -66,6 +67,7 @@ public abstract class StormClassTransformer {
 	 * Read or parse class byte array using {@link ClassReader}.
 	 *
 	 * @param rawClass array of bytes to read.
+	 *
 	 * @return {@code this} instance of {@link StormClassTransformer}.
 	 *
 	 * @throws ClassTransformationException if given byte array is empty.
@@ -122,8 +124,8 @@ public abstract class StormClassTransformer {
 	 * Calls method chain to transform the given {@code Class} byte array.
 	 *
 	 * @param rawClass byte array representing the {@code Class} to transform.
-	 * @return byte array representing transformed class.
 	 *
+	 * @return byte array representing transformed class.
 	 * @throws ClassTransformationException if given byte array is empty.
 	 */
 	public byte[] transform(byte[] rawClass) {

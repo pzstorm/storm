@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.pzstorm.storm.UnitTest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -14,6 +13,8 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import io.pzstorm.storm.UnitTest;
 
 class StormLoggerTest implements UnitTest {
 
@@ -63,7 +64,7 @@ class StormLoggerTest implements UnitTest {
 				Assertions.assertEquals(expectedLevel, entry.getValue());
 			}
 			// reset the logger levels to original values
-			for (String appender : new String[]{ "Console", "MainFile" })
+			for (String appender : new String[] { "Console", "MainFile" })
 			{
 				rootLoggerConfig.removeAppender(appender);
 				rootLoggerConfig.addAppender(config.getAppender(appender), originalLevel, null);

@@ -70,6 +70,7 @@ public abstract class StormClassTestTransformer extends StormClassTransformer {
 	 * @param className filename of the original (unrevised file).
 	 * @param originalCode lines of the original file.
 	 * @param modifiedCode lines of the modified file.
+	 *
 	 * @return bytecode difference between two set of code lines.
 	 */
 	private static String getBytecodeDiff(String className, String originalCode, String modifiedCode) {

@@ -23,7 +23,7 @@ public class StormEventHandler {
 			KahluaTable table = event.element.Parent.table;
 			if (table instanceof KahluaTableImpl)
 			{
-				Object internal = ((KahluaTableImpl)table).delegate.get("internal");
+				Object internal = ((KahluaTableImpl) table).delegate.get("internal");
 				if (internal instanceof String && internal.equals("VERSIONDETAIL"))
 				{
 					String text = "Storm version 0.1.0-alpha";

@@ -90,6 +90,7 @@ class StormClassLoader extends ClassLoader {
 	 * Defines and returns a package by name in this {@code ClassLoader}.
 	 *
 	 * @param name name of the package to define.
+	 *
 	 * @return instance of {@link Package} defined or {@code null} if no package defined.
 	 *
 	 * @throws IllegalArgumentException if package name duplicates an existing
@@ -125,8 +126,8 @@ class StormClassLoader extends ClassLoader {
 	 *
 	 * @param name the binary name of the class.
 	 * @param resolve if {@code true} then resolve the class.
-	 * @return the resulting {@code Class} object.
 	 *
+	 * @return the resulting {@code Class} object.
 	 * @throws ClassNotFoundException if the class could not be found.
 	 */
 	private Class<?> loadClassInternal(String name, boolean resolve) throws ClassNotFoundException {
@@ -199,6 +200,7 @@ class StormClassLoader extends ClassLoader {
 	 * Reads the {@code Class} with given name into a {@code byte} array and return the result.
 	 *
 	 * @param name name of the {@code Class} to read.
+	 *
 	 * @return {@code byte} array read from {@code Class} or an empty array
 	 * 		if the {@code Class} with the given name could not be found.
 	 *

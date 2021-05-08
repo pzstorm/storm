@@ -1,8 +1,9 @@
 package io.pzstorm.storm.event;
 
-import io.pzstorm.storm.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import io.pzstorm.storm.IntegrationTest;
 
 @SuppressWarnings("unused")
 class StormEventDispatcherIntegrationTest implements IntegrationTest {
@@ -24,7 +25,6 @@ class StormEventDispatcherIntegrationTest implements IntegrationTest {
 
 	@Test
 	void shouldRegisterEventHandlerWithStaticContextAndDispatchEvents() {
-
 		StormEventDispatcher.registerEventHandler(TestStaticContextEventHandler.class);
 
 		Assertions.assertFalse(TestStaticContextEventHandler.eventsCalled[0]);
@@ -52,7 +52,8 @@ class StormEventDispatcherIntegrationTest implements IntegrationTest {
 		Assertions.assertDoesNotThrow(() ->
 				StormEventDispatcher.registerEventHandler(new Object() {
 					@SubscribeEvent
-					public void handleEvent(ZomboidEvent event) {}
+					public void handleEvent(ZomboidEvent event) {
+					}
 				})
 		);
 	}
@@ -65,28 +66,32 @@ class StormEventDispatcherIntegrationTest implements IntegrationTest {
 				StormEventDispatcher.registerEventHandler(new Object() {
 					@SuppressWarnings("unused")
 					@SubscribeEvent
-					public void handleEvent() {}
+					public void handleEvent() {
+					}
 				})
 		);
 		// invalid method parameter type
 		Assertions.assertThrows(IllegalArgumentException.class, () ->
 				StormEventDispatcher.registerEventHandler(new Object() {
 					@SubscribeEvent
-					public void handleEvent(Object object) {}
+					public void handleEvent(Object object) {
+					}
 				})
 		);
 		// extra method parameters
 		Assertions.assertThrows(IllegalArgumentException.class, () ->
 				StormEventDispatcher.registerEventHandler(new Object() {
 					@SubscribeEvent
-					public void handleEvent(ZomboidEvent event, Object object) {}
+					public void handleEvent(ZomboidEvent event, Object object) {
+					}
 				})
 		);
 		// completely valid method
 		Assertions.assertDoesNotThrow(() ->
 				StormEventDispatcher.registerEventHandler(new Object() {
 					@SubscribeEvent
-					public void handleEvent(ZomboidEvent event) {}
+					public void handleEvent(ZomboidEvent event) {
+					}
 				})
 		);
 	}

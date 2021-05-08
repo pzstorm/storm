@@ -3,15 +3,17 @@ package io.pzstorm.storm.core;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import io.pzstorm.storm.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import io.pzstorm.storm.IntegrationTest;
 
 class StormClassTransformerIntegrationTest implements IntegrationTest {
 
 	private static final Class<?> STORM_CLASS_TRANSFORMER, STORM_CLASS_TRANSFORMERS;
 
-	static {
+	static
+	{
 		try {
 			STORM_CLASS_TRANSFORMER = Class.forName(
 					"io.pzstorm.storm.core.StormClassTransformer",

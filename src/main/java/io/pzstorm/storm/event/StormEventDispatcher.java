@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.pzstorm.storm.core.StormLogger;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
-import io.pzstorm.storm.hook.StormHook;
 
 import com.google.common.collect.Sets;
+
+import io.pzstorm.storm.core.StormLogger;
+import io.pzstorm.storm.hook.StormHook;
 
 /**
  * This class is responsible for registering event handlers and dispatching {@link ZomboidEvent} instances.
@@ -94,7 +95,6 @@ public class StormEventDispatcher {
 								"or use a different context to register the handler. See StormEventDispatcher " +
 								"class documentation for more information. Method: " + method.getName());
 					}
-
 					Class<? extends ZomboidEvent> eventClass = (Class<? extends ZomboidEvent>) cEventClass;
 					EventHandlerMethod eventHandlerMethod = new EventHandlerMethod(method, handler);
 
@@ -132,9 +132,8 @@ public class StormEventDispatcher {
 	 * @param handlerClass {@code Class} of the event handler to register.
 	 *
 	 * @throws IllegalArgumentException if any subscribing method declared in handler is <i>not</i> declared as
-	 * 		{@code static}, if the any subscribing method does not have exactly one argument
-	 *		or the argument is not an instance of {@link ZomboidEvent}.
-	 *
+	 *        {@code static}, if the any subscribing method does not have exactly one argument
+	 * 		or the argument is not an instance of {@link ZomboidEvent}.
 	 * @see #registerEventHandler(Object)
 	 */
 	public static void registerEventHandler(Class<?> handlerClass) {
@@ -154,9 +153,8 @@ public class StormEventDispatcher {
 	 * @param handler instance of the event handler to register.
 	 *
 	 * @throws IllegalArgumentException if any subscribing method declared in handler is declared as
-	 * 		{@code static}, if the any subscribing method does not have exactly one argument
+	 *        {@code static}, if the any subscribing method does not have exactly one argument
 	 * 		or the argument is not an instance of {@link ZomboidEvent}.
-	 *
 	 * @see #registerEventHandler(Class)
 	 */
 	public static void registerEventHandler(Object handler) {
@@ -175,6 +173,7 @@ public class StormEventDispatcher {
 	 * @param eventConstructorInsn list of instructions that represent constructing a new
 	 *        {@link ZomboidEvent} instance and adding the result to the stack. These instructions
 	 * 		will be <i>transferred</i> to the start of the resulting instruction list.
+	 *
 	 * @see #dispatchEvent(ZomboidEvent)
 	 */
 	public static InsnList callDispatchEvent(List<AbstractInsnNode> eventConstructorInsn) {

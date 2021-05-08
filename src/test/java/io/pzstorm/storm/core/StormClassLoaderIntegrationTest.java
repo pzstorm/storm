@@ -9,12 +9,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 
-import io.pzstorm.storm.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+
+import io.pzstorm.storm.IntegrationTest;
 
 @SuppressWarnings("SpellCheckingInspection")
 class StormClassLoaderIntegrationTest extends StormClassLoader implements IntegrationTest {
@@ -24,7 +25,7 @@ class StormClassLoaderIntegrationTest extends StormClassLoader implements Integr
 	private static final URL DELEGATE_RESOURCE_DIR = Objects.requireNonNull(CL.getResource("./delegate/"));
 
 	StormClassLoaderIntegrationTest() {
-		super(new URL[]{ CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
+		super(new URL[] { CLASSES_RESOURCE_DIR, DELEGATE_RESOURCE_DIR });
 	}
 
 	private static String getRandomString() {
@@ -107,7 +108,7 @@ class StormClassLoaderIntegrationTest extends StormClassLoader implements Integr
 	@Test
 	void whenIncorrectPackageNameShouldNotDefinePackage() {
 
-		String[] incorrectPackageNames = new String[]{
+		String[] incorrectPackageNames = new String[] {
 				"package", ".package", ".", ""
 		};
 		for (String incorrectPackageName : incorrectPackageNames) {

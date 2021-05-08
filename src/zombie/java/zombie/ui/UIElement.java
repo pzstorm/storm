@@ -11,6 +11,5 @@ public class UIElement {
 	public KahluaTable table;
 
 	public void render() {
-
 	}
 }

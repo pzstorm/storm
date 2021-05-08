@@ -52,6 +52,7 @@ public class AsmUtils {
 	 *
 	 * @param list list of instructions to search.
 	 * @param match list of instructions to match.
+	 *
 	 * @return first {@code LabelNode} that was matched or {@code null} if no node was matched.
 	 */
 	public static @Nullable LabelNode getFirstMatchingLabelNode(InsnList list, List<AbstractInsnNode> match) {
@@ -98,6 +99,7 @@ public class AsmUtils {
 	 *
 	 * @param a first node to compare.
 	 * @param b second node to compare.
+	 *
 	 * @return {@code true} if node fields are equal, {@code false} otherwise.
 	 */
 	public static boolean equalNodes(AbstractInsnNode a, AbstractInsnNode b) {

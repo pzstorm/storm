@@ -21,8 +21,13 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 public class StormLogger {
 
 	public static final Level VERBOSE = Level.forName("VERBOSE", 450);
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger("Storm");
 	static final String LOGGER_PROPERTY = "storm.logger";
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger("Storm");
+
+	/* Make the constructor private to disable instantiation */
+	private StormLogger() {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Initialize {@link StormLogger} system by setting logging level resolved from system properties.
@@ -40,7 +45,7 @@ public class StormLogger {
 				Configuration config = ctx.getConfiguration();
 
 				LoggerConfig rootLoggerConfig = config.getLoggers().get("");
-				for (String appender : new String[]{ "Console", "MainFile" })
+				for (String appender : new String[] { "Console", "MainFile" })
 				{
 					rootLoggerConfig.removeAppender(appender);
 					rootLoggerConfig.addAppender(config.getAppender(appender), level, null);
@@ -51,11 +56,6 @@ public class StormLogger {
 			else LOGGER.error("Unable to resolve logging level '" + sLevel + '\'');
 		}
 		LOGGER.info("Initialized Storm logger");
-	}
-
-	/* Make the constructor private to disable instantiation */
-	private StormLogger() {
-		throw new UnsupportedOperationException();
 	}
 
 	/**

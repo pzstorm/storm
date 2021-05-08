@@ -1,8 +1,8 @@
 package io.pzstorm.storm.util;
 
-import io.pzstorm.storm.core.StormLogger;
-
 import java.lang.reflect.Method;
+
+import io.pzstorm.storm.core.StormLogger;
 
 public class StormUtils {
 
@@ -26,7 +26,7 @@ public class StormUtils {
 	 *
 	 * @throws ReflectiveOperationException if an exception occurred while invoking method.
 	 */
-	public static void invokeRestrictedMethod(Method method, Object obj, Object...args) throws ReflectiveOperationException {
+	public static void invokeRestrictedMethod(Method method, Object obj, Object... args) throws ReflectiveOperationException {
 
 		boolean wasAccessible = false;
 		if (method.isAccessible())

@@ -17,7 +17,7 @@ import io.pzstorm.storm.UnitTest;
 class AsmUtilsTest implements UnitTest {
 
 	private static final String intDesc = "(I)Ljava/lang/Integer;";
-	private static final LabelNode[] LABELS = new LabelNode[]{
+	private static final LabelNode[] LABELS = new LabelNode[] {
 			new LabelNode(), new LabelNode(), new LabelNode(),
 			new LabelNode(), new LabelNode()
 	};
@@ -129,8 +129,8 @@ class AsmUtilsTest implements UnitTest {
 	void shouldGetFirstMatchingLabelNodeInstruction() {
 
 		List<Integer[]> labelIndexPairs = ImmutableList.of(
-				new Integer[]{ 0, 6 }, new Integer[]{ 6, 12 },
-				new Integer[]{ 12, 23 }, new Integer[]{ 23, 27 }
+				new Integer[] { 0, 6 }, new Integer[] { 6, 12 },
+				new Integer[] { 12, 23 }, new Integer[] { 23, 27 }
 		);
 		for (int i1 = 0; i1 < labelIndexPairs.size(); i1++)
 		{
