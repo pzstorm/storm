@@ -25,7 +25,9 @@ capsid {
 sourceSets {
 	// module containing zomboid dummy classes and classes used in testing
 	// this module is only required by tests and CI compiler
-	zombie {}
+	zombie {
+		compileClasspath += sourceSets.main.output
+	}
 	main {
 		// add dummy zomboid classes to classpath when compiling on CI
 		if (System.getenv("CI") != null) {
@@ -41,7 +43,7 @@ sourceSets {
 	remove(sourceSets.media)
 }
 configurations {
-	zombieImplementation.extendsFrom(compileOnly, zomboidImplementation)
+	zombieImplementation.extendsFrom(compileOnly, implementation, zomboidImplementation)
 }
 
 dependencies {
