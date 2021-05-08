@@ -2,6 +2,7 @@ package io.pzstorm.storm.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
@@ -89,6 +90,38 @@ public class AsmUtils {
 			}
 		}//@formatter:on
 		return null;
+	}
+
+	/**
+	 * Replace all instructions between the given {@link LabelNode} and next label node in
+	 * specified list of instructions. Note that label nodes will not be altered in any way,
+	 * they are only used to mark the start and end of replacement operation.
+	 *
+	 * @param list list of instructions to replace nodes in.
+	 * @param target {@link LabelNode} that marks the start of replacement.
+	 * @param content list of instructions to insert after target node.
+	 *
+	 * @return {@code true} if replacement was successful, {@code false} otherwise.
+	 *///@formatter:off
+	public static boolean replaceFirstMatchingLabelNode(InsnList list, LabelNode target, List<AbstractInsnNode> content) {
+
+		ListIterator<AbstractInsnNode> iterator = list.iterator();
+		while (iterator.hasNext())
+		{
+			if (iterator.next().equals(target))
+			{
+				while (iterator.hasNext())
+				{
+					if (iterator.next() instanceof LabelNode) {
+						iterator.previous(); break;
+					}
+					iterator.remove();
+				}
+				content.forEach(iterator::add);
+				return true;
+			}
+		}//@formatter:on
+		return false;
 	}
 
 	/**
