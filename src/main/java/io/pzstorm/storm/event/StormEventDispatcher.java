@@ -51,7 +51,9 @@ public class StormEventDispatcher {
 
 	/**
 	 * Internal registry that maps {@link ZomboidEvent} classes to handler methods.
-	 * These methods are then invoked when dispatching matching events.
+	 * These methods are then invoked when dispatching matching events. Event registration happens
+	 * on-demand which means that registry will only contain an event entry if at least one registered
+	 * handler contains at least one method that subscribe to that event.
 	 */
 	private static final Map<Class<? extends ZomboidEvent>, Set<EventHandlerMethod>> DISPATCH_REGISTRY = new HashMap<>();
 
@@ -201,8 +203,12 @@ public class StormEventDispatcher {
 	 */
 	public static void dispatchEvent(ZomboidEvent event) {
 
-		for (EventHandlerMethod handler : DISPATCH_REGISTRY.get(event.getClass())) {
-			handler.invoke(event);
+		Set<EventHandlerMethod> handlerMethods = DISPATCH_REGISTRY.get(event.getClass());
+		if (handlerMethods != null)
+		{
+			for (EventHandlerMethod method : handlerMethods) {
+				method.invoke(event);
+			}
 		}
 	}
 
