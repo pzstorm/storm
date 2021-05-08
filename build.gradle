@@ -37,6 +37,8 @@ sourceSets {
 		runtimeClasspath += sourceSets.zombie.output
 		compileClasspath += sourceSets.zombie.output
 	}
+	// remove media sourceSet created by capsid
+	remove(sourceSets.media)
 }
 configurations {
 	zombieImplementation.extendsFrom(compileOnly, zomboidImplementation)
