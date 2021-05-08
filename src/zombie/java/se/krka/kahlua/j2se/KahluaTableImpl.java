@@ -7,6 +7,6 @@ import zombie.ZomboidClass;
 
 @ZomboidClass
 @SuppressWarnings("ALL")
-public class KahluaTableImpl implements KahluaTable {
+public abstract class KahluaTableImpl implements KahluaTable {
 	public Map<Object, Object> delegate;
 }
