@@ -36,4 +36,58 @@ class StormEventDispatcherIntegrationTest implements IntegrationTest {
 		Assertions.assertTrue(TestStaticContextEventHandler.eventsCalled[1]);
 	}
 
+	@Test
+	void shouldThrowExceptionWhenHandlerRegisteredInWrongContext() {
+
+		// registration of instance context
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				StormEventDispatcher.registerEventHandler(TestInstanceContextEventHandler.class)
+		);
+		// registration of static context
+		//noinspection InstantiationOfUtilityClass
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				StormEventDispatcher.registerEventHandler(new TestStaticContextEventHandler())
+		);
+		// completely valid method
+		Assertions.assertDoesNotThrow(() ->
+				StormEventDispatcher.registerEventHandler(new Object() {
+					@SubscribeEvent
+					public void handleEvent(ZomboidEvent event) {}
+				})
+		);
+	}
+
+	@Test
+	void shouldThrowExceptionWhenHandlerRegisteredWithInvalidMethodParameters() {
+
+		// missing method parameters
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				StormEventDispatcher.registerEventHandler(new Object() {
+					@SuppressWarnings("unused")
+					@SubscribeEvent
+					public void handleEvent() {}
+				})
+		);
+		// invalid method parameter type
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				StormEventDispatcher.registerEventHandler(new Object() {
+					@SubscribeEvent
+					public void handleEvent(Object object) {}
+				})
+		);
+		// extra method parameters
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				StormEventDispatcher.registerEventHandler(new Object() {
+					@SubscribeEvent
+					public void handleEvent(ZomboidEvent event, Object object) {}
+				})
+		);
+		// completely valid method
+		Assertions.assertDoesNotThrow(() ->
+				StormEventDispatcher.registerEventHandler(new Object() {
+					@SubscribeEvent
+					public void handleEvent(ZomboidEvent event) {}
+				})
+		);
+	}
 }
