@@ -1,4 +1,4 @@
-package io.pzstorm.storm.core;
+package io.pzstorm.storm.logging;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

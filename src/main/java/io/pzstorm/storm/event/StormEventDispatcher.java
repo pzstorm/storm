@@ -16,7 +16,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 
 import com.google.common.collect.Sets;
 
-import io.pzstorm.storm.core.StormLogger;
+import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.hook.StormHook;
 
 /**

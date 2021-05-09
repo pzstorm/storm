@@ -2,6 +2,7 @@ package io.pzstorm.storm.core;
 
 import java.util.Optional;
 
+import io.pzstorm.storm.logging.StormLogger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;

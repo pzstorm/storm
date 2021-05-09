@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Objects;
 
+import io.pzstorm.storm.logging.StormLogger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,7 @@ class StormClassLoader extends ClassLoader {
 	private static final ImmutableSet<String> CLASS_BLACKLIST = ImmutableSet.of(
 			"java.", "org.objectweb.asm.", "sun.", "com.sun.", "org.xml.", "org.w3c.",
 			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.",
-			"io.pzstorm.storm.core.StormLogger"
+			"io.pzstorm.storm.logging.StormLogger"
 	);
 	protected final URLClassLoader resourceClassLoader;
 	/**

@@ -2,7 +2,7 @@ package io.pzstorm.storm.util;
 
 import java.lang.reflect.Method;
 
-import io.pzstorm.storm.core.StormLogger;
+import io.pzstorm.storm.logging.StormLogger;
 
 public class StormUtils {
 
