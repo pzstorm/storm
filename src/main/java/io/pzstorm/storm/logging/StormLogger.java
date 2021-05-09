@@ -33,7 +33,7 @@ public class StormLogger {
 	 * Initialize {@link StormLogger} system by setting logging level resolved from system properties.
 	 * To configure console logging level launch Storm with {@code JVM_PROPERTY} set to a custom logger level.
 	 */
-	static void initialize() {
+	public static void initialize() {
 
 		String sLevel = System.getProperty(LOGGER_PROPERTY);
 		if (sLevel != null && !sLevel.isEmpty())
