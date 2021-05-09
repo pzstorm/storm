@@ -13,8 +13,9 @@
     </CustomLevels>
     <Appenders>
         <!-- Console for use in production environment -->
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{[HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+        <Console name="StormConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{[HH:mm:ss]} [${logLevelPattern}] [%c{1}]: %msg%n"/>
+        </Console>
         </Console>
         <!-- Log file for standard use in development environment -->
         <RollingFile name="MainFile" fileName="logs/storm/main.log" filePattern="${logFilePattern}-%i.log.zip">
@@ -37,8 +38,8 @@
     </Appenders>
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="Console" level="verbose"/>
-            <AppenderRef ref="MainFile" level="verbose"/>
+            <AppenderRef ref="StormConsole" level="verbose"/>
+            <AppenderRef ref="MainFile" level="verbose" />
             <AppenderRef ref="DebugFile"/>
         </Root>
     </Loggers>
