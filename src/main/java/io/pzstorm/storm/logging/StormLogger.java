@@ -8,7 +8,7 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
 /**
- * <p>Simple wrapper class for logging with Log4j 2 logger.
+ * <p>Wrapper class for printing Storm logs with Log4j 2 logger.
  * To configure console logging level launch Storm with {@code JVM_PROPERTY}
  * set to a custom logger level and call {@link #initialize()} method.
  * </p><p>
@@ -45,11 +45,9 @@ public class StormLogger {
 				Configuration config = ctx.getConfiguration();
 
 				LoggerConfig rootLoggerConfig = config.getLoggers().get("");
-				for (String appender : new String[] { "Console", "MainFile" })
-				{
-					rootLoggerConfig.removeAppender(appender);
-					rootLoggerConfig.addAppender(config.getAppender(appender), level, null);
-				}
+				rootLoggerConfig.removeAppender("StormConsole");
+				rootLoggerConfig.addAppender(config.getAppender("StormConsole"), level, null);
+
 				ctx.updateLoggers();
 				LOGGER.info("Setting custom level for Storm logger '" + sLevel + '\'');
 			}
