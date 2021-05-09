@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.pzstorm.storm.logging.StormLogger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -52,24 +51,21 @@ class StormLoggerTest implements UnitTest {
 			for (AppenderControl appenderControl : appenders.get())
 			{
 				String appenderName = appenderControl.getAppenderName();
-				if (appenderName.equals("StormConsole") || appenderName.equals("MainFile")) {
+				if (appenderName.equals("StormConsole")) {
 					actualLevels.put(appenderName, (Level) appenderLevelField.get(appenderControl));
 				}
 			}
-			// assert that all appenders were found
+			// assert that appender was found
 			Assertions.assertTrue(actualLevels.containsKey("StormConsole"));
-			Assertions.assertTrue(actualLevels.containsKey("MainFile"));
 
 			// assert that logger has correct levels
 			for (Map.Entry<String, Level> entry : actualLevels.entrySet()) {
 				Assertions.assertEquals(expectedLevel, entry.getValue());
 			}
-			// reset the logger levels to original values
-			for (String appender : new String[] { "StormConsole", "MainFile" })
-			{
-				rootLoggerConfig.removeAppender(appender);
-				rootLoggerConfig.addAppender(config.getAppender(appender), originalLevel, null);
-			}
+			// reset logger level to original values
+			rootLoggerConfig.removeAppender("StormConsole");
+			rootLoggerConfig.addAppender(config.getAppender("StormConsole"), originalLevel, null);
+
 			ctx.updateLoggers();
 		}
 	}
