@@ -12,23 +12,41 @@
         <CustomLevel name="VERBOSE" intLevel="450"/>
     </CustomLevels>
     <Appenders>
-        <!-- Console for use in production environment -->
+        <!-- Console appenders -->
         <Console name="StormConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{[HH:mm:ss]} [${logLevelPattern}] [%c{1}]: %msg%n"/>
         </Console>
+        <Console name="ZomboidConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{[HH:mm:ss]} [${logLevelPattern}] [%c{1}/%msg%n"/>
         </Console>
-        <!-- Log file for standard use in development environment -->
-        <RollingFile name="MainFile" fileName="logs/storm/main.log" filePattern="${logFilePattern}-%i.log.zip">
-            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+        <!-- Storm File appenders -->
+        <RollingFile name="StormMainFile" fileName="logs/storm/main.log" filePattern="${logFilePattern}-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] [%c{1}]: %msg%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
-        <!-- Log file for debugging use in development environment -->
-        <RollingFile name="DebugFile" fileName="logs/storm/debug.log" filePattern="${logFilePattern}-debug-%i.log.zip">
-            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] %c{1} - %msg%n"/>
+        <RollingFile name="StormDebugFile" fileName="logs/storm/debug.log" filePattern="${logFilePattern}-debug-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] [%c{1}]: %msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <!-- Zomboid File appenders -->
+        <RollingFile name="ZomboidMainFile" fileName="logs/storm/main.log" filePattern="${logFilePattern}-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] [%c{1}/%msg%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="ZomboidDebugFile" fileName="logs/storm/debug.log" filePattern="${logFilePattern}-debug-%i.log.zip">
+            <PatternLayout pattern="%d{[yyyy-MM-dd][HH:mm:ss]} [${logLevelPattern}] [%c{1}/%msg%n"/>
             <Policies>
                 <OnStartupTriggeringPolicy/>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -37,10 +55,15 @@
         </RollingFile>
     </Appenders>
     <Loggers>
+        <Logger name="Zomboid" level="debug" additivity="false">
+            <AppenderRef ref="ZomboidConsole" level="verbose"/>
+            <AppenderRef ref="ZomboidMainFile" level="verbose"/>
+            <AppenderRef ref="ZomboidDebugFile"/>
+        </Logger>
         <Root level="debug">
             <AppenderRef ref="StormConsole" level="verbose"/>
-            <AppenderRef ref="MainFile" level="verbose" />
-            <AppenderRef ref="DebugFile"/>
+            <AppenderRef ref="StormMainFile" level="verbose" />
+            <AppenderRef ref="StormDebugFile"/>
         </Root>
     </Loggers>
 </Configuration>

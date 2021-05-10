@@ -3,6 +3,9 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pzstorm.storm.patch.DebugLogPatch;
+import io.pzstorm.storm.patch.DebugLogStreamPatch;
+import io.pzstorm.storm.patch.ZomboidPatch;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +29,19 @@ public class StormClassTransformers {
 
 	static
 	{
+		 /////////////////////
+		 // REGISTER HOOKS //
+		///////////////////
+
 		registerTransformer("zombie.gameStates.MainScreenState", new OnMainScreenRenderHook());
 		registerTransformer("zombie.ui.UIElement", new OnUIElementPreRenderHook());
+
+		///////////////////////
+		// REGISTER PATCHES //
+		/////////////////////
+
+		registerTransformer("zombie.debug.DebugLog", new DebugLogPatch());
+		registerTransformer("zombie.debug.DebugLogStream", new DebugLogStreamPatch());
 	}
 
 	/**
@@ -38,6 +52,26 @@ public class StormClassTransformers {
 	 */
 	private static void registerTransformer(String className, StormClassTransformer transformer) {
 		TRANSFORMERS.put(className, transformer);
+	}
+
+	/**
+	 * Create and register a new {@link StormClassTransformer} with given name
+	 * that applies a {@link ZomboidPatch} designated by method parameter.
+	 *
+	 * @param className name of the target class to transform.
+	 * @param patch {@code ZomboidPatch} to apply with transformation.
+	 */
+	private static void registerTransformer(String className, ZomboidPatch patch) {
+
+		TRANSFORMERS.put(className, new StormClassTransformer(className) {
+
+			@Override
+			StormClassTransformer transform() {
+
+				patch.applyPatch(this);
+				return this;
+			}
+		});
 	}
 
 	/**
