@@ -144,6 +144,22 @@ class AsmUtilsTest implements UnitTest {
 	}
 
 	@Test
+	void shouldGetNthLabelNodeFromInsnList() {
+
+		InsnList instructions = createInstructionList();
+		for (int i = 0; i < LABELS.length; i++) {
+			Assertions.assertEquals(LABELS[i], AsmUtils.getNthLabelNode(instructions, i + 1));
+		}
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				AsmUtils.getNthLabelNode(instructions, -1)
+		);
+		Assertions.assertThrows(IllegalArgumentException.class, () ->
+				AsmUtils.getNthLabelNode(instructions, 0)
+		);
+		Assertions.assertNull(AsmUtils.getNthLabelNode(instructions, LABELS.length + 1));
+	}
+
+	@Test
 	@SuppressWarnings("ConstantConditions")
 	void shouldGetLastInstructionOfType() {
 
