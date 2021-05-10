@@ -17,6 +17,9 @@ apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spo
 
 version '0.1.0'
 
+// is gradle executing on CI server
+def isCI = System.getenv("CI")?: 'false'
+
 capsid {
 	isModProject = false
 	setProjectRepository('pzstorm', 'storm')
@@ -30,7 +33,7 @@ sourceSets {
 	}
 	main {
 		// add dummy zomboid classes to classpath when compiling on CI
-		if (System.getenv("CI") != null) {
+		if (isCI) {
 			compileClasspath += sourceSets.zombie.output
 		}
 	}
@@ -40,7 +43,9 @@ sourceSets {
 		compileClasspath += sourceSets.zombie.output
 	}
 	// remove media sourceSet created by capsid
-	remove(sourceSets.media)
+	if (!isCI) {
+		remove(sourceSets.media)
+	}
 }
 configurations {
 	zombieImplementation.extendsFrom(compileOnly, implementation, zomboidImplementation)
