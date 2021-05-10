@@ -63,54 +63,131 @@ public class StormLogger {
 		return LOGGER;
 	}
 
+	/**
+	 * Logs a message object with the {@link Level#INFO INFO} level.
+	 */
 	public static void info(String log) {
 		LOGGER.info(log);
 	}
 
-	public static void info(String log, Object... params) {
-		LOGGER.printf(Level.INFO, log, params);
+	/**
+	 * Logs a formatted message with {@link Level#INFO INFO}
+	 * level using the specified format string and arguments.
+	 *
+	 * @param format the format {@code String}.
+	 * @param params arguments specified by the format.
+	 */
+	public static void info(String format, Object... params) {
+		LOGGER.printf(Level.INFO, format, params);
 	}
 
+	/**
+	 * Logs a message object with the {@link StormLogger#VERBOSE VERBOSE} level.
+	 */
 	public static void detail(String log) {
-		LOGGER.log(VERBOSE, log);
+		LOGGER.log(StormLogger.VERBOSE, log);
 	}
 
-	public static void detail(String log, Object... params) {
-		LOGGER.printf(VERBOSE, log, params);
+	/**
+	 * Logs a formatted message with {@link StormLogger#VERBOSE VERBOSE}
+	 * level using the specified format string and arguments.
+	 *
+	 * @param format the format {@code String}.
+	 * @param params arguments specified by the format.
+	 */
+	public static void detail(String format, Object... params) {
+		LOGGER.printf(StormLogger.VERBOSE, format, params);
 	}
 
-	public static void error(String log) {
-		LOGGER.error(log);
+	/**
+	 * Logs a message object with the {@link Level#ERROR ERROR} level.
+	 *
+	 * @param message the message string to log.
+	 */
+	public static void error(String message) {
+		LOGGER.error(message);
 	}
 
-	public static void error(String log, Object... args) {
-		LOGGER.printf(Level.ERROR, log, args);
+	/**
+	 * Logs a formatted message with {@link Level#ERROR ERROR}
+	 * level using the specified format string and arguments.
+	 *
+	 * @param format the format {@code String}.
+	 * @param params arguments specified by the format.
+	 */
+	public static void error(String format, Object... params) {
+		LOGGER.printf(Level.ERROR, format, params);
 	}
 
-	public static void error(String log, Throwable t) {
-		LOGGER.error(log, t);
+	/**
+	 * Logs a message at the {@link Level#ERROR ERROR} level including the
+	 * stack trace of the {@link Throwable} <code>t</code> passed as parameter.
+	 *
+	 * @param message the message object to log.
+	 * @param t the exception to log, including its stack trace.
+	 */
+	public static void error(String message, Throwable t) {
+		LOGGER.error(message, t);
 	}
 
-	public static void warn(String log) {
-		LOGGER.warn(log);
+	/**
+	 * Logs a message object with the {@link Level#WARN WARN} level.
+	 *
+	 * @param message the message string to log.
+	 */
+	public static void warn(String message) {
+		LOGGER.warn(message);
 	}
 
+	/**
+	 * Logs a formatted message with {@link Level#WARN WARN}
+	 * level using the specified format string and arguments.
+	 *
+	 * @param format the format {@code String}.
+	 * @param params arguments specified by the format.
+	 */
 	public static void warn(String format, Object... params) {
 		LOGGER.printf(Level.WARN, format, params);
 	}
 
-	public static void debug(String log) {
-		LOGGER.debug(log);
+	/**
+	 * Logs a message object with the {@link Level#DEBUG DEBUG} level.
+	 *
+	 * @param message the message string to log.
+	 */
+	public static void debug(String message) {
+		LOGGER.debug(message);
 	}
 
-	public static void debug(String format, Object... args) {
-		LOGGER.printf(Level.DEBUG, format, args);
+	/**
+	 * Logs a formatted message with {@link Level#DEBUG DEBUG}
+	 * level using the specified format string and arguments.
+	 *
+	 * @param format the format {@code String}.
+	 * @param params arguments specified by the format.
+	 */
+	public static void debug(String format, Object... params) {
+		LOGGER.printf(Level.DEBUG, format, params);
 	}
 
-	public static void debug(String log, Throwable t) {
-		LOGGER.debug(log, t);
+	/**
+	 * Logs a message at the {@link Level#DEBUG DEBUG} level including the
+	 * stack trace of the {@link Throwable} <code>t</code> passed as parameter.
+	 *
+	 * @param message the message to log.
+	 * @param t the exception to log, including its stack trace.
+	 */
+	public static void debug(String message, Throwable t) {
+		LOGGER.debug(message, t);
 	}
 
+	/**
+	 * Logs a formatted message using the specified format string and arguments.
+	 *
+	 * @param level The logging Level.
+	 * @param format The format String.
+	 * @param params Arguments specified by the format.
+	 */
 	public static void printf(Level level, String format, Object... params) {
 		LOGGER.printf(level, format, params);
 	}
