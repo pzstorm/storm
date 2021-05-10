@@ -112,6 +112,38 @@ class AsmUtilsTest implements UnitTest {
 	}
 
 	@Test
+	void shouldAddInstructionsToTheEndOfInsnList() {
+
+		AbstractInsnNode[] nodesToAdd = new AbstractInsnNode[] {
+				new LabelNode(),
+				new VarInsnNode(Opcodes.ALOAD, 0),
+				new MethodInsnNode(Opcodes.INVOKESPECIAL,
+						"io.pzstorm.storm.util", "<init>", "()V"),
+				new InsnNode(Opcodes.RETURN)
+		};
+		InsnList expectedList = createInstructionList();
+		for (AbstractInsnNode node : nodesToAdd) {
+			expectedList.add(node);
+		}
+		InsnList actualList = AsmUtils.addToInsnList(
+				createInstructionList(),
+				new LabelNode(),
+				new VarInsnNode(Opcodes.ALOAD, 0),
+				new MethodInsnNode(Opcodes.INVOKESPECIAL,
+						"io.pzstorm.storm.util", "<init>", "()V"),
+				new InsnNode(Opcodes.RETURN)
+		);;
+
+		Assertions.assertEquals(expectedList.size(), actualList.size());
+
+		Iterator<AbstractInsnNode> iteratorExpected = expectedList.iterator();
+		Iterator<AbstractInsnNode> iteratorActual = expectedList.iterator();
+		while (iteratorExpected.hasNext()) {
+			Assertions.assertTrue(AsmUtils.equalNodes(iteratorExpected.next(), iteratorActual.next()));
+		}
+	}
+
+	@Test
 	@SuppressWarnings("ConstantConditions")
 	void shouldGetLastInstructionOfType() {
 
