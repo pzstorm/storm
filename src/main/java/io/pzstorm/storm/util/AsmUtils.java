@@ -63,6 +63,36 @@ public class AsmUtils {
 	}
 
 	/**
+	 * Return {@code nth} {@link LabelNode} in given list of instructions.
+	 *
+	 * @param list {@link InsnList} to get the label node from.
+	 * @param n index of the node to retrieve from list. The value of the index
+	 * 		has to larger then {@code 1} otherwise an exception will be thrown.
+	 *
+	 * @return {@code LabelNode} found under the specified index or {@code null}
+	 * 		if no {@code LabelNode} for that index was found.
+	 */
+	public static @Nullable LabelNode getNthLabelNode(InsnList list, int n) {
+
+		if (n < 1) {
+			throw new IllegalArgumentException("Method parameter 'n' has a value < 1");
+		}
+		//@formatter:off
+		int i1 = 1; for (int i2 = 0; i2 < list.size(); i2++)
+		{
+			AbstractInsnNode node = list.get(i2);
+			if (node instanceof LabelNode)
+			{
+				if (i1 == n) {
+					return (LabelNode) node;
+				}
+				else i1 += 1;
+			}
+		}//@formatter:on
+		return null;
+	}
+
+	/**
 	 * Find and return first {@link LabelNode} that contains given list of instructions.
 	 * Note that {@link LineNumberNode} and {@link LabelNode} instructions will be excluded when
 	 * comparing entries which means that these instructions are safe to be included in {@code match} list.
