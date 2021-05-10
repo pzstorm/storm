@@ -29,7 +29,8 @@ sourceSets {
 	// module containing zomboid dummy classes and classes used in testing
 	// this module is only required by tests and CI compiler
 	zombie {
-		compileClasspath += sourceSets.main.output
+		// module should not depend on main module to avoid circular dependency
+		//compileClasspath += sourceSets.main.output
 	}
 	main {
 		// add dummy zomboid classes to classpath when compiling on CI
