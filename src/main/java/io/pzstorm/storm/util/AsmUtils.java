@@ -27,6 +27,22 @@ public class AsmUtils {
 	}
 
 	/**
+	 * Add the specified array of instructions to the end of given {@link InsnList}.
+	 *
+	 * @param list instruction list to add the array of instructions to.
+	 * @param instructions array of instructions to add to end of list.
+	 *
+	 * @return given instruction list with instructions added to end.
+	 */
+	public static InsnList addToInsnList(InsnList list, AbstractInsnNode... instructions) {
+
+		for (AbstractInsnNode instruction : instructions) {
+			list.add(instruction);
+		}
+		return list;
+	}
+
+	/**
 	 * Finds and returns the last instructions of a specific {@code Class} in a given list.
 	 *
 	 * @param list list of instructions to search.
