@@ -3,7 +3,16 @@ package io.pzstorm.storm.logging;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.OutputStreamAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.jetbrains.annotations.NotNull;
+import zombie.core.Core;
+import zombie.ui.UIDebugConsole;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
@@ -13,6 +22,24 @@ import java.util.Arrays;
 public class ZomboidLogger {
 
 	private static final Logger LOGGER = LogManager.getLogger("Zomboid");
+	private static final PrintStream DEBUG_CONSOLE = new ZomboidPrintStream();
+
+	static
+	{
+		Configuration config = LoggerContext.getContext(false).getConfiguration();
+
+		// create appender for printing to debug console
+		Appender appender = OutputStreamAppender.createAppender(
+				config.getAppender("ZomboidConsole").getLayout(),
+				null, DEBUG_CONSOLE, "ZomboidUIConsole", false, true);
+
+		appender.start();
+		config.addAppender(appender);
+
+		// print Storm and Zomboid logs to debug console
+		config.getLoggers().get("Zomboid").addAppender(appender, Level.DEBUG, null);
+		config.getRootLogger().addAppender(appender, Level.DEBUG, null);
+	}
 
 	/**
 	 * Returns an instance of Log4j {@link Logger} used for logging.
@@ -201,6 +228,27 @@ public class ZomboidLogger {
 		 */
 		private static Level getForName(String name, LogSeverity def) {
 			return Arrays.stream(values()).filter(l -> l.name.equals(name)).findFirst().orElse(def).level;
+		}
+	}
+
+	/**
+	 * This class represents a {@link PrintStream} for {@link UIDebugConsole}.
+	 * Any content printed by this {@code PrintStream} will automatically print
+	 * to the in-game UI debug console which is viewable by players when playing.
+	 */
+	private static class ZomboidPrintStream extends PrintStream {
+
+		private ZomboidPrintStream() {
+			// this output stream is never actually used
+			super(new ByteArrayOutputStream());
+		}
+
+		@Override
+		public void write(byte @NotNull [] buf, int off, int len) {
+
+			if (Core.bDebug && UIDebugConsole.instance != null) {
+				UIDebugConsole.instance.addOutput(buf, off, len);
+			}
 		}
 	}
 }
