@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import zombie.core.Core;
 import zombie.ui.UIDebugConsole;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 /**
  * Wrapper class for printing Project Zomboid logs with Log4j 2 logger.
  */
+@Nonnull
 @SuppressWarnings({ "unused", "WeakerAccess" })
 public class ZomboidLogger {
 
