@@ -59,7 +59,10 @@ sourceSets {
 	}
 }
 configurations {
-	zombieImplementation.extendsFrom(compileOnly, implementation, zomboidImplementation)
+	implementation.extendsFrom(api)
+	testImplementation.extendsFrom(api)
+	zombieImplementation.extendsFrom(compileOnly, zomboidImplementation)
+	apiImplementation.extendsFrom(api, errorprone, zombieImplementation)
 }
 
 dependencies {
