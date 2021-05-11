@@ -17,7 +17,6 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import com.google.common.collect.Sets;
 
 import io.pzstorm.storm.logging.StormLogger;
-import io.pzstorm.storm.hook.StormHook;
 
 /**
  * This class is responsible for registering event handlers and dispatching {@link ZomboidEvent} instances.
@@ -29,7 +28,7 @@ import io.pzstorm.storm.hook.StormHook;
  * </ul>
  * All methods in registered event handlers annotated with {@link SubscribeEvent} will be called
  * by {@link #dispatchEvent(ZomboidEvent)} method when an appropriate event is created by installed
- * {@link StormHook}. Each subscribed method has to have exactly one parameter that matches the type
+ * {@code StormHook}. Each subscribed method has to have exactly one parameter that matches the type
  * of event it wants to subscribe to. For example if a method wanted to subscribe to {@code OnRenderEvent}
  * it would define itself in one of two ways depending on the handler registration method used:
  * <br><br><pre>
@@ -169,7 +168,7 @@ public class StormEventDispatcher {
 
 	/**
 	 * Create and return a list of instructions that calls {@link #dispatchEvent(ZomboidEvent)} method.
-	 * This is a convenience method intended to be used <b>only</b> by {@link StormHook} implementations to
+	 * This is a convenience method intended to be used <b>only</b> by {@code StormHook} implementations to
 	 * get a list of instructions that represents a dispatch call for given event.
 	 *
 	 * @param eventConstructorInsn list of instructions that represent constructing a new
@@ -196,7 +195,7 @@ public class StormEventDispatcher {
 
 	/**
 	 * Dispatch the given event to all methods registered in dispatch registry. This is an internal
-	 * method <b>only</b> called by {@link StormHook} implementations installed in game code.
+	 * method <b>only</b> called by {@code StormHook} implementations installed in game code.
 	 *
 	 * @param event {@link ZomboidEvent} to dispatch.
 	 * @see #callDispatchEvent(List)
