@@ -32,7 +32,17 @@ sourceSets {
 		// module should not depend on main module to avoid circular dependency
 		//compileClasspath += sourceSets.main.output
 	}
+	api {
+		// add dummy zomboid classes to classpath when compiling on CI
+		if (isCI) {
+			compileClasspath += sourceSets.zombie.output
+		}
+	}
 	main {
+		// include api classes on compile and runtime classpath
+		compileClasspath += sourceSets.api.output
+		runtimeClasspath += sourceSets.api.output
+
 		// add dummy zomboid classes to classpath when compiling on CI
 		if (isCI) {
 			compileClasspath += sourceSets.zombie.output
@@ -40,8 +50,8 @@ sourceSets {
 	}
 	test {
 		// tests need to see classes used in class transformation tests
-		runtimeClasspath += sourceSets.zombie.output
-		compileClasspath += sourceSets.zombie.output
+		runtimeClasspath += sourceSets.zombie.output + sourceSets.api.output
+		compileClasspath += sourceSets.zombie.output + sourceSets.api.output
 	}
 	// remove media sourceSet created by capsid
 	if (!isCI) {
