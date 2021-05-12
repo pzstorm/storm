@@ -111,6 +111,16 @@ class StormClassLoader extends ClassLoader {
 		return null;
 	}
 
+	/**
+	 * Returns {@code true} if this loader has been recorded by the Java virtual machine as an
+	 * initiating loader of a class with the given binary name. Otherwise {@code null} is returned.
+	 *
+	 * @return {@code true} if class with given name has been loaded, {@code false} otherwise.
+	 */
+	boolean isClassLoaded(String name) {
+		return findLoadedClass(name) != null;
+	}
+
 	@Override
 	public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 
