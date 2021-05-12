@@ -31,6 +31,9 @@ out/
 *.tar.gz
 *.rar
 
+# Exclude jar files used as resources
+!**/resources/**/*.jar
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
