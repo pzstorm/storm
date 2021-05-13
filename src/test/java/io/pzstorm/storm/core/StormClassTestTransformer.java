@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import io.pzstorm.storm.logging.StormLogger;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -16,6 +15,8 @@ import org.objectweb.asm.util.TraceMethodVisitor;
 import com.github.difflib.DiffUtils;
 import com.github.difflib.UnifiedDiffUtils;
 import com.github.difflib.patch.Patch;
+
+import io.pzstorm.storm.logging.StormLogger;
 
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}

@@ -132,7 +132,7 @@ class AsmUtilsTest implements UnitTest {
 				new MethodInsnNode(Opcodes.INVOKESPECIAL,
 						"io.pzstorm.storm.util", "<init>", "()V"),
 				new InsnNode(Opcodes.RETURN)
-		);;
+		);
 
 		Assertions.assertEquals(expectedList.size(), actualList.size());
 

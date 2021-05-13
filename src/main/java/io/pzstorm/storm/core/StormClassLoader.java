@@ -7,11 +7,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Objects;
 
-import io.pzstorm.storm.logging.StormLogger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableSet;
+
+import io.pzstorm.storm.logging.StormLogger;
 
 /**
  * This is a custom {@code ClassLoader} used to define, transform and load Project Zomboid classes.

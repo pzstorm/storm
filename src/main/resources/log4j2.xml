@@ -62,7 +62,7 @@
         </Logger>
         <Root level="debug">
             <AppenderRef ref="StormConsole" level="verbose"/>
-            <AppenderRef ref="StormMainFile" level="verbose" />
+            <AppenderRef ref="StormMainFile" level="verbose"/>
             <AppenderRef ref="StormDebugFile"/>
         </Root>
     </Loggers>

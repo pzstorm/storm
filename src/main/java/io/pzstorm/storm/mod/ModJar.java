@@ -20,6 +20,7 @@ public class ModJar extends JarFile {
 	private final File jarFile;
 
 	public ModJar(File file) throws IOException {
+
 		super(file, true);
 		jarFile = file;
 	}

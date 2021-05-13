@@ -1,14 +1,5 @@
 package io.pzstorm.storm.core;
 
-import com.google.common.collect.ImmutableSet;
-import io.pzstorm.storm.logging.StormLogger;
-import io.pzstorm.storm.mod.ModJar;
-import io.pzstorm.storm.mod.ModVersion;
-import io.pzstorm.storm.mod.ModMetadata;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
-import zombie.util.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,6 +11,17 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+
+import com.google.common.collect.ImmutableSet;
+
+import io.pzstorm.storm.logging.StormLogger;
+import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModMetadata;
+import io.pzstorm.storm.mod.ModVersion;
+import zombie.util.StringUtils;
 
 /**
  * This class is responsible for registering and loading mod components:
@@ -204,14 +206,14 @@ class StormModLoader {
 				while (jarEntries.hasMoreElements())
 				{
 					JarEntry jarEntry = jarEntries.nextElement();
-					if(jarEntry.isDirectory() || !jarEntry.getName().endsWith(".class")) {
+					if (jarEntry.isDirectory() || !jarEntry.getName().endsWith(".class")) {
 						continue;
 					}
 					String entryName = jarEntry.getName();
 					String className = entryName.substring(0, entryName.length() - 6);
 					try {
 						modClasses.add(StormBootstrap.CLASS_LOADER.loadClass(
-								className.replace('/', '.' ), true));
+								className.replace('/', '.'), true));
 					}
 					catch (ClassNotFoundException e) {
 						throw new RuntimeException(e);

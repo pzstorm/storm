@@ -1,12 +1,14 @@
 package io.pzstorm.storm.patch;
 
-import com.google.common.collect.ImmutableList;
-import io.pzstorm.storm.core.StormClassTransformer;
-import io.pzstorm.storm.util.AsmUtils;
+import java.util.Objects;
+
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-import java.util.Objects;
+import com.google.common.collect.ImmutableList;
+
+import io.pzstorm.storm.core.StormClassTransformer;
+import io.pzstorm.storm.util.AsmUtils;
 
 public class DebugLogPatch implements ZomboidPatch {
 

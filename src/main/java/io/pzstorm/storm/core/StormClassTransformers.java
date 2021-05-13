@@ -3,15 +3,15 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.pzstorm.storm.patch.DebugLogPatch;
-import io.pzstorm.storm.patch.DebugLogStreamPatch;
-import io.pzstorm.storm.patch.ZomboidPatch;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import io.pzstorm.storm.hook.OnMainScreenRenderHook;
 import io.pzstorm.storm.hook.OnUIElementPreRenderHook;
 import io.pzstorm.storm.hook.StormHook;
+import io.pzstorm.storm.patch.DebugLogPatch;
+import io.pzstorm.storm.patch.DebugLogStreamPatch;
+import io.pzstorm.storm.patch.ZomboidPatch;
 
 /**
  * This class defines, initializes and stores {@link StormClassTransformer} instances.
@@ -29,8 +29,8 @@ public class StormClassTransformers {
 
 	static
 	{
-		 /////////////////////
-		 // REGISTER HOOKS //
+		/////////////////////
+		// REGISTER HOOKS //
 		///////////////////
 
 		registerTransformer("zombie.gameStates.MainScreenState", new OnMainScreenRenderHook());

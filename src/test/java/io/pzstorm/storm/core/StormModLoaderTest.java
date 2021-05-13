@@ -1,18 +1,5 @@
 package io.pzstorm.storm.core;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.CharSink;
-import io.pzstorm.storm.UnitTest;
-import io.pzstorm.storm.mod.ModJar;
-import io.pzstorm.storm.mod.ModVersion;
-import io.pzstorm.storm.mod.ModMetadata;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -21,12 +8,29 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.io.CharSink;
+
+import io.pzstorm.storm.UnitTest;
+import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModMetadata;
+import io.pzstorm.storm.mod.ModVersion;
+
+//@formatter:off
 class StormModLoaderTest implements UnitTest {
 
 	@SuppressWarnings({ "WeakerAccess", "ConstantConditions" })
 	@TempDir File tempDir = null;
 	private File zomboidModsDir;
 
+	//@formatter:on
 	@BeforeEach
 	void prepareStormModLoaderTest() {
 

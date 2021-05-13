@@ -1,13 +1,15 @@
 package io.pzstorm.storm.patch;
 
-import com.google.common.collect.ImmutableList;
-import io.pzstorm.storm.core.StormClassTransformer;
-import io.pzstorm.storm.util.AsmUtils;
+import java.util.List;
+import java.util.Objects;
+
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
-import java.util.List;
-import java.util.Objects;
+import com.google.common.collect.ImmutableList;
+
+import io.pzstorm.storm.core.StormClassTransformer;
+import io.pzstorm.storm.util.AsmUtils;
 
 public class DebugLogStreamPatch implements ZomboidPatch {
 
@@ -30,7 +32,7 @@ public class DebugLogStreamPatch implements ZomboidPatch {
 								"toString", "()Ljava/lang/String;"),
 						new VarInsnNode(Opcodes.ALOAD, 5),
 						new MethodInsnNode(Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
-						"printf", "(Ljava/lang/String;Ljava/lang/String;)V"))
+								"printf", "(Ljava/lang/String;Ljava/lang/String;)V"))
 		);
 		// private void writeln(PrintStream var1, LogSeverity var2, String var3, String var4, Object var5)
 		replaceMethodNode(transformer.getInstructionsForMethod("writeln",

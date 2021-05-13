@@ -1,5 +1,11 @@
 package io.pzstorm.storm.logging;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+
+import javax.annotation.Nonnull;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,13 +14,9 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.OutputStreamAppender;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.jetbrains.annotations.NotNull;
+
 import zombie.core.Core;
 import zombie.ui.UIDebugConsole;
-
-import javax.annotation.Nonnull;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
 
 /**
  * Wrapper class for printing Project Zomboid logs with Log4j 2 logger.
@@ -225,7 +227,7 @@ public class ZomboidLogger {
 		 * @param name name of the {@code LogSeverity} entry to get the level for.
 		 * @param def default {@code LogSeverity} entry to use if no entry was matched.
 		 *
- 		 * @return {@code Level} associated with matched entry or {@code Level} associated
+		 * @return {@code Level} associated with matched entry or {@code Level} associated
 		 * 		with default entry if no entry was matched for given name.
 		 */
 		private static Level getForName(String name, LogSeverity def) {

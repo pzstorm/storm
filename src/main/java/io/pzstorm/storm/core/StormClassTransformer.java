@@ -2,7 +2,6 @@ package io.pzstorm.storm.core;
 
 import java.util.Optional;
 
-import io.pzstorm.storm.logging.StormLogger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.ClassReader;
@@ -11,6 +10,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
+
+import io.pzstorm.storm.logging.StormLogger;
 
 /**
  * This class represents a {@code Class} transformer used to alter {@code Class}

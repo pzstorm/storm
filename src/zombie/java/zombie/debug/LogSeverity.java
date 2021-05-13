@@ -4,6 +4,5 @@ public enum LogSeverity {
 	Trace,
 	General,
 	Warning,
-	Error;
+	Error
 }
-
