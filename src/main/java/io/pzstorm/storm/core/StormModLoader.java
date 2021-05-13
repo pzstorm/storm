@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.collect.ObjectArrays;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 
@@ -24,7 +26,7 @@ import io.pzstorm.storm.mod.ModVersion;
 import zombie.util.StringUtils;
 
 /**
- * This class is responsible for registering and loading mod components:
+ * This class is responsible for loading mod components:
  * <ul>
  * <li>Catalog mod jars by mapping them to mod directory name.</li>
  * <li>Catalog mod metadata by mapping them to mod directory name.</li>
@@ -32,28 +34,43 @@ import zombie.util.StringUtils;
  * <li>Load mod classes with {@link StormClassLoader}.</li>
  * </ul>
  */
-class StormModLoader {
-
-	/**
-	 * This catalog contains {@link ModMetadata} instances mapped to directory names.
-	 *
-	 * @see #loadModMetadata()
-	 */
-	private static final Map<String, ModMetadata> METADATA_CATALOG = new HashMap<>();
+class StormModLoader extends URLClassLoader {
 
 	/**
 	 * This catalog stores {@link ModJar} instances mapped to directory names.
-	 *
-	 * @see #catalogModJars()
 	 */
 	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
 
 	/**
-	 * This catalog stores {@link Class} instances mapped to directory names.
-	 *
-	 * @see #loadModClasses()
+	 * This catalog contains {@link ModMetadata} instances mapped to directory names.
 	 */
-	private static final Map<String, ImmutableSet<Class<?>>> CLASS_CATALOG = new HashMap<>();
+	static final Map<String, ModMetadata> METADATA_CATALOG = new HashMap<>();
+
+	/**
+	 * This catalog stores {@link Class} instances mapped to directory names.
+	 */
+	static final Map<String, ImmutableSet<Class<?>>> CLASS_CATALOG = new HashMap<>();
+
+	StormModLoader(URL[] urls) {
+		super(ObjectArrays.concat(urls, getJarResourcePaths(), URL.class));
+	}
+
+	StormModLoader() {
+		super(getJarResourcePaths());
+	}
+
+	/**
+	 * Returns an array of paths pointing to cataloged jars.
+	 * This method will return an empty array if no jars are cataloged.
+	 */
+	private static URL[] getJarResourcePaths() {
+
+		List<URL> result = new ArrayList<>();
+		for (Set<ModJar> modJars : JAR_CATALOG.values()) {
+			modJars.forEach(j -> result.add(j.getResourcePath()));
+		}
+		return result.toArray(new URL[0]);
+	}
 
 	/**
 	 * Find and catalog {@code jar} files found in {@code $HOME/Zomboid/mods/} subdirectories.
@@ -229,19 +246,6 @@ class StormModLoader {
 	 */
 	private static Path getUserHomePath() {
 		return Paths.get(System.getProperty("user.home"));
-	}
-
-	/**
-	 * Returns an array of paths pointing to cataloged jars.
-	 * This method will return an empty array if no jars are cataloged.
-	 */
-	static URL[] getJarResourcePaths() {
-
-		List<URL> result = new ArrayList<>();
-		for (Set<ModJar> modJars : JAR_CATALOG.values()) {
-			modJars.forEach(j -> result.add(j.getResourcePath()));
-		}
-		return result.toArray(new URL[0]);
 	}
 
 	@TestOnly

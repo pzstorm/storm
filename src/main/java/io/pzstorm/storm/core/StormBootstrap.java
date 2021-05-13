@@ -16,7 +16,7 @@ class StormBootstrap {
 	 * their own set of class instances and native libraries this loader should always be
 	 * used to load classes that access or modify transformed class fields or methods.
 	 */
-	static final StormClassLoader CLASS_LOADER = new StormClassLoader(StormModLoader.getJarResourcePaths());
+	static final StormClassLoader CLASS_LOADER = new StormClassLoader();
 
 	/**
 	 * Loaded and initialized {@link StormClassTransformer} {@code Class}. To transform specific

@@ -1,30 +1,25 @@
 package io.pzstorm.storm.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.io.CharSink;
 import io.pzstorm.storm.IntegrationTest;
-import io.pzstorm.storm.TestUtils;
+import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModMetadata;
+import io.pzstorm.storm.mod.ModVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.CharSink;
-
-import io.pzstorm.storm.UnitTest;
-import io.pzstorm.storm.mod.ModJar;
-import io.pzstorm.storm.mod.ModMetadata;
-import io.pzstorm.storm.mod.ModVersion;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 //@formatter:off
 class StormModLoaderIntegrationTest implements IntegrationTest {
@@ -153,14 +148,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		}
 		testCatalogingModJarsInModsDir(true);
 
-		// StormClassLoader is constructed in static context by StormBootstrap
-		// with an initial set of resource paths, which could have been initialized
-		// by previous tests so use reflection to modify URLClassLoader
-		TestUtils.setPrivateFinalFieldToValue(
-				StormClassLoader.class.getDeclaredField("resourceClassLoader"),
-				StormBootstrap.CLASS_LOADER, new URLClassLoader(
-						StormModLoader.getJarResourcePaths(), StormBootstrap.CLASS_LOADER.getParent())
-		);
+		StormBootstrap.CLASS_LOADER.updateModResourceLoader();
 		StormModLoader.loadModClasses();
 
 		for (String clazz : expectedLoadedClasses) {

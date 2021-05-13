@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Objects;
 
 import org.jetbrains.annotations.Contract;
@@ -35,7 +34,12 @@ class StormClassLoader extends ClassLoader {
 			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.",
 			"io.pzstorm.storm.logging.StormLogger"
 	);
-	protected final URLClassLoader resourceClassLoader;
+
+	/**
+	 * {@code URLClassLoader} responsible for loading mod classes and assets.
+	 */
+	private StormModLoader modResourceLoader;
+
 	/**
 	 * {@code ClassLoader} that is the parent of this {@code ClassLoader}.
 	 * When loading classes, those classes not matching the whitelist pattern will have
@@ -51,16 +55,23 @@ class StormClassLoader extends ClassLoader {
 	StormClassLoader(URL[] resourceLocations) {
 
 		parentClassLoader = getClass().getClassLoader();
-		resourceClassLoader = new URLClassLoader(
-				Objects.requireNonNull(resourceLocations), getParent()
-		);
+		modResourceLoader = new StormModLoader(resourceLocations);
 	}
 
 	StormClassLoader() {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
-		resourceClassLoader = (URLClassLoader) getParent();
+		modResourceLoader =  new StormModLoader();
+	}
+
+	/**
+	 * Reinitialize mod resource loader instance. This method should be called
+	 * after new mods have been loaded by {@link StormModLoader} since new
+	 * {@code URL}s have to be added to loader classpath.
+	 */
+	void updateModResourceLoader() {
+		modResourceLoader = new StormModLoader();
 	}
 
 	/**
@@ -76,16 +87,13 @@ class StormClassLoader extends ClassLoader {
 	public @Nullable URL getResource(String name) {
 		Objects.requireNonNull(name);
 
-		URL url = resourceClassLoader.getResource(name);
-		if (url == null) {
-			url = parentClassLoader.getResource(name);
-		}
-		return url;
+		URL url = modResourceLoader.getResource(name);
+		return url == null ? parentClassLoader.getResource(name) : url;
 	}
 
 	@Override
 	protected @Nullable URL findResource(String name) {
-		return resourceClassLoader.findResource(name);
+		return modResourceLoader.findResource(name);
 	}
 
 	/**
