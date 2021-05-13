@@ -2,7 +2,9 @@ package io.pzstorm.storm;
 
 import io.pzstorm.storm.logging.StormLogger;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public class TestUtils {
 
@@ -33,4 +35,28 @@ public class TestUtils {
 		}
 	}
 
+	/**
+	 * Sets the given instance {@link Field} to value designated by method parameter.
+	 * This method will work for all modifiers but was primarily intended for
+	 * fields with {@code private} and {@code final} modifiers.
+	 *
+	 * @param field {@code Field} to set the value of.
+	 * @param instance the object whose field should be modified.
+	 * @param value the new value for the field of obj being modified.
+	 */
+	public static void setPrivateFinalFieldToValue(Field field, Object instance, Object value) {
+
+		try {
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+
+			modifiersField.setAccessible(true);
+			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+			field.setAccessible(true);
+			field.set(instance, value);
+		}
+		catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
