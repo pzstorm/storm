@@ -3,11 +3,13 @@ package io.pzstorm.storm.core;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import io.pzstorm.storm.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -149,6 +151,15 @@ class StormModLoaderTest implements UnitTest {
 			Assertions.assertFalse(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
 		}
 		testCatalogingModJarsInModsDir(true);
+
+		// StormClassLoader is constructed in static context by StormBootstrap
+		// with an initial set of resource paths, which could have been initialized
+		// by previous tests so use reflection to modify URLClassLoader
+		TestUtils.setPrivateFinalFieldToValue(
+				StormClassLoader.class.getDeclaredField("resourceClassLoader"),
+				StormBootstrap.CLASS_LOADER, new URLClassLoader(
+						StormModLoader.getJarResourcePaths(), StormBootstrap.CLASS_LOADER.getParent())
+		);
 		StormModLoader.loadModClasses();
 
 		for (String clazz : expectedLoadedClasses) {
