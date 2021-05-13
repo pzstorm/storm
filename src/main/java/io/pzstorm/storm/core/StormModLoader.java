@@ -13,6 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
@@ -23,7 +24,6 @@ import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.mod.ModJar;
 import io.pzstorm.storm.mod.ModMetadata;
 import io.pzstorm.storm.mod.ModVersion;
-import zombie.util.StringUtils;
 
 /**
  * This class is responsible for loading mod components:
@@ -180,7 +180,7 @@ class StormModLoader extends URLClassLoader {
 			modInfo.load(new FileInputStream(modInfoFile));
 
 			String modName = modInfo.getProperty("name");
-			if (StringUtils.isNullOrEmpty(modName))
+			if (Strings.isNullOrEmpty(modName))
 			{
 				String message = "Unable to register mod in directory '%s' with missing name, check mod.info file";
 				StormLogger.error(String.format(message, modEntry));
