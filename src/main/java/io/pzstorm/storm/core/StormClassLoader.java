@@ -200,12 +200,10 @@ class StormClassLoader extends ClassLoader {
 
 	@Override
 	public @Nullable InputStream getResourceAsStream(String name) {
+		Objects.requireNonNull(name);
 
-		InputStream inputStream = resourceClassLoader.getResourceAsStream(name);
-		if (inputStream == null) {
-			inputStream = parentClassLoader.getResourceAsStream(name);
-		}
-		return inputStream;
+		InputStream inputStream = modResourceLoader.getResourceAsStream(name);
+		return inputStream == null ? parentClassLoader.getResourceAsStream(name) : inputStream;
 	}
 
 	/**
