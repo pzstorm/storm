@@ -228,4 +228,13 @@ class StormModLoader {
 	private static Path getUserHomePath() {
 		return Paths.get(System.getProperty("user.home"));
 	}
+	@TestOnly
+	static @Nullable ModMetadata getMetadataCatalogEntry(String name) {
+		return METADATA_CATALOG.get(name);
+	}
+
+	@TestOnly
+	static @Nullable ImmutableSet<ModJar> getJarCatalogEntry(String name) {
+		return JAR_CATALOG.get(name);
+	}
 }
