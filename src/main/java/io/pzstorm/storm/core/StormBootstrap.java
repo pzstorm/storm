@@ -11,11 +11,12 @@ import org.jetbrains.annotations.Nullable;
 class StormBootstrap {
 
 	/**
-	 * {@code ClassLoader} used to transform and load all needed classes. Because class loaders
-	 * maintain their own set of class instances and native libraries you should always use
-	 * this loader to load classes that access or modify transformed class fields or methods.
+	 * {@code ClassLoader} used to transform and load all needed classes.
+	 * This includes both Project Zomboid and mod classes. Because class loaders maintain
+	 * their own set of class instances and native libraries this loader should always be
+	 * used to load classes that access or modify transformed class fields or methods.
 	 */
-	static final StormClassLoader CLASS_LOADER = new StormClassLoader();
+	static final StormClassLoader CLASS_LOADER = new StormClassLoader(StormModLoader.getJarResourcePaths());
 
 	/**
 	 * Loaded and initialized {@link StormClassTransformer} {@code Class}. To transform specific

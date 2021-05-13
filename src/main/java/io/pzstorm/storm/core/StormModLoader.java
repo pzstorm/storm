@@ -228,6 +228,20 @@ class StormModLoader {
 	private static Path getUserHomePath() {
 		return Paths.get(System.getProperty("user.home"));
 	}
+
+	/**
+	 * Returns an array of paths pointing to cataloged jars.
+	 * This method will return an empty array if no jars are cataloged.
+	 */
+	static URL[] getJarResourcePaths() {
+
+		List<URL> result = new ArrayList<>();
+		for (Set<ModJar> modJars : JAR_CATALOG.values()) {
+			modJars.forEach(j -> result.add(j.getResourcePath()));
+		}
+		return result.toArray(new URL[0]);
+	}
+
 	@TestOnly
 	static @Nullable ModMetadata getMetadataCatalogEntry(String name) {
 		return METADATA_CATALOG.get(name);
