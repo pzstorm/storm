@@ -133,6 +133,25 @@ class StormModLoaderTest implements UnitTest {
 		// assert using default version
 		Assertions.assertEquals(new ModVersion("0.1.0"), modE.version);
 	}
+
+	@Test
+	void shouldLoadAllModClasses() throws Throwable {
+
+		String[] expectedLoadedClasses = new String[] {
+				"com.sample.mod.ModA", "com.sample.mod.ModUtils",
+				"com.sample.mod.ModB", "com.sample.mod.ModC"
+		};
+		for (String clazz : expectedLoadedClasses) {
+			Assertions.assertFalse(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
+		}
+		testCatalogingModJarsInModsDir(true);
+		StormModLoader.loadModClasses();
+
+		for (String clazz : expectedLoadedClasses) {
+			Assertions.assertTrue(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
+		}
+	}
+
 	private void testCatalogingModJarsInModsDir(boolean createMetadata) throws Throwable {
 
 		ClassLoader CL = getClass().getClassLoader();
