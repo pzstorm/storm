@@ -2,6 +2,7 @@ package io.pzstorm.storm.util;
 
 import java.lang.reflect.Method;
 
+import io.pzstorm.storm.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ class StormUtilsTest implements UnitTest {
 		Method method = StormUtilsTest.class.getDeclaredMethod("inaccessibleMethod", String.class, Integer.class);
 
 		Assertions.assertFalse(method.isAccessible());
-		StormUtils.invokeRestrictedMethod(method, this, "sample", 0);
+		TestUtils.invokeRestrictedMethod(method, this, "sample", 0);
 		Assertions.assertFalse(method.isAccessible());
 	}
 
@@ -34,7 +35,7 @@ class StormUtilsTest implements UnitTest {
 
 		Method method = StormUtilsTest.class.getDeclaredMethod("inaccessibleMethod", String.class, Integer.class);
 
-		StormUtils.invokeRestrictedMethod(method, this, "sample", 0);
+		TestUtils.invokeRestrictedMethod(method, this, "sample", 0);
 		Assertions.assertTrue(hasInvokedRestrictedMethod);
 	}
 
