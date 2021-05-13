@@ -47,6 +47,13 @@ class StormModLoader {
 	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
 
 	/**
+	 * This catalog stores {@link Class} instances mapped to directory names.
+	 *
+	 * @see #loadModClasses()
+	 */
+	private static final Map<String, ImmutableSet<Class<?>>> CLASS_CATALOG = new HashMap<>();
+
+	/**
 	 * Find and catalog {@code jar} files found in {@code $HOME/Zomboid/mods/} subdirectories.
 	 * The found jars will be mapped to the name of directory in which they were discovered.
 	 * Note that directories that do not contain a {@code mod.info} file will be excluded
@@ -176,6 +183,45 @@ class StormModLoader {
 			METADATA_CATALOG.put(modName, new ModMetadata(modName, new ModVersion(modVersion)));
 		}
 	}
+
+	/**
+	 * Load classes from cataloged {@link ModJar} instances with {@link StormClassLoader}.
+	 * Once loaded the classes will also be cataloged by mapping them to directory name.
+	 * Before loading classes it is important to populate the jar catalog with
+	 * {@link #catalogModJars()} method, otherwise this method will only clear the class catalog.
+	 */
+	static void loadModClasses() {
+
+		// clear map before entering new data
+		CLASS_CATALOG.clear();
+
+		for (Map.Entry<String, ImmutableSet<ModJar>> entry : JAR_CATALOG.entrySet())
+		{
+			Set<Class<?>> modClasses = new HashSet<>();
+			for (ModJar modJar : entry.getValue())
+			{
+				Enumeration<JarEntry> jarEntries = modJar.entries();
+				while (jarEntries.hasMoreElements())
+				{
+					JarEntry jarEntry = jarEntries.nextElement();
+					if(jarEntry.isDirectory() || !jarEntry.getName().endsWith(".class")) {
+						continue;
+					}
+					String entryName = jarEntry.getName();
+					String className = entryName.substring(0, entryName.length() - 6);
+					try {
+						modClasses.add(StormBootstrap.CLASS_LOADER.loadClass(
+								className.replace('/', '.' ), true));
+					}
+					catch (ClassNotFoundException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+			CLASS_CATALOG.put(entry.getKey(), ImmutableSet.copyOf(modClasses));
+		}
+	}
+
 	/**
 	 * Returns {@code Path} that denotes {@code user.home} system property.
 	 */
