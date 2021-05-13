@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import io.pzstorm.storm.IntegrationTest;
 import io.pzstorm.storm.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ import io.pzstorm.storm.mod.ModMetadata;
 import io.pzstorm.storm.mod.ModVersion;
 
 //@formatter:off
-class StormModLoaderTest implements UnitTest {
+class StormModLoaderIntegrationTest implements IntegrationTest {
 
 	@SuppressWarnings({ "WeakerAccess", "ConstantConditions" })
 	@TempDir File tempDir = null;
