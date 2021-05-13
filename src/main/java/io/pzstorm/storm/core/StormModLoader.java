@@ -1,18 +1,23 @@
 package io.pzstorm.storm.core;
 
 import com.google.common.collect.ImmutableSet;
+import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModVersion;
 import io.pzstorm.storm.mod.ModMetadata;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
+import zombie.util.StringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,6 +31,15 @@ import java.util.stream.Stream;
  * </ul>
  */
 class StormModLoader {
+
+	/**
+	 * This catalog contains {@link ModMetadata} instances mapped to directory names.
+	 *
+	 * @see #loadModMetadata()
+	 */
+	private static final Map<String, ModMetadata> METADATA_CATALOG = new HashMap<>();
+
+	/**
 	 * This catalog stores {@link ModJar} instances mapped to directory names.
 	 *
 	 * @see #catalogModJars()
@@ -112,6 +126,56 @@ class StormModLoader {
 		}
 	}
 
+	/**
+	 * Load mod metadata for each entry in jar catalog. Before loading mod metadata it is
+	 * important to populate the jar catalog by calling {@link #catalogModJars()} method,
+	 * otherwise this method will only clear the metadata catalog. Metadata is read from
+	 * {@code mod.info} file located in mod root directory. Directories which do not
+	 * contain a metadata file will be excluded from this operation.
+	 *
+	 * @throws IOException if an error occurred when reading from input stream.
+	 */
+	static void loadModMetadata() throws IOException {
+
+		// clear map before entering new data
+		METADATA_CATALOG.clear();
+
+		Path zomboidModsDir = getUserHomePath().resolve("Zomboid/mods");
+		for (String modEntry : JAR_CATALOG.keySet())
+		{
+			File modInfoFile = Paths.get(zomboidModsDir.toString(), modEntry, "mod.info").toFile();
+			if (!modInfoFile.exists() || modInfoFile.isDirectory())
+			{
+				String message = "Unable to register mod in directory '%s' missing 'mod.info' file";
+				StormLogger.error(message, modEntry);
+				continue;
+			}
+			Properties modInfo = new Properties();
+			modInfo.load(new FileInputStream(modInfoFile));
+
+			String modName = modInfo.getProperty("name");
+			if (StringUtils.isNullOrEmpty(modName))
+			{
+				String message = "Unable to register mod in directory '%s' with missing name, check mod.info file";
+				StormLogger.error(String.format(message, modEntry));
+				continue;
+			}
+			String modVersion = modInfo.getProperty("modversion");
+			if (modVersion == null)
+			{
+				String message = "Unable to register mod '%s' with missing version, check mod.info file";
+				StormLogger.error(String.format(message, modName));
+				continue;
+			}
+			else if (modVersion.isEmpty())
+			{
+				String message = "Mod '%s' has empty version property, using 0.1.0 version instead";
+				StormLogger.warn(message, modName);
+				modVersion = "0.1.0";
+			}
+			METADATA_CATALOG.put(modName, new ModMetadata(modName, new ModVersion(modVersion)));
+		}
+	}
 	/**
 	 * Returns {@code Path} that denotes {@code user.home} system property.
 	 */
