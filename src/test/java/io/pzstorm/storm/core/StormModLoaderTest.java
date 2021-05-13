@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.io.CharSink;
 import io.pzstorm.storm.UnitTest;
 import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModVersion;
+import io.pzstorm.storm.mod.ModMetadata;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,93 @@ class StormModLoaderTest implements UnitTest {
 		testCatalogingModJarsInModsDir(false);
 	}
 
+	@Test
+	void shouldCorrectlyLoadAllModMetadata() throws Throwable {
+
+		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
+				"A", new ModMetadata("A", new ModVersion("1.7.0")),
+				"B", new ModMetadata("B", new ModVersion("0.3.0")),
+				"C", new ModMetadata("C", new ModVersion("2.0.0"))
+		);
+		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet())
+		{
+			String modDirName = entry.getKey();
+			File modDir = new File(zomboidModsDir, modDirName);
+			Assertions.assertTrue(modDir.mkdirs());
+
+			writeToModMetadataFile(modDir, ImmutableList.of(
+					"name=" + modDirName, "modversion=" + entry.getValue().version));
+		}
+		testCatalogingModJarsInModsDir(false);
+		StormModLoader.loadModMetadata();
+
+		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet())
+		{
+			ModMetadata expectedModMetadata = entry.getValue();
+			ModMetadata actualModMetadata = StormModLoader.getMetadataCatalogEntry(entry.getKey());
+			Assertions.assertEquals(expectedModMetadata, actualModMetadata);
+		}
+	}
+
+	@Test
+	void shouldNotLoadModMetadataWhenModInfoFileMissing() throws Throwable {
+
+		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
+				"A", new ModMetadata("A", new ModVersion("1.1.0")),
+				"B", new ModMetadata("B", new ModVersion("1.1.0")),
+				"C", new ModMetadata("C", new ModVersion("1.1.0"))
+		);
+		testCatalogingModJarsInModsDir(false);
+		StormModLoader.loadModMetadata();
+
+		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet()) {
+			Assertions.assertNull(StormModLoader.getMetadataCatalogEntry(entry.getKey()));
+		}
+	}
+
+	@Test
+	void shouldNotLoadModMetadataWhenMissingProperties() throws Throwable {
+
+		Map<String, ModMetadata> modEntries = ImmutableMap.of(
+				"A", new ModMetadata("A", new ModVersion("1.0.0")),
+				"B", new ModMetadata(null, new ModVersion("2.4.0")),
+				"C", new ModMetadata("", new ModVersion("0.3.0")),
+				"D", new ModMetadata("D", null),
+				"E", new ModMetadata("E", new ModVersion(""))
+		);
+		for (Map.Entry<String, ModMetadata> entry : modEntries.entrySet())
+		{
+			String modDirName = entry.getKey();
+			File modDir = new File(zomboidModsDir, modDirName);
+			Assertions.assertTrue(modDir.mkdirs());
+
+			ModMetadata modMetadata = entry.getValue();
+			writeToModMetadataFile(modDir, ImmutableList.of(
+					modMetadata.name != null ? "name=" + modMetadata.name : "",
+					modMetadata.version != null ? "modversion=" + modMetadata.version : ""));
+		}
+		testCatalogingModJarsInModsDir(false);
+		StormModLoader.loadModMetadata();
+
+		// both name and version properties present
+		Assertions.assertNotNull(StormModLoader.getMetadataCatalogEntry("A"));
+
+		// missing name property
+		Assertions.assertNull(StormModLoader.getMetadataCatalogEntry("B"));
+
+		// name property is empty string
+		Assertions.assertNull(StormModLoader.getMetadataCatalogEntry("C"));
+
+		// missing version property
+		Assertions.assertNull(StormModLoader.getMetadataCatalogEntry("D"));
+
+		// version property is empty string
+		ModMetadata modE = StormModLoader.getMetadataCatalogEntry("E");
+		Assertions.assertNotNull(modE);
+
+		// assert using default version
+		Assertions.assertEquals(new ModVersion("0.1.0"), modE.version);
+	}
 	private void testCatalogingModJarsInModsDir(boolean createMetadata) throws Throwable {
 
 		ClassLoader CL = getClass().getClassLoader();
