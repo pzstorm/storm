@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.CharSink;
+import com.google.common.io.MoreFiles;
 import io.pzstorm.storm.IntegrationTest;
 import io.pzstorm.storm.mod.ModJar;
 import io.pzstorm.storm.mod.ModMetadata;
 import io.pzstorm.storm.mod.ModVersion;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,21 +21,21 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-//@formatter:off
 class StormModLoaderIntegrationTest implements IntegrationTest {
 
-	@SuppressWarnings({ "WeakerAccess", "ConstantConditions" })
-	@TempDir File tempDir = null;
-	private File zomboidModsDir;
+	private static final File TEMP_DIR = IntegrationTest.getTemporaryBuildDir(StormModLoaderIntegrationTest.class);
+	private static final File ZOMBOID_MODS_DIR = new File(TEMP_DIR, "Zomboid/mods");
 
-	//@formatter:on
-	@BeforeEach
-	void prepareStormModLoaderTest() {
+	@BeforeAll
+	static void prepareStormModLoaderTest() throws IOException {
 
-		zomboidModsDir = new File(tempDir, "Zomboid/mods");
-		Assertions.assertTrue(zomboidModsDir.mkdirs());
-
-		System.setProperty("user.home", tempDir.getPath());
+		if (TEMP_DIR.exists())
+		{
+			MoreFiles.deleteDirectoryContents(TEMP_DIR.toPath());
+			Assertions.assertEquals(0, Objects.requireNonNull(TEMP_DIR.listFiles()).length);
+		}
+		else Assertions.assertTrue(ZOMBOID_MODS_DIR.mkdirs());
+		System.setProperty("user.home", TEMP_DIR.getPath());
 	}
 
 	@Test
@@ -59,7 +59,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet())
 		{
 			String modDirName = entry.getKey();
-			File modDir = new File(zomboidModsDir, modDirName);
+			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
 			Assertions.assertTrue(modDir.mkdirs());
 
 			writeToModMetadataFile(modDir, ImmutableList.of(
@@ -105,7 +105,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		for (Map.Entry<String, ModMetadata> entry : modEntries.entrySet())
 		{
 			String modDirName = entry.getKey();
-			File modDir = new File(zomboidModsDir, modDirName);
+			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
 			Assertions.assertTrue(modDir.mkdirs());
 
 			ModMetadata modMetadata = entry.getValue();
@@ -168,7 +168,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		for (Map.Entry<String, String[]> entry : modJarData.entrySet())
 		{
 			String modDirName = entry.getKey();
-			File modDir = new File(zomboidModsDir, modDirName);
+			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
 
 			// create temporary mod directory
 			if (!modDir.exists()) {
@@ -185,9 +185,11 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 				File destination = new File(modDir, modJarName);
 
 				// copy resource mod jars to temporary directory
-				Files.copy(Paths.get(jarResource.toURI()), destination.toPath());
-				Assertions.assertTrue(destination.exists());
-
+				if (!destination.exists())
+				{
+					Files.copy(Paths.get(jarResource.toURI()), destination.toPath());
+					Assertions.assertTrue(destination.exists());
+				}
 				modJars.add(new ModJar(destination));
 			}
 			expectedJarRegistry.put(entry.getKey(), ImmutableSet.copyOf(modJars));
