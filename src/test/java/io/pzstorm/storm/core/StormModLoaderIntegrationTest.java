@@ -20,6 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Run test methods in a certain order to ensure the tests pass on CI.
+ * This is only needed when running on Windows platform because resources like
+ * metadata and jar files cannot be removed once they have been loaded by JVM.
+ */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StormModLoaderIntegrationTest implements IntegrationTest {
 
 	/* do not use TempDir annotation to create temporary directory
@@ -54,9 +60,6 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 			// create temporary mod directory
 			Assertions.assertTrue(modDir.mkdir());
 
-			// write metadata files
-			writeToModMetadataFile(modDir, ImmutableList.of("name=" + modDirName, "modversion=1.1.0"));
-
 			for (String modJarName : entry.getValue())
 			{
 				URL jarResource = Objects.requireNonNull(CL.getResource("./jars/" + modJarName));
@@ -72,8 +75,44 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		}
 	}
 
+	/**
+	 * Run this method before others because it does not require metadata files present.
+	 */
 	@Test
+	@Order(1)
+	void shouldExcludeModJarsFromCatalogWhenMissingModMetadata() throws Throwable {
+
+		StormModLoader.catalogModJars();
+		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet()) {
+			Assertions.assertNull(StormModLoader.getJarCatalogEntry(entry.getKey()));
+		}
+	}
+
+	/**
+	 * Run this method before others because it does not require metadata files present.
+	 */
+	@Test
+	@Order(2)
+	void shouldNotLoadModMetadataWhenModInfoFileMissing() throws Throwable {
+
+		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
+				"A", new ModMetadata("A", new ModVersion("1.1.0")),
+				"B", new ModMetadata("B", new ModVersion("1.1.0")),
+				"C", new ModMetadata("C", new ModVersion("1.1.0"))
+		);
+		StormModLoader.loadModMetadata();
+
+		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet()) {
+			Assertions.assertNull(StormModLoader.getMetadataCatalogEntry(entry.getKey()));
+		}
+	}
+
+	@Test
+	@Order(3)
 	void shouldCatalogAllModJarsFoundInModsDir() throws Throwable {
+
+		// write metadata files
+		createAndWriteMetadataFiles();
 
 		Map<String, ImmutableSet<ModJar>> expectedJarRegistry = new HashMap<>();
 		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet())
@@ -93,6 +132,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	}
 
 	@Test
+	@Order(4)
 	void shouldLoadAllModClasses() throws IOException {
 
 		String[] expectedLoadedClasses = new String[] {
@@ -112,16 +152,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	}
 
 	@Test
-	void shouldExcludeModJarsFromCatalogWhenMissingModMetadata() throws Throwable {
-
-		removeMetadataFiles();
-		StormModLoader.catalogModJars();
-		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet()) {
-			Assertions.assertNull(StormModLoader.getJarCatalogEntry(entry.getKey()));
-		}
-	}
-
-	@Test
+	@Order(5)
 	void shouldCorrectlyLoadAllModMetadata() throws Throwable {
 
 		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
@@ -151,22 +182,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	}
 
 	@Test
-	void shouldNotLoadModMetadataWhenModInfoFileMissing() throws Throwable {
-
-		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
-				"A", new ModMetadata("A", new ModVersion("1.1.0")),
-				"B", new ModMetadata("B", new ModVersion("1.1.0")),
-				"C", new ModMetadata("C", new ModVersion("1.1.0"))
-		);
-		removeMetadataFiles();
-		StormModLoader.loadModMetadata();
-
-		for (Map.Entry<String, ModMetadata> entry : expectedModEntries.entrySet()) {
-			Assertions.assertNull(StormModLoader.getMetadataCatalogEntry(entry.getKey()));
-		}
-	}
-
-	@Test
+	@Order(6)
 	void shouldNotLoadModMetadataWhenMissingProperties() throws Throwable {
 
 		Map<String, ModMetadata> modEntries = ImmutableMap.of(
@@ -211,14 +227,14 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 		Assertions.assertEquals(new ModVersion("0.1.0"), modE.version);
 	}
 
-	private void removeMetadataFiles() {
+	private static void createAndWriteMetadataFiles() throws IOException {
 
-		for (String modDirName : new String[] { "A", "B", "C" })
+		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet())
 		{
-			File metadataFile = Paths.get(ZOMBOID_MODS_DIR.getPath(), modDirName, "mod.info").toFile();
-			if (metadataFile.exists()) {
-				Assertions.assertTrue(metadataFile.delete());
-			}
+			String modDirName = entry.getKey();
+			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
+
+			writeToModMetadataFile(modDir, ImmutableList.of("name=" + modDirName, "modversion=1.1.0"));
 		}
 	}
 
