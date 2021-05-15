@@ -18,7 +18,7 @@ import io.pzstorm.storm.logging.StormLogger;
  * It is initially invoked by {@link StormLauncher} when launching the game.
  */
 @SuppressWarnings("WeakerAccess")
-class StormClassLoader extends ClassLoader {
+public class StormClassLoader extends ClassLoader {
 
 	/**
 	 * <p>
@@ -58,7 +58,7 @@ class StormClassLoader extends ClassLoader {
 		modResourceLoader = new StormModLoader(resourceLocations);
 	}
 
-	StormClassLoader() {
+	public StormClassLoader() {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();

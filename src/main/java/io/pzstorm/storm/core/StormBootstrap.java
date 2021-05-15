@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * This class bootstraps everything needed to launch the game with static initialization.
  * It should be loaded from {@link StormLauncher} before Storm attempts to launch the game.
  */
-class StormBootstrap {
+public class StormBootstrap {
 
 	/**
 	 * {@code ClassLoader} used to transform and load all needed classes.
@@ -16,7 +16,7 @@ class StormBootstrap {
 	 * their own set of class instances and native libraries this loader should always be
 	 * used to load classes that access or modify transformed class fields or methods.
 	 */
-	static final StormClassLoader CLASS_LOADER = new StormClassLoader();
+	public static final StormClassLoader CLASS_LOADER = new StormClassLoader();
 
 	/**
 	 * Loaded and initialized {@link StormClassTransformer} {@code Class}. To transform specific
