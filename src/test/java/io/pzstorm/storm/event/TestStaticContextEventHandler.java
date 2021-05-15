@@ -1,9 +1,9 @@
 package io.pzstorm.storm.event;
 
 @SuppressWarnings("unused")
-public class TestStaticContextEventHandler {
+class TestStaticContextEventHandler {
 
-	static Boolean[] eventsCalled = new Boolean[] { false, false };
+	static final Boolean[] eventsCalled = new Boolean[] { false, false };
 
 	@SubscribeEvent
 	public static void handleTestZomboidEventA(TestZomboidEventA event) {

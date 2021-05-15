@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.net.URL;
 
 class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 
@@ -32,7 +31,6 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 			STORM_MOD_LOADER_CLASS = Class.forName(
 					"io.pzstorm.storm.core.StormModLoader", true, StormBootstrap.CLASS_LOADER
 			);
-			Constructor<?>[] constructors = STORM_MOD_LOADER_CLASS.getDeclaredConstructors();
 			STORM_MOD_REGISTRY_CLASS = Class.forName(
 					"io.pzstorm.storm.core.StormModRegistry", true, StormBootstrap.CLASS_LOADER
 			);

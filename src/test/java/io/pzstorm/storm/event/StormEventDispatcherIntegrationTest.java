@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import io.pzstorm.storm.IntegrationTest;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "EmptyMethod" })
 class StormEventDispatcherIntegrationTest implements IntegrationTest {
 
 	@Test

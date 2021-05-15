@@ -3,7 +3,7 @@ package io.pzstorm.storm.event;
 @SuppressWarnings("unused")
 public class TestInstanceContextEventHandler {
 
-	Boolean[] eventsCalled = new Boolean[] { false, false };
+	final Boolean[] eventsCalled = new Boolean[] { false, false };
 
 	@SubscribeEvent
 	public void handleTestZomboidEventA(TestZomboidEventA event) {

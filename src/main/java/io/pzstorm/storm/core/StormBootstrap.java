@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * This class bootstraps everything needed to launch the game with static initialization.
  * It should be loaded from {@link StormLauncher} before Storm attempts to launch the game.
  */
+@SuppressWarnings("WeakerAccess")
 public class StormBootstrap {
 
 	/**
