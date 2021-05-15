@@ -103,7 +103,7 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 			Assertions.assertFalse(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
 		}
 		StormModLoader.catalogModJars();
-		StormBootstrap.CLASS_LOADER.updateModResourcePaths();
+		StormBootstrap.CLASS_LOADER.updateModResourceLoader();
 		StormModLoader.loadModClasses();
 
 		for (String clazz : expectedLoadedClasses) {

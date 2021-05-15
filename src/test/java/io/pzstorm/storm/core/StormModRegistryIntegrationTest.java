@@ -78,7 +78,7 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 		Constructor<?> constructor = STORM_MOD_LOADER_CLASS.getDeclaredConstructor();
 		constructor.setAccessible(true);
 
-		StormBootstrap.CLASS_LOADER.updateModResourcePaths();
+		StormBootstrap.CLASS_LOADER.updateModResourceLoader();
 		LOAD_MOD_CLASSES.invoke(null);
 		REGISTER_MODS.invoke(null);
 
