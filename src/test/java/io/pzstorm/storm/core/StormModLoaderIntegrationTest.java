@@ -3,8 +3,6 @@ package io.pzstorm.storm.core;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.io.CharSink;
-import com.google.common.io.MoreFiles;
 import io.pzstorm.storm.IntegrationTest;
 import io.pzstorm.storm.mod.ModJar;
 import io.pzstorm.storm.mod.ModMetadata;
@@ -13,12 +11,10 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Run test methods in a certain order to ensure the tests pass on CI.
@@ -26,7 +22,7 @@ import java.util.*;
  * metadata and jar files cannot be removed once they have been loaded by JVM.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class StormModLoaderIntegrationTest implements IntegrationTest {
+class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 
 	/* do not use TempDir annotation to create temporary directory
 	 * because Windows cannot delete these temporary directories due
@@ -34,45 +30,10 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	 */
 	private static final File TEMP_DIR = IntegrationTest.getTemporaryBuildDir(StormModLoaderIntegrationTest.class);
 	private static final File ZOMBOID_MODS_DIR = new File(TEMP_DIR, "Zomboid/mods");
-	private static final Map<String, String[]> MOD_JAR_DATA = ImmutableMap.of(
-			"A", new String[] { "modA.jar" },
-			"B", new String[] { "modA.jar", "modB.jar" },
-			"C", new String[] { "modA.jar", "modB.jar", "modC.jar" }
-	);
+
 	@BeforeAll
-	static void prepareStormModLoaderTest() throws IOException, URISyntaxException {
-
-		if (TEMP_DIR.exists())
-		{
-			// clean temporary directory from last test run
-			MoreFiles.deleteDirectoryContents(TEMP_DIR.toPath());
-			Assertions.assertEquals(0, Objects.requireNonNull(TEMP_DIR.listFiles()).length);
-		}
-		Assertions.assertTrue(ZOMBOID_MODS_DIR.mkdirs());
-		System.setProperty("user.home", TEMP_DIR.getPath());
-
-		ClassLoader CL = StormModLoaderIntegrationTest.class.getClassLoader();
-		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet())
-		{
-			String modDirName = entry.getKey();
-			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
-
-			// create temporary mod directory
-			Assertions.assertTrue(modDir.mkdir());
-
-			for (String modJarName : entry.getValue())
-			{
-				URL jarResource = Objects.requireNonNull(CL.getResource("./jars/" + modJarName));
-				File destination = new File(modDir, modJarName);
-
-				// copy resource mod jars to temporary directory
-				if (!destination.exists())
-				{
-					Files.copy(Paths.get(jarResource.toURI()), destination.toPath());
-					Assertions.assertTrue(destination.exists());
-				}
-			}
-		}
+	static void prepareStormModLoaderTest() throws IOException {
+		prepareTestClass(TEMP_DIR);
 	}
 
 	/**
@@ -112,7 +73,7 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	void shouldCatalogAllModJarsFoundInModsDir() throws Throwable {
 
 		// write metadata files
-		createAndWriteMetadataFiles();
+		createAndWriteMetadataFiles(TEMP_DIR);
 
 		Map<String, ImmutableSet<ModJar>> expectedJarRegistry = new HashMap<>();
 		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet())
@@ -136,14 +97,13 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 	void shouldLoadAllModClasses() throws IOException {
 
 		String[] expectedLoadedClasses = new String[] {
-				"com.sample.mod.ModA", "com.sample.mod.ModUtils",
-				"com.sample.mod.ModB", "com.sample.mod.ModC"
+				"com.sample.mod.ModA", "com.sample.mod.ModB", "com.sample.mod.ModC"
 		};
 		for (String clazz : expectedLoadedClasses) {
 			Assertions.assertFalse(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
 		}
 		StormModLoader.catalogModJars();
-		StormBootstrap.CLASS_LOADER.updateModResourceLoader();
+		StormBootstrap.CLASS_LOADER.updateModResourcePaths();
 		StormModLoader.loadModClasses();
 
 		for (String clazz : expectedLoadedClasses) {
@@ -225,31 +185,5 @@ class StormModLoaderIntegrationTest implements IntegrationTest {
 
 		// assert using default version
 		Assertions.assertEquals(new ModVersion("0.1.0"), modE.version);
-	}
-
-	private static void createAndWriteMetadataFiles() throws IOException {
-
-		for (Map.Entry<String, String[]> entry : MOD_JAR_DATA.entrySet())
-		{
-			String modDirName = entry.getKey();
-			File modDir = new File(ZOMBOID_MODS_DIR, modDirName);
-
-			writeToModMetadataFile(modDir, ImmutableList.of("name=" + modDirName, "modversion=1.1.0"));
-		}
-	}
-
-	private static void writeToModMetadataFile(File modDir, List<String> lines) throws IOException {
-
-		File metadataFile = new File(modDir, "mod.info");
-		if (!metadataFile.exists()) {
-			Assertions.assertTrue(metadataFile.createNewFile());
-		}
-		CharSink sink = com.google.common.io.Files.asCharSink(metadataFile, StandardCharsets.UTF_8);
-		try {
-			sink.writeLines(lines, "\n");
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
