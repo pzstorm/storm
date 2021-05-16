@@ -37,3 +37,6 @@ sourceSets {
         compileClasspath += zombieProject.sourceSets.main.output
     }
 }
+
+jar.archiveBaseName.set('storm-core')
+

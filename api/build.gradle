@@ -10,3 +10,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
     implementation 'org.ow2.asm:asm-tree:9.1'
 }
+
+jar.archiveBaseName.set('storm-api')
+
