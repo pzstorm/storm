@@ -45,6 +45,9 @@ subprojects.sort {
         if (isCI) {
             it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
         }
+        // assemble project jars in root build directory
+        it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
+
         it.publishing {
             // enable publishing to mavenLocal repository
             repositories { mavenLocal() }
