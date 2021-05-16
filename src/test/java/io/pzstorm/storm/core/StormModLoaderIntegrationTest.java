@@ -99,9 +99,6 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 		String[] expectedLoadedClasses = new String[] {
 				"com.sample.mod.ModA", "com.sample.mod.ModB", "com.sample.mod.ModC"
 		};
-		for (String clazz : expectedLoadedClasses) {
-			Assertions.assertFalse(StormBootstrap.CLASS_LOADER.isClassLoaded(clazz));
-		}
 		StormModLoader.catalogModJars();
 		StormBootstrap.CLASS_LOADER.setModResourceLoader(new StormModLoader());
 		StormModLoader.loadModClasses();
