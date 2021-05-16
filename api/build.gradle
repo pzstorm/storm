@@ -13,3 +13,11 @@ dependencies {
 
 jar.archiveBaseName.set('storm-api')
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId 'storm-api'
+        }
+    }
+}

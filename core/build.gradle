@@ -40,3 +40,11 @@ sourceSets {
 
 jar.archiveBaseName.set('storm-core')
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId 'storm-core'
+        }
+    }
+}
