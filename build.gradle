@@ -39,7 +39,7 @@ subprojects.sort {
     if (isCI && !it.name.equals('zombie')) {
         it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
     }
-
+    // declare dependencies common to all subprojects
     it.dependencies {
         // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
         errorprone 'com.google.errorprone:error_prone_core:2.6.0'

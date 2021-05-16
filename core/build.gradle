@@ -1,6 +1,7 @@
 def apiProject = project(':api')
 def zombieProject = project(':zombie')
 
+def rootConfigurations = rootProject.configurations;
 dependencies {
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
@@ -19,6 +20,9 @@ dependencies {
 
     implementation apiProject
     testImplementation apiProject, zombieProject
+
+    implementation files(rootConfigurations.zomboidImplementation.files)
+    runtimeOnly files(rootConfigurations.zomboidRuntimeOnly.files)
 }
 
 test {
