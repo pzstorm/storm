@@ -1,131 +1,109 @@
 //file:noinspection SpellCheckingInspection
-import io.pzstorm.capsid.setup.xml.LaunchRunConfig
+
 import io.pzstorm.capsid.setup.VmParameter
+import io.pzstorm.capsid.setup.xml.LaunchRunConfig
 
 plugins {
-	id 'io.pzstorm.capsid' version '0.4.0'
+    id 'io.pzstorm.capsid' version '0.4.0'
 
-	// Plugin that keeps your code spotless with Gradle
-	// https://plugins.gradle.org/plugin/com.diffplug.spotless
-	id "com.diffplug.spotless" version "5.12.1"
+    // Plugin that keeps your code spotless with Gradle
+    // https://plugins.gradle.org/plugin/com.diffplug.spotless
+    id "com.diffplug.spotless" version "5.12.1"
 
-	// https://plugins.gradle.org/plugin/net.ltgt.errorprone
-	id 'net.ltgt.errorprone' version '2.0.1'
+    // https://plugins.gradle.org/plugin/net.ltgt.errorprone
+    id 'net.ltgt.errorprone' version '2.0.1'
+
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    id 'maven-publish'
 }
-apply plugin: 'com.diffplug.spotless'
-apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+// is gradle executing on CI server?
+def isCI = System.getenv("CI") ?: 'false'
 
-version '0.1.0'
+allprojects {
+    repositories { mavenCentral() }
+    project.ext.set('CI', isCI)
+}
 
-// is gradle executing on CI server
-def isCI = System.getenv("CI")?: 'false'
+// make sure to configure zombie subproject first because other
+// subprojects depend on including it's sourceset output
+def zombieProject = project(':zombie')
+subprojects.sort {
+    return it.name.equals('zombie') ? 0 : 1
+}.each {
+    it.group 'io.github.pzstorm'
+    it.version '0.1.0'
+
+    it.apply plugin: 'java'
+    it.apply plugin: 'maven-publish'
+    it.apply plugin: 'net.ltgt.errorprone'
+    it.apply plugin: 'com.diffplug.spotless'
+    it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+
+    if (!it.name.equals('zombie'))
+    {
+        // add dummy zomboid classes to classpath when compiling on CI
+        if (isCI) {
+            it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+        }
+        // assemble project jars in root build directory
+        it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
+
+        it.publishing {
+            // enable publishing to mavenLocal repository
+            repositories { mavenLocal() }
+        }
+    }
+    // declare dependencies common to all subprojects
+    it.dependencies {
+        // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
+        errorprone 'com.google.errorprone:error_prone_core:2.6.0'
+
+        // https://mvnrepository.com/artifact/com.google.errorprone/javac
+        errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
+
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+        compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+
+        // https://mvnrepository.com/artifact/org.jetbrains/annotations
+        compileOnly 'org.jetbrains:annotations:20.1.0'
+    }
+}
 
 capsid {
-	isModProject = false
-	setProjectRepository('pzstorm', 'storm')
+    isModProject = false
+    setProjectRepository('pzstorm', 'storm')
 }
 
 sourceSets {
-	// module containing zomboid dummy classes and classes used in testing
-	// this module is only required by tests and CI compiler
-	zombie {
-		// module should not depend on main module to avoid circular dependency
-		//compileClasspath += sourceSets.main.output
-	}
-	api {
-		// add dummy zomboid classes to classpath when compiling on CI
-		if (isCI) {
-			compileClasspath += sourceSets.zombie.output
-		}
-	}
-	main {
-		// include api classes on compile and runtime classpath
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-
-		// add dummy zomboid classes to classpath when compiling on CI
-		if (isCI) {
-			compileClasspath += sourceSets.zombie.output
-		}
-	}
-	test {
-		// tests need to see classes used in class transformation tests
-		runtimeClasspath += sourceSets.zombie.output + sourceSets.api.output
-		compileClasspath += sourceSets.zombie.output + sourceSets.api.output
-	}
-	// remove media sourceSet created by capsid
-	if (!isCI) {
-		remove(sourceSets.media)
-	}
-}
-configurations {
-	implementation.extendsFrom(api)
-	testImplementation.extendsFrom(api)
-	zombieImplementation.extendsFrom(compileOnly, zomboidImplementation)
-	apiImplementation.extendsFrom(api, errorprone, zombieImplementation)
-}
-
-dependencies {
-	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
-
-	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
-
-	// https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
-	testImplementation 'io.github.java-diff-utils:java-diff-utils:4.10'
-
-	// https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
-	errorprone 'com.google.errorprone:error_prone_core:2.6.0'
-
-	// https://mvnrepository.com/artifact/com.google.errorprone/javac
-	errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
-
-	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-	api 'org.apache.logging.log4j:log4j-core:2.14.0'
-
-	// https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
-	api 'org.ow2.asm:asm-tree:9.1'
-
-	// https://mvnrepository.com/artifact/com.google.guava/guava
-	api 'com.google.guava:guava:30.1.1-jre'
-
-	// https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
-	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-
-	// https://mvnrepository.com/artifact/org.jetbrains/annotations
-	compileOnly 'org.jetbrains:annotations:20.1.0'
-
-	// https://mvnrepository.com/artifact/org.ow2.asm/asm
-	implementation 'org.ow2.asm:asm:9.1'
-
-	// https://mvnrepository.com/artifact/org.ow2.asm/asm-util
-	implementation 'org.ow2.asm:asm-util:9.1'
-}
-
-test {
-	useJUnitPlatform()
-	testLogging.events "passed", "skipped", "failed"
+    // remove media sourceSet created by capsid
+    def mediaSourceSet = sourceSets.findByName('media')
+    if (mediaSourceSet != null) {
+        remove(mediaSourceSet)
+    }
 }
 
 tasks.createRunConfigurations.configure {
-	actions.clear()
-	doLast {
-		def vmParameterBuilder = new VmParameter.Builder()
-		def os = org.gradle.internal.os.OperatingSystem.current()
-		if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
-			vmParameterBuilder = vmParameterBuilder
-					.withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
-					.withLwjglLibraryPaths(gameDir)
-		}
-		//@formatter:off
-		LaunchRunConfig launchStorm = new LaunchRunConfig(
-				"Launch Storm", "io.pzstorm.storm.core.StormLauncher",
-				vmParameterBuilder, [
-						Main: new File(file(gameDir), "logs/storm/main.log").toPath() ,
-						Debug: new File(file(gameDir), "logs/storm/debug.log").toPath()] as Map
-		)//@formatter:on
-		launchStorm.vmParamBuilder.build()
-		launchStorm.configure(getProject()).writeToFile()
-	}
+    actions.clear()
+    doLast {
+        def vmParameterBuilder = new VmParameter.Builder()
+        def os = org.gradle.internal.os.OperatingSystem.current()
+        if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
+            vmParameterBuilder = vmParameterBuilder
+                    .withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
+                    .withLwjglLibraryPaths(gameDir)
+        }
+        //@formatter:off
+        LaunchRunConfig launchStorm = new LaunchRunConfig(
+                "Launch Storm", "io.pzstorm.storm.core.StormLauncher",
+                vmParameterBuilder, [
+                Main: new File(file(gameDir), "logs/storm/main.log").toPath() ,
+                Debug: new File(file(gameDir), "logs/storm/debug.log").toPath()] as Map
+        )//@formatter:on
+        launchStorm.vmParamBuilder.build()
+        launchStorm.configure(getProject()).writeToFile()
+    }
 }
+
+// root project does not produce any artifacts on it's own,
+// it is just an aggregate task for subproject jar tasks
+jar.actions.clear()

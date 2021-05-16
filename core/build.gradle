@@ -1,0 +1,48 @@
+def apiProject = project(':api')
+def zombieProject = project(':zombie')
+
+def rootConfigurations = rootProject.configurations
+dependencies {
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+
+    // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
+    testImplementation 'io.github.java-diff-utils:java-diff-utils:4.10'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    implementation 'org.ow2.asm:asm:9.1'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-util
+    implementation 'org.ow2.asm:asm-util:9.1'
+
+    implementation apiProject
+    testImplementation apiProject, zombieProject
+
+    if (!CI) {
+        implementation files(rootConfigurations.zomboidImplementation.files).filter {
+            return !(it.name.equals('media'))
+        }
+        runtimeOnly files(rootConfigurations.zomboidRuntimeOnly.files).filter {
+            return !(it.name.contains('test') || it.name.contains('junit'))
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging.events "passed", "skipped", "failed"
+}
+
+jar.archiveBaseName.set('storm-core')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId 'storm-core'
+        }
+    }
+}
