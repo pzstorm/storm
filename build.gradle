@@ -86,3 +86,7 @@ tasks.createRunConfigurations.configure {
         launchStorm.configure(getProject()).writeToFile()
     }
 }
+
+// root project does not produce any artifacts on it's own,
+// it is just an aggregate task for subproject jar tasks
+jar.actions.clear()
