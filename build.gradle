@@ -39,9 +39,16 @@ subprojects.sort {
     it.apply plugin: 'com.diffplug.spotless'
     it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
 
-    // add dummy zomboid classes to classpath when compiling on CI
-    if (isCI && !it.name.equals('zombie')) {
-        it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+    if (!it.name.equals('zombie'))
+    {
+        // add dummy zomboid classes to classpath when compiling on CI
+        if (isCI) {
+            it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+        }
+        it.publishing {
+            // enable publishing to mavenLocal repository
+            repositories { mavenLocal() }
+        }
     }
     // declare dependencies common to all subprojects
     it.dependencies {
