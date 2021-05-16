@@ -21,8 +21,12 @@ dependencies {
     implementation apiProject
     testImplementation apiProject, zombieProject
 
-    implementation files(rootConfigurations.zomboidImplementation.files)
-    runtimeOnly files(rootConfigurations.zomboidRuntimeOnly.files)
+    implementation files(rootConfigurations.zomboidImplementation.files).filter {
+        return !(it.name.equals('media'))
+    }
+    runtimeOnly files(rootConfigurations.zomboidRuntimeOnly.files).filter {
+        return !(it.name.contains('test') || it.name.contains('junit'))
+    }
 }
 
 test {
