@@ -21,16 +21,26 @@ allprojects {
     project.ext.set('CI', isCI)
 }
 
-subprojects {
-    group 'io.github.pzstorm'
-    version '0.1.0'
+// make sure to configure zombie subproject first because other
+// subprojects depend on including it's sourceset output
+def zombieProject = project(':zombie')
+subprojects.sort {
+    return it.name.equals('zombie') ? 0 : 1
+}.each {
+    it.group 'io.github.pzstorm'
+    it.version '0.1.0'
 
-    apply plugin: 'java'
-    apply plugin: 'net.ltgt.errorprone'
-    apply plugin: 'com.diffplug.spotless'
-    apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+    it.apply plugin: 'java'
+    it.apply plugin: 'net.ltgt.errorprone'
+    it.apply plugin: 'com.diffplug.spotless'
+    it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
 
-    dependencies {
+    // add dummy zomboid classes to classpath when compiling on CI
+    if (isCI && !it.name.equals('zombie')) {
+        it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+    }
+
+    it.dependencies {
         // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
         errorprone 'com.google.errorprone:error_prone_core:2.6.0'
 

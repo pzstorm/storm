@@ -1,15 +1,5 @@
 apply plugin: 'java-library'
 
-def zombieProject = project(':zombie')
-sourceSets {
-    main {
-        // add dummy zomboid classes to classpath when compiling on CI
-        if (CI) {
-            compileClasspath += zombieProject.sourceSets.main.output
-        }
-    }
-}
-
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     api 'org.apache.logging.log4j:log4j-core:2.14.0'
