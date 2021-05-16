@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Objects;
 
 import org.jetbrains.annotations.Contract;
@@ -39,7 +40,7 @@ public class StormClassLoader extends ClassLoader {
 	/**
 	 * {@code URLClassLoader} responsible for loading mod classes and assets.
 	 */
-	private StormModLoader modResourceLoader;
+	private URLClassLoader modResourceLoader;
 
 	/**
 	 * {@code ClassLoader} that is the parent of this {@code ClassLoader}.
@@ -56,14 +57,14 @@ public class StormClassLoader extends ClassLoader {
 	StormClassLoader(URL[] resourceLocations) {
 
 		parentClassLoader = getClass().getClassLoader();
-		modResourceLoader = new StormModLoader(resourceLocations);
+		modResourceLoader = new URLClassLoader(resourceLocations);
 	}
 
 	public StormClassLoader() {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
-		modResourceLoader =  new StormModLoader();
+		modResourceLoader = (URLClassLoader) getParent();
 	}
 
 	/**
@@ -71,8 +72,8 @@ public class StormClassLoader extends ClassLoader {
 	 * after new mods have been loaded by {@link StormModLoader} since new
 	 * {@code URL}s have to be added to loader classpath.
 	 */
-	void updateModResourceLoader() {
-		modResourceLoader = new StormModLoader();
+	void setModResourceLoader(URLClassLoader classLoader) {
+		modResourceLoader = classLoader;
 	}
 
 	/**

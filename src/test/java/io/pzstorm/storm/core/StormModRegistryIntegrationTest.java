@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URLClassLoader;
 
 class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 
@@ -16,6 +17,8 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 
 	private static final Class<?> STORM_MOD_LOADER_CLASS;
 	private static final Class<?> STORM_MOD_REGISTRY_CLASS;
+
+	private static final Constructor<?> STORM_MOD_LOADER_CONSTRUCTOR;
 
 	private static final Method GET_JAR_RESOURCE_PATHS;
 	private static final Method CATALOG_MOD_JARS;
@@ -34,6 +37,9 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 			STORM_MOD_REGISTRY_CLASS = Class.forName(
 					"io.pzstorm.storm.core.StormModRegistry", true, StormBootstrap.CLASS_LOADER
 			);
+			STORM_MOD_LOADER_CONSTRUCTOR = STORM_MOD_LOADER_CLASS.getDeclaredConstructor();
+			STORM_MOD_LOADER_CONSTRUCTOR.setAccessible(true);
+
 			GET_JAR_RESOURCE_PATHS = STORM_MOD_LOADER_CLASS.getDeclaredMethod("getJarResourcePaths");
 			GET_JAR_RESOURCE_PATHS.setAccessible(true);
 
@@ -76,7 +82,9 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 		Constructor<?> constructor = STORM_MOD_LOADER_CLASS.getDeclaredConstructor();
 		constructor.setAccessible(true);
 
-		StormBootstrap.CLASS_LOADER.updateModResourceLoader();
+		StormBootstrap.CLASS_LOADER.setModResourceLoader(
+				(URLClassLoader) STORM_MOD_LOADER_CONSTRUCTOR.newInstance()
+		);
 		LOAD_MOD_CLASSES.invoke(null);
 		REGISTER_MODS.invoke(null);
 
