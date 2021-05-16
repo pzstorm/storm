@@ -1,0 +1,22 @@
+apply plugin: 'java-library'
+
+def zombieProject = project(':zombie')
+sourceSets {
+    main {
+        // add dummy zomboid classes to classpath when compiling on CI
+        if (CI) {
+            compileClasspath += zombieProject.sourceSets.main.output
+        }
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    api 'org.apache.logging.log4j:log4j-core:2.14.0'
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    api 'com.google.guava:guava:30.1.1-jre'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
+    implementation 'org.ow2.asm:asm-tree:9.1'
+}

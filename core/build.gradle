@@ -1,0 +1,51 @@
+def apiProject = project(':api')
+def zombieProject = project(':zombie')
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+
+    // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
+    testImplementation 'io.github.java-diff-utils:java-diff-utils:4.10'
+
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.0'
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    implementation 'org.ow2.asm:asm:9.1'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
+    implementation 'org.ow2.asm:asm-tree:9.1'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-util
+    implementation 'org.ow2.asm:asm-util:9.1'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging.events "passed", "skipped", "failed"
+}
+
+sourceSets {
+    main {
+        // include api classes on compile and runtime classpath
+        compileClasspath += apiProject.sourceSets.main.output
+        runtimeClasspath += apiProject.sourceSets.main.output
+
+        // add dummy zomboid classes to classpath when compiling on CI
+        if (CI) {
+            compileClasspath += zombieProject.sourceSets.main.output
+        }
+    }
+    test {
+        // tests need to see classes used in class transformation tests
+        runtimeClasspath += zombieProject.sourceSets.main.output + apiProject.sourceSets.main.output
+        compileClasspath += zombieProject.sourceSets.main.output + apiProject.sourceSets.main.output
+    }
+}
