@@ -1,7 +1,7 @@
 def apiProject = project(':api')
 def zombieProject = project(':zombie')
 
-def rootConfigurations = rootProject.configurations;
+def rootConfigurations = rootProject.configurations
 dependencies {
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
@@ -28,14 +28,6 @@ dependencies {
 test {
     useJUnitPlatform()
     testLogging.events "passed", "skipped", "failed"
-}
-
-sourceSets {
-    test {
-        // tests need to see classes used in class transformation tests
-        runtimeClasspath += zombieProject.sourceSets.main.output
-        compileClasspath += zombieProject.sourceSets.main.output
-    }
 }
 
 jar.archiveBaseName.set('storm-core')
