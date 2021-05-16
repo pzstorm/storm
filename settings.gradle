@@ -5,3 +5,15 @@ pluginManagement {
 	}
 }
 rootProject.name = 'storm'
+
+// module containing api classes that should be consumed
+// during compile and runtime in mod projects
+include 'api'
+
+// module containing internal implementation that should not be consumed
+// during compile time in mod projects (consume only during runtime)
+include 'core'
+
+// module containing zomboid dummy classes and classes used in testing
+// this module is only required when testing or building on CI server
+include 'zombie'
