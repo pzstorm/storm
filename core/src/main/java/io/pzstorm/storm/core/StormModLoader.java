@@ -83,12 +83,15 @@ public class StormModLoader extends URLClassLoader {
 	 */
 	public static void catalogModJars() throws IOException {
 
+		StormLogger.info(String.format("%s mod jar catalog", JAR_CATALOG.isEmpty() ? "Building" : "Rebuilding"));
 		File zomboidLocalDir = getUserHomePath().resolve("Zomboid").toFile();
 
 		if (!zomboidLocalDir.exists() && !zomboidLocalDir.mkdir()) {
 			throw new IOException("Unable to create 'Zomboid' directory in '" + getUserHomePath() + '\'');
 		}
 		File zomboidModsDir = new File(zomboidLocalDir, "mods");
+		StormLogger.debug("Cataloging mod jars in '" + zomboidModsDir.getPath() + '\'');
+
 		if (!zomboidModsDir.exists() && !zomboidModsDir.mkdir()) {
 			throw new IOException("Unable to create 'mods' directory in '" + zomboidModsDir.toPath() + '\'');
 		}
@@ -98,6 +101,7 @@ public class StormModLoader extends URLClassLoader {
 		for (Path modDir : listModDirectories(zomboidModsDir))
 		{
 			Set<ModJar> modJars = new HashSet<>();
+			String modFileName = modDir.getFileName().toString();
 			try (Stream<Path> stream = Files.walk(modDir, 1))
 			{
 				Set<Path> files = stream.filter(Files::isRegularFile).collect(Collectors.toSet());
@@ -109,7 +113,11 @@ public class StormModLoader extends URLClassLoader {
 						modJars.add(new ModJar(modJar.toFile()));
 					}
 					JAR_CATALOG.put(modDir.toFile().getName(), ImmutableSet.copyOf(modJars));
+
+					StormLogger.debug("Created new jar catalog entry:");
+					StormLogger.debug(String.format("Found %d jars in mod directory '%s'", modJars.size(), modFileName));
 				}
+				else StormLogger.warn("Skipped jar catalog entry for mod directory '" + modFileName + '\'');
 			}
 		}
 	}
@@ -163,6 +171,8 @@ public class StormModLoader extends URLClassLoader {
 	 */
 	public static void loadModMetadata() throws IOException {
 
+		StormLogger.info(String.format("%s mod metadata catalog", JAR_CATALOG.isEmpty() ? "Building" : "Rebuilding"));
+
 		// clear map before entering new data
 		METADATA_CATALOG.clear();
 
@@ -178,6 +188,7 @@ public class StormModLoader extends URLClassLoader {
 			}
 			Properties modInfo = new Properties();
 			modInfo.load(new FileInputStream(modInfoFile));
+			StormLogger.debug("Found metadata file for entry '" + modEntry + '\'');
 
 			String modName = modInfo.getProperty("name");
 			if (Strings.isNullOrEmpty(modName))
@@ -199,7 +210,10 @@ public class StormModLoader extends URLClassLoader {
 				StormLogger.warn(message, modName);
 				modVersion = "0.1.0";
 			}
-			METADATA_CATALOG.put(modName, new ModMetadata(modName, new ModVersion(modVersion)));
+			ModMetadata metadata = new ModMetadata(modName, new ModVersion(modVersion));
+			METADATA_CATALOG.put(modName, metadata);
+
+			StormLogger.debug("Created new metadata catalog entry: " + metadata);
 		}
 	}
 
@@ -210,6 +224,8 @@ public class StormModLoader extends URLClassLoader {
 	 * {@link #catalogModJars()} method, otherwise this method will only clear the class catalog.
 	 */
 	public static void loadModClasses() {
+
+		StormLogger.info(String.format("%s mod class catalog", JAR_CATALOG.isEmpty() ? "Building" : "Rebuilding"));
 
 		// clear map before entering new data
 		CLASS_CATALOG.clear();
@@ -238,6 +254,9 @@ public class StormModLoader extends URLClassLoader {
 				}
 			}
 			CLASS_CATALOG.put(entry.getKey(), ImmutableSet.copyOf(modClasses));
+
+			StormLogger.debug("Created new metadata catalog entry:");
+			StormLogger.debug(String.format("Found %d classes in mod directory '%s'", modClasses.size(), entry.getKey()));
 		}
 	}
 
