@@ -1,5 +1,6 @@
 apply plugin: 'java-library'
 
+def rootConfigurations = rootProject.configurations
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     api 'org.apache.logging.log4j:log4j-core:2.14.0'
@@ -9,6 +10,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
     implementation 'org.ow2.asm:asm-tree:9.1'
+
+    if (!CI) {
+        compileOnly files(rootConfigurations.zomboidImplementation.files).filter {
+            return !(it.name.equals('media'))
+        }
+    }
 }
 
 jar.archiveBaseName.set('storm-api')
