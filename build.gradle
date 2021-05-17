@@ -40,6 +40,11 @@ subprojects.sort {
     it.apply plugin: 'com.diffplug.spotless'
     it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
 
+    it.java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
     if (!it.name.equals('zombie'))
     {
         // add dummy zomboid classes to classpath when compiling on CI
