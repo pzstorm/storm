@@ -27,16 +27,15 @@ class StormLauncher {
 	 */
 	public static void main(String[] args) throws ReflectiveOperationException {
 
-		StormLogger.debug("Preparing to launch Project Zomboid");
-
-		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
-		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
-
-		// load ZomboidLogger with StormClassLoader
-		Class.forName("io.pzstorm.storm.logging.ZomboidLogger", true, classLoader);
-
 		// initialize logging system
 		StormLogger.initialize();
+
+		StormLogger.debug("Preparing to launch Project Zomboid...");
+		StormClassLoader classLoader = StormBootstrap.CLASS_LOADER;
+
+		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
+		Class.forName("io.pzstorm.storm.logging.ZomboidLogger", true, classLoader);
+
 
 		// initialize dispatcher system
 		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
