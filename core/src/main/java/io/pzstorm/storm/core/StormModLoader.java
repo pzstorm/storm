@@ -34,7 +34,7 @@ import io.pzstorm.storm.mod.ModVersion;
  * <li>Load mod classes with {@link StormClassLoader}.</li>
  * </ul>
  */
-class StormModLoader extends URLClassLoader {
+public class StormModLoader extends URLClassLoader {
 
 	/**
 	 * This catalog stores {@link ModJar} instances mapped to directory names.
@@ -55,7 +55,7 @@ class StormModLoader extends URLClassLoader {
 		super(ObjectArrays.concat(urls, getJarResourcePaths(), URL.class));
 	}
 
-	StormModLoader() {
+	public StormModLoader() {
 		super(getJarResourcePaths());
 	}
 
@@ -81,7 +81,7 @@ class StormModLoader extends URLClassLoader {
 	 * @throws IOException if unable to create {@code Zomboid/mods} directory structure,
 	 * 		an I/O error occurred while walking file tree or constructing {@link ModJar} instance.
 	 */
-	static void catalogModJars() throws IOException {
+	public static void catalogModJars() throws IOException {
 
 		File zomboidLocalDir = getUserHomePath().resolve("Zomboid").toFile();
 
@@ -161,7 +161,7 @@ class StormModLoader extends URLClassLoader {
 	 *
 	 * @throws IOException if an error occurred when reading from input stream.
 	 */
-	static void loadModMetadata() throws IOException {
+	public static void loadModMetadata() throws IOException {
 
 		// clear map before entering new data
 		METADATA_CATALOG.clear();
@@ -209,7 +209,7 @@ class StormModLoader extends URLClassLoader {
 	 * Before loading classes it is important to populate the jar catalog with
 	 * {@link #catalogModJars()} method, otherwise this method will only clear the class catalog.
 	 */
-	static void loadModClasses() {
+	public static void loadModClasses() {
 
 		// clear map before entering new data
 		CLASS_CATALOG.clear();

@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * This class is responsible for creating and registering {@link ZomboidMod} instances.
  */
-class StormModRegistry {
+public class StormModRegistry {
 
 	private static final Map<String, ZomboidMod> MOD_REGISTRY = new HashMap<>();
 
@@ -28,7 +28,7 @@ class StormModRegistry {
 	 * @throws ReflectiveOperationException if an exception was thrown while
 	 * 		instantiating {@code ZomboidMod} implementation class.
 	 */
-	static void registerMods() throws ReflectiveOperationException {
+	public static void registerMods() throws ReflectiveOperationException {
 
 		for (Map.Entry<String, ImmutableSet<Class<?>>> entry : StormModLoader.CLASS_CATALOG.entrySet())
 		{
