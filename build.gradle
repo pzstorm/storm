@@ -17,7 +17,8 @@ plugins {
     id 'maven-publish'
 }
 // is gradle executing on CI server?
-def isCI = System.getenv("CI") ?: 'false'
+String sIsCI = System.getenv("CI")
+boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
 
 allprojects {
     repositories { mavenCentral() }
