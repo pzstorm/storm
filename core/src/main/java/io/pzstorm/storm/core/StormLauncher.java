@@ -1,8 +1,8 @@
 package io.pzstorm.storm.core;
 
-import java.lang.reflect.Method;
-
 import io.pzstorm.storm.logging.StormLogger;
+
+import java.lang.reflect.Method;
 
 class StormLauncher {
 
@@ -36,6 +36,8 @@ class StormLauncher {
 		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
 		Class.forName("io.pzstorm.storm.logging.ZomboidLogger", true, classLoader);
 
+		// load and register all local mods found in user.home
+		StormBootstrap.loadAndRegisterMods();
 
 		// initialize dispatcher system
 		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
