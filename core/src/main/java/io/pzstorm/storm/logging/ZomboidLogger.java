@@ -188,7 +188,7 @@ public class ZomboidLogger {
 	 * @param message the message to log.
 	 */
 	public static void printf(String level, String message) {
-		LOGGER.printf(LogSeverity.getForName(level, LogSeverity.GENERAL), message);
+		LOGGER.log(LogSeverity.getForName(level, LogSeverity.GENERAL), message);
 	}
 
 	/**
