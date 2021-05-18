@@ -6,10 +6,9 @@ import io.pzstorm.storm.mod.ModMetadata;
 import io.pzstorm.storm.mod.ZomboidMod;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
+import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class is responsible for creating and registering {@link ZomboidMod} instances.
@@ -45,6 +44,15 @@ public class StormModRegistry {
 			}
 			else MOD_REGISTRY.put(entry.getKey(), (ZomboidMod) modClass.get().newInstance());
 		}
+	}
+
+	/**
+	 * Retrieve a {@code Set} of registered mods. Note that the returned
+	 * {@code Set} is <b>unmodifiable</b> and modifying it in any way
+	 * will result in an {@code UnsupportedOperationException}.
+	 */
+	public static @UnmodifiableView Set<ZomboidMod> getRegisteredMods() {
+		return Collections.unmodifiableSet(new HashSet<>(MOD_REGISTRY.values()));
 	}
 
 	@TestOnly
