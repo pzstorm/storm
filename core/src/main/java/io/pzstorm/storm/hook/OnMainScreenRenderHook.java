@@ -30,7 +30,6 @@ public class OnMainScreenRenderHook implements StormHook {
 		// Core.getInstance().EndFrameUI();
 		// ...
 		LabelNode target = AsmUtils.getFirstMatchingLabelNode(instructions, ImmutableList.of(
-				// INVOKESTATIC zombie/core/Core.getInstance ()Lzombie/core/Core;
 				new MethodInsnNode(Opcodes.INVOKESTATIC,
 						"zombie/core/Core", "getInstance", "()Lzombie/core/Core;"
 				),
