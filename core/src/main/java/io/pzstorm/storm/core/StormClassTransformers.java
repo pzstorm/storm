@@ -3,6 +3,7 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import io.pzstorm.storm.hook.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +38,26 @@ public class StormClassTransformers {
 
 		registerTransformer("zombie.gameStates.MainScreenState", new OnMainScreenRenderHook());
 		registerTransformer("zombie.ui.UIElement", new OnUIElementPreRenderHook());
+		registerTransformer("zombie.Lua.LuaEventManager",
+				new OnTriggerLuaEventHook(), ImmutableMap.<MethodData, Integer>builder()
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;)V"), 7)
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+								"Ljava/lang/Object;)V"), 7)
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+								"Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+								"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+						.put(new MethodData("triggerEvent",
+						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+								"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+						.build()
+		);
 
 		///////////////////////
 		// REGISTER PATCHES //
