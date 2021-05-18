@@ -33,4 +33,11 @@ public class StormEventHandler {
 			}
 		}
 	}
+
+	@SubscribeEvent
+	public static void handleLuaEventTrigger(OnTriggerLuaEvent event) {
+
+		// TODO: handle lua event triggers here
+		// StormLogger.info("Triggered lua event '" + event.luaEvent.name + '\'');
+	}
 }
