@@ -29,6 +29,8 @@ dependencies {
             return !(it.name.contains('test') || it.name.contains('junit'))
         }
     }
+    // depend on dummy zombie classes when building on CI
+    else implementation zombieProject
 }
 
 test {
