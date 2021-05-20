@@ -1,8 +1,8 @@
 package io.pzstorm.storm.event.lua;
 
-/**
- * This event is currently not used.
- */
+import io.pzstorm.storm.event.InertEvent;
+
+@InertEvent
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnAddBuildingEvent implements LuaEvent {
 

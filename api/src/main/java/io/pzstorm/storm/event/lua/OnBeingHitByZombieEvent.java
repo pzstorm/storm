@@ -1,8 +1,8 @@
 package io.pzstorm.storm.event.lua;
 
-/**
- * This event is currently not being used.
- */
+import io.pzstorm.storm.event.InertEvent;
+
+@InertEvent
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnBeingHitByZombieEvent implements LuaEvent {
 
