@@ -8,6 +8,10 @@ package io.pzstorm.storm.event.lua;
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnKeyPressedEvent implements LuaEvent {
 
+	/**
+	 * <p>Integer denoting the key being pressed.</p>
+	 * See {@code org.lwjgl.input.Keyboard} for list of key codes.
+	 */
 	public final int key;
 
 	public OnKeyPressedEvent(int key) {
