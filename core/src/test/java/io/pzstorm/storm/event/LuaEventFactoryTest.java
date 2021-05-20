@@ -1,7 +1,9 @@
-package io.pzstorm.storm.event.lua;
+package io.pzstorm.storm.event;
 
 import com.google.common.collect.ImmutableMap;
 import io.pzstorm.storm.UnitTest;
+import io.pzstorm.storm.event.LuaEventFactory;
+import io.pzstorm.storm.event.lua.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import se.krka.kahlua.vm.KahluaTable;

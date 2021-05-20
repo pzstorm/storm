@@ -1,5 +1,6 @@
-package io.pzstorm.storm.event.lua;
+package io.pzstorm.storm.event;
 
+import io.pzstorm.storm.event.lua.*;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 

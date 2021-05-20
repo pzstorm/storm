@@ -10,7 +10,7 @@ import zombie.Lua.LuaEventManager;
  * easier and safer interaction to subscribers then when subscribing from Lua.</p>
  * <h3>Note for developers</h3>
  * <p>When writing new event implementation classes do not forget to add the class
- * references to {@link LuaEventFactory} static block so that the references are
+ * references to {@code LuaEventFactory} static block so that the references are
  * properly mapped and recognized by factory. If the references are not added the
  * factory will not be able create new instances of those event.</p>
  */

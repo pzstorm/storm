@@ -40,7 +40,7 @@ class StormLauncher {
 		StormBootstrap.loadAndRegisterMods();
 
 		// load LuaEvent factory and classes
-		classLoader.loadClass("io.pzstorm.storm.event.lua.LuaEventFactory");
+		classLoader.loadClass("io.pzstorm.storm.event.LuaEventFactory");
 
 		// initialize dispatcher system
 		Class<?> eventHandler = classLoader.loadClass("io.pzstorm.storm.event.StormEventHandler");
