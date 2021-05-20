@@ -88,9 +88,8 @@ class LuaEventFactoryTest implements UnitTest {
 		{
 			Class<? extends LuaEvent> eventClass = entry.getKey();
 			List<Object> constructorArgs = getDummyConstructorArgList(entry.getValue());
-			LuaEvent event = LuaEventFactory.constructLuaEvent(eventClass, constructorArgs.toArray());
 
-			Assertions.assertNotNull(event);
+			LuaEvent event = LuaEventFactory.constructLuaEvent(eventClass, constructorArgs.toArray());
 			Assertions.assertTrue(eventClass.isAssignableFrom(event.getClass()));
 		}
 	}
@@ -103,11 +102,20 @@ class LuaEventFactoryTest implements UnitTest {
 			Class<? extends LuaEvent> eventClass = entry.getKey();
 			List<Object> constructorArgs = getDummyConstructorArgList(entry.getValue());
 			String eventName = LuaEventFactory.getEventName(eventClass);
-			LuaEvent event = LuaEventFactory.constructLuaEvent(eventName, constructorArgs.toArray());
 
-			Assertions.assertNotNull(event);
+			LuaEvent event = LuaEventFactory.constructLuaEvent(eventName, constructorArgs.toArray());
 			Assertions.assertTrue(eventClass.isAssignableFrom(event.getClass()));
 		}
+	}
+
+	@Test
+	void shouldConstructLuaEventWithMultipleConstructors() {
+
+		LuaEvent event = LuaEventFactory.constructLuaEvent(OnConnectFailedEvent.class, "");
+		Assertions.assertTrue(OnConnectFailedEvent.class.isAssignableFrom(event.getClass()));
+
+		event = LuaEventFactory.constructLuaEvent(OnConnectFailedEvent.class);
+		Assertions.assertTrue(OnConnectFailedEvent.class.isAssignableFrom(event.getClass()));
 	}
 
 	private List<Object> getDummyConstructorArgList(Class<?>[] constructorArgTypes) {
