@@ -1,11 +1,11 @@
 package io.pzstorm.storm.event;
 
 import io.pzstorm.storm.event.lua.*;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class LuaEventFactory {
 	 * Constructors are mapped in this way to increase performance when instantiating {@code LuaEvent}s.
 	 */
 	@Unmodifiable
-	private static final Map<Class<? extends LuaEvent>, Constructor<? extends LuaEvent>> EVENT_CONSTRUCTORS;
+	private static final Map<Class<? extends LuaEvent>, Constructor<? extends LuaEvent>[]> EVENT_CONSTRUCTORS;
 
 	/**
 	 * This map contains {@link LuaEvent} classes mapped to their respected names.
@@ -35,7 +35,7 @@ public class LuaEventFactory {
 
 	static
 	{
-		Map<Class<? extends LuaEvent>, Constructor<LuaEvent>> eventConstructors = new HashMap<>();
+		Map<Class<? extends LuaEvent>, Constructor<LuaEvent>[]> eventConstructors = new HashMap<>();
 		Map<String, Class<? extends LuaEvent>> eventClassesMap = new HashMap<>();
 		/*
 		 * this is a complete list of all event classes,
@@ -108,15 +108,13 @@ public class LuaEventFactory {
 		for (Class<? extends LuaEvent> eventClass : eventClasses)
 		{
 			Constructor<?>[] constructors = eventClass.getConstructors();
-			if (constructors.length != 1) {
-				throw new IllegalStateException("Unexpected number of constructors found for class '" + eventClass + '\'');
+			for (Constructor<?> constructor : constructors)
+			{
+				if (!Modifier.isPublic(constructor.getModifiers())) {
+					throw new IllegalStateException("Found inaccessible constructor for class '" + eventClass + '\'');
+				}
 			}
-			Constructor<?> constructor = constructors[0];
-
-			if (!Modifier.isPublic(constructor.getModifiers())) {
-				throw new IllegalStateException("Found inaccessible constructor for class '" + eventClass + '\'');
-			}
-			eventConstructors.put(eventClass, (Constructor<LuaEvent>) constructors[0]);
+			eventConstructors.put(eventClass, (Constructor<LuaEvent>[]) constructors);
 
 			String className = getEventName(eventClass);
 			eventClassesMap.put(className, eventClass);
@@ -131,21 +129,47 @@ public class LuaEventFactory {
 	 * @param eventClass {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @throws IllegalStateException if an error occurred while instantiating {@code LuaEvent}.
-	 * @throws IllegalArgumentException if array of arguments differs from declared
-	 * 		{@code LuaEvent} constructor parameters in any way.
+	 * @throws IllegalStateException if an error occurred while instantiating {@code LuaEvent}
+	 * 		or no registered constructors found for given event class.
+	 * @throws IllegalArgumentException if no constructor with parameters matching specified array of
+	 * 		arguments was found for given {@code LuaEvent} class.
 	 *
 	 * @return new instance of {@code LuaEvent} for given class.
 	 */
-	public static @Nullable LuaEvent constructLuaEvent(Class<? extends LuaEvent> eventClass, Object... args) {
+	public static LuaEvent constructLuaEvent(Class<? extends LuaEvent> eventClass, Object... args) {
 
-		Constructor<?> constructor = EVENT_CONSTRUCTORS.get(eventClass);
-		try {
-			return constructor != null ? (LuaEvent) constructor.newInstance(args) : null;
+		Constructor<?>[] constructors = EVENT_CONSTRUCTORS.get(eventClass);
+		if (constructors != null)
+		{
+			Class<?>[] argTypes = new Class<?>[args.length];
+			for (int i = 0; i < args.length; i++) {
+				argTypes[i] = args[i] != null ? args[i].getClass() : null;
+			}
+			for (Constructor<?> constructor : constructors)
+			{
+				if (constructor.getParameterCount() == args.length)
+				{
+					Class<?>[] paramTypes = constructor.getParameterTypes();
+					for (int i = 0; i < paramTypes.length; i++)
+					{
+						// on parameter type mismatch skip to next constructor
+						if (paramTypes[i] != argTypes[i]) {
+							break;
+						}
+					}
+					try {
+						// if all parameter types match return this constructor
+						return (LuaEvent) constructor.newInstance(args);
+					}
+					catch (ReflectiveOperationException e) {
+						throw new IllegalStateException(e);
+					}
+				}
+			}
+			String message = "Unable to find constructor for class '%s' that matches arguments %s";
+			throw new IllegalArgumentException(String.format(message, eventClass, Arrays.toString(args)));
 		}
-		catch (ReflectiveOperationException e) {
-			throw new IllegalStateException(e);
-		}
+		throw new IllegalStateException("No registered constructors found for event '" + eventClass + '\'');
 	}
 
 	/**
@@ -154,16 +178,21 @@ public class LuaEventFactory {
 	 * @param eventName name of the {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @throws IllegalStateException if an error occurred while instantiating {@code LuaEvent}.
-	 * @throws IllegalArgumentException if array of arguments differs from declared
-	 * 		{@code LuaEvent} constructor parameters in any way.
+	 * @throws IllegalStateException if no registered {@code LuaEvent} class found for given name
+	 * 		or an error occurred while instantiating {@code LuaEvent} or no registered
+	 * 		constructors found for event class resolved from given name.
+	 * @throws IllegalArgumentException if no constructor with parameters matching specified array of
+	 * 		arguments was found for {@code LuaEvent} class resolved from given name.
 	 *
 	 * @return new instance of {@code LuaEvent} for class of given name.
 	 */
-	public static @Nullable LuaEvent constructLuaEvent(String eventName, Object... args) {
+	public static LuaEvent constructLuaEvent(String eventName, Object... args) {
 
 		Class<? extends LuaEvent> eventClass = EVENT_CLASSES.get(eventName);
-		return eventClass != null ? constructLuaEvent(eventClass, args) : null;
+		if (eventClass == null) {
+			throw new IllegalStateException("No registered LuaEvent class found for name '" + eventName + '\'');
+		}
+		return constructLuaEvent(eventClass, args);
 	}
 
 	/**
