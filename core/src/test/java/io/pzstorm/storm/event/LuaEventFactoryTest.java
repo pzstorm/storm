@@ -22,7 +22,7 @@ import java.util.Map;
 
 class LuaEventFactoryTest implements UnitTest {
 
-	private static final Map<Class<? extends LuaEvent>, Class<?>[]> EVENT_CLASS_CONSTRUCTOR_DATA =
+	private static final ImmutableMap<Class<? extends LuaEvent>, Class<?>[]> EVENT_CLASS_CONSTRUCTOR_DATA =
 			ImmutableMap.<Class<? extends LuaEvent>, Class<?>[]>builder()
 					.put(OnChallengeQueryEvent.class, new Class<?>[]{})
 					.put(OnCharacterCollideEvent.class, new Class<?>[] {

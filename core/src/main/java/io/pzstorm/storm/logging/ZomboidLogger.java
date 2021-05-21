@@ -211,6 +211,7 @@ public class ZomboidLogger {
 		/**
 		 * Log4j 2 level associated with this {@link LogSeverity} entry.
 		 */
+		@SuppressWarnings("ImmutableEnumChecker")
 		private final Level level;
 
 		LogSeverity(String name, Level level) {

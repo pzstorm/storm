@@ -42,7 +42,7 @@ public class StormModRegistry {
 
 				StormLogger.warn(String.format(format, meta != null ? meta.name : "unknown"));
 			}
-			else MOD_REGISTRY.put(entry.getKey(), (ZomboidMod) modClass.get().newInstance());
+			else MOD_REGISTRY.put(entry.getKey(), (ZomboidMod) modClass.get().getDeclaredConstructor().newInstance());
 		}
 	}
 
