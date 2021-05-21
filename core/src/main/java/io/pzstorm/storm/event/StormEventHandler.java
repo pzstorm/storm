@@ -1,5 +1,6 @@
 package io.pzstorm.storm.event;
 
+import io.pzstorm.storm.event.lua.LuaEvent;
 import se.krka.kahlua.j2se.KahluaTableImpl;
 import se.krka.kahlua.vm.KahluaTable;
 import zombie.core.Core;
@@ -37,7 +38,9 @@ public class StormEventHandler {
 	@SubscribeEvent
 	public static void handleLuaEventTrigger(OnTriggerLuaEvent event) {
 
-		// TODO: handle lua event triggers here
-		// StormLogger.info("Triggered lua event '" + event.luaEvent.name + '\'');
+		LuaEvent luaEvent = LuaEventFactory.constructLuaEvent(
+				event.luaEvent.name, event.args.toArray(new Object[0])
+		);
+		StormEventDispatcher.dispatchEvent(luaEvent);
 	}
 }
