@@ -2,10 +2,10 @@ package io.pzstorm.storm.util;
 
 import java.lang.reflect.Method;
 
-import io.pzstorm.storm.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import io.pzstorm.storm.TestUtils;
 import io.pzstorm.storm.UnitTest;
 
 @SuppressWarnings("unused")

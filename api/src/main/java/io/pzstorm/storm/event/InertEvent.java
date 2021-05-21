@@ -1,11 +1,11 @@
 package io.pzstorm.storm.event;
 
-import io.pzstorm.storm.event.lua.LuaEvent;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import io.pzstorm.storm.event.lua.LuaEvent;
 
 /**
  * This annotation indicates that the annotated {@link LuaEvent} is never triggered

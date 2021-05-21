@@ -25,6 +25,7 @@ public class OnAIStateChangeEvent implements LuaEvent {
 	public final State prevState;
 
 	public OnAIStateChangeEvent(IsoGameCharacter character, State newState, State prevState) {
+
 		this.character = character;
 		this.newState = newState;
 		this.prevState = prevState;

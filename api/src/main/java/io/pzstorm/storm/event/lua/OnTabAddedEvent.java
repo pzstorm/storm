@@ -17,6 +17,7 @@ public class OnTabAddedEvent implements LuaEvent {
 	public final Short tabID;
 
 	public OnTabAddedEvent(String tabTitle, Short tabID) {
+
 		this.tabTitle = tabTitle;
 		this.tabID = tabID;
 	}

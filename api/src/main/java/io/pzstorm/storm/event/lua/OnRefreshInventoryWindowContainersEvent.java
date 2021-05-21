@@ -19,6 +19,7 @@ public class OnRefreshInventoryWindowContainersEvent implements LuaEvent {
 	public final String action;
 
 	public OnRefreshInventoryWindowContainersEvent(KahluaTable inventoryPage, String action) {
+
 		this.inventoryPage = inventoryPage;
 		this.action = action;
 	}

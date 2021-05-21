@@ -26,6 +26,7 @@ public class OnObjectLeftMouseButtonUpEvent implements LuaEvent {
 	public final Integer y;
 
 	public OnObjectLeftMouseButtonUpEvent(IsoObject object, Integer x, Integer y) {
+
 		this.object = object;
 		this.x = x;
 		this.y = y;

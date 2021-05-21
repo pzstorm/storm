@@ -20,6 +20,7 @@ public class OnPressRackButtonEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnPressRackButtonEvent(IsoPlayer player, HandWeapon weapon) {
+
 		this.player = player;
 		this.weapon = weapon;
 	}

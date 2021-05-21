@@ -1,12 +1,5 @@
 package io.pzstorm.storm.core;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.io.CharSink;
-import com.google.common.io.MoreFiles;
-import io.pzstorm.storm.IntegrationTest;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +10,15 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import org.junit.jupiter.api.Assertions;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.io.CharSink;
+import com.google.common.io.MoreFiles;
+
+import io.pzstorm.storm.IntegrationTest;
 
 class ModLoaderTestFixture implements IntegrationTest {
 

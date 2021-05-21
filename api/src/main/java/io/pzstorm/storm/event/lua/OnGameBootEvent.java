@@ -8,4 +8,5 @@ package io.pzstorm.storm.event.lua;
  */
 @SuppressWarnings("unused")
 public class OnGameBootEvent implements LuaEvent {
+
 }

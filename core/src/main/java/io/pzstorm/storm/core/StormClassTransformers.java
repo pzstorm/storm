@@ -3,18 +3,22 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-import io.pzstorm.storm.hook.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
-
-import io.pzstorm.storm.patch.DebugLogPatch;
-import io.pzstorm.storm.patch.DebugLogStreamPatch;
-import io.pzstorm.storm.patch.ZomboidPatch;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.pzstorm.storm.hook.OnMainScreenRenderHook;
+import io.pzstorm.storm.hook.OnTriggerLuaEventHook;
+import io.pzstorm.storm.hook.OnUIElementPreRenderHook;
+import io.pzstorm.storm.hook.StormHook;
+import io.pzstorm.storm.patch.DebugLogPatch;
+import io.pzstorm.storm.patch.DebugLogStreamPatch;
+import io.pzstorm.storm.patch.ZomboidPatch;
 
 /**
  * This class defines, initializes and stores {@link StormClassTransformer} instances.
@@ -41,21 +45,21 @@ public class StormClassTransformers {
 		registerTransformer("zombie.Lua.LuaEventManager",
 				new OnTriggerLuaEventHook(), ImmutableMap.<MethodData, Integer>builder()
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;)V"), 7)
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-								"Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;)V"), 7)
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-								"Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-								"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
 						.put(new MethodData("triggerEvent",
-						"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-								"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
 						.build()
 		);
 
@@ -179,6 +183,7 @@ public class StormClassTransformers {
 		private final String descriptor;
 
 		private MethodData(String name, String descriptor) {
+
 			this.name = name;
 			this.descriptor = descriptor;
 		}

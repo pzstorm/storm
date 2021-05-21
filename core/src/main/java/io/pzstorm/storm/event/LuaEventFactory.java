@@ -1,14 +1,15 @@
 package io.pzstorm.storm.event;
 
-import io.pzstorm.storm.event.lua.*;
-import org.jetbrains.annotations.Unmodifiable;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.jetbrains.annotations.Unmodifiable;
+
+import io.pzstorm.storm.event.lua.*;
 
 /**
  * This class is used to creates new {@link LuaEvent} instances on demand.
@@ -255,11 +256,11 @@ public class LuaEventFactory {
 	 * @param eventClass {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
+	 * @return new instance of {@code LuaEvent} for given class.
+	 *
 	 * @throws IllegalArgumentException if no constructor with parameters matching specified array of
 	 * 		arguments was found for given {@code LuaEvent} class, an error occurred while instantiating
-	 * 		{@code LuaEvent} or no registered constructors found for given event class.
-	 *
-	 * @return new instance of {@code LuaEvent} for given class.
+	 *        {@code LuaEvent} or no registered constructors found for given event class.
 	 */
 	public static LuaEvent constructLuaEvent(Class<? extends LuaEvent> eventClass, Object... args) {
 
@@ -296,7 +297,7 @@ public class LuaEventFactory {
 	/**
 	 * Returns {@code true} if given constructor parameter types match specified
 	 * array of classes exactly, or {@code false} otherwise.
-	 * 
+	 *
 	 * @param constructor {@code Constructor} to match types for.
 	 * @param argTypes array of classes to match against constructor parameters.
 	 */
@@ -320,12 +321,12 @@ public class LuaEventFactory {
 	 * @param eventName name of the {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @throws IllegalStateException if no constructor with parameters matching specified array of
-	 * 	 	arguments was found for {@code LuaEvent} class resolved from given name, no registered
-	 * 	 	{@code LuaEvent} class found for given name, an error occurred while instantiating
-	 * 	 	{@code LuaEvent} or no registered constructors found for event class resolved from given name.
-	 *
 	 * @return new instance of {@code LuaEvent} for class of given name.
+	 *
+	 * @throws IllegalStateException if no constructor with parameters matching specified array of
+	 * 		arguments was found for {@code LuaEvent} class resolved from given name, no registered
+	 *        {@code LuaEvent} class found for given name, an error occurred while instantiating
+	 *        {@code LuaEvent} or no registered constructors found for event class resolved from given name.
 	 */
 	public static LuaEvent constructLuaEvent(String eventName, Object... args) {
 

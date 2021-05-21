@@ -1,12 +1,13 @@
 package io.pzstorm.storm.event;
 
-import io.pzstorm.storm.event.lua.LuaEvent;
-import org.jetbrains.annotations.Unmodifiable;
-import zombie.Lua.Event;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.jetbrains.annotations.Unmodifiable;
+
+import io.pzstorm.storm.event.lua.LuaEvent;
+import zombie.Lua.Event;
 
 /**
  * This event fires when an in-game Lua event has been triggered. This event is only used

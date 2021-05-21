@@ -1,15 +1,16 @@
 package io.pzstorm.storm.core;
 
-import io.pzstorm.storm.IntegrationTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import io.pzstorm.storm.IntegrationTest;
 
 class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 

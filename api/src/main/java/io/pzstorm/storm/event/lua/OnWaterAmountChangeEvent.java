@@ -19,6 +19,7 @@ public class OnWaterAmountChangeEvent implements LuaEvent {
 	public final Integer oldWaterAmount;
 
 	public OnWaterAmountChangeEvent(IsoObject container, Integer oldWaterAmount) {
+
 		this.container = container;
 		this.oldWaterAmount = oldWaterAmount;
 	}

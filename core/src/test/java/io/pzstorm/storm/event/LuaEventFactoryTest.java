@@ -1,11 +1,16 @@
 package io.pzstorm.storm.event;
 
-import com.google.common.collect.ImmutableMap;
-import io.pzstorm.storm.UnitTest;
-import io.pzstorm.storm.event.LuaEventFactory;
-import io.pzstorm.storm.event.lua.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.pzstorm.storm.UnitTest;
+import io.pzstorm.storm.event.lua.*;
 import se.krka.kahlua.vm.KahluaTable;
 import zombie.characters.IsoGameCharacter;
 import zombie.characters.IsoPlayer;
@@ -16,15 +21,11 @@ import zombie.iso.BuildingDef;
 import zombie.iso.IsoMovingObject;
 import zombie.iso.IsoObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 class LuaEventFactoryTest implements UnitTest {
 
 	private static final ImmutableMap<Class<? extends LuaEvent>, Class<?>[]> EVENT_CLASS_CONSTRUCTOR_DATA =
 			ImmutableMap.<Class<? extends LuaEvent>, Class<?>[]>builder()
-					.put(OnChallengeQueryEvent.class, new Class<?>[]{})
+					.put(OnChallengeQueryEvent.class, new Class<?>[] {})
 					.put(OnCharacterCollideEvent.class, new Class<?>[] {
 							IsoMovingObject.class, IsoObject.class
 					})

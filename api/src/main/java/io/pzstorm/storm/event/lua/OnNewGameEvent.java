@@ -20,6 +20,7 @@ public class OnNewGameEvent implements LuaEvent {
 	public final IsoGridSquare gridSquare;
 
 	public OnNewGameEvent(IsoPlayer player, IsoGridSquare gridSquare) {
+
 		this.player = player;
 		this.gridSquare = gridSquare;
 	}

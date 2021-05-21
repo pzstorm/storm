@@ -1,6 +1,7 @@
 package io.pzstorm.storm.event.lua;
 
 import org.jetbrains.annotations.Nullable;
+
 import zombie.iso.objects.IsoThumpable;
 
 /**
@@ -20,6 +21,7 @@ public class OnDestroyIsoThumpableEvent implements LuaEvent {
 	public final @Nullable Object object;
 
 	public OnDestroyIsoThumpableEvent(IsoThumpable thumpableObject, @Nullable Object object) {
+
 		this.thumpableObject = thumpableObject;
 		this.object = object;
 	}

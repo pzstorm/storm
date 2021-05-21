@@ -15,6 +15,7 @@ public class OnWeaponSwingEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnWeaponSwingEvent(IsoGameCharacter player, HandWeapon weapon) {
+
 		this.player = player;
 		this.weapon = weapon;
 	}

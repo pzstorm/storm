@@ -27,6 +27,7 @@ public class OnResolutionChangeEvent implements LuaEvent {
 	public final Integer newHeight;
 
 	public OnResolutionChangeEvent(Integer oldWidth, Integer oldHeight, Integer newWidth, Integer newHeight) {
+
 		this.oldWidth = oldWidth;
 		this.oldHeight = oldHeight;
 		this.newWidth = newWidth;

@@ -13,6 +13,7 @@ public class OnMouseMoveEvent implements LuaEvent {
 	public final Double y;
 
 	public OnMouseMoveEvent(Double xA, Double yA, Double x, Double y) {
+
 		this.xA = xA;
 		this.yA = yA;
 		this.x = x;

@@ -11,15 +11,17 @@ public class OnDeviceTextEvent implements LuaEvent {
 	public final Float x, y, z;
 
 	public OnDeviceTextEvent(String text1, Integer x, Integer y, Integer z, String text2, WaveSignalDevice device) {
+
 		this.text1 = text1;
-		this.x = (float)x;
-		this.y = (float)y;
-		this.z = (float)z;
+		this.x = (float) x;
+		this.y = (float) y;
+		this.z = (float) z;
 		this.text2 = text2;
 		this.device = device;
 	}
 
 	public OnDeviceTextEvent(String text1, Float x, Float y, WaveSignalDevice device) {
+
 		this.text1 = text1;
 		this.x = x;
 		this.y = y;

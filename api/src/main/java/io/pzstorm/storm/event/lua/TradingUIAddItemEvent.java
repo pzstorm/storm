@@ -11,6 +11,7 @@ public class TradingUIAddItemEvent implements LuaEvent {
 	public final InventoryItem var2;
 
 	public TradingUIAddItemEvent(IsoPlayer var1, InventoryItem var2) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 	}

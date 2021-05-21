@@ -11,6 +11,7 @@ public class OnUpdateModdedWeatherStageEvent implements LuaEvent {
 	public final Float airFrontStrength;
 
 	public OnUpdateModdedWeatherStageEvent(WeatherPeriod period, WeatherPeriod.WeatherStage stage, Float airFrontStrength) {
+
 		this.period = period;
 		this.stage = stage;
 		this.airFrontStrength = airFrontStrength;

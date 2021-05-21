@@ -21,6 +21,7 @@ public class DoSpecialTooltipEvent implements LuaEvent {
 	public final IsoGridSquare square;
 
 	public DoSpecialTooltipEvent(ObjectTooltip tooltip, IsoGridSquare square) {
+
 		this.tooltip = tooltip;
 		this.square = square;
 	}

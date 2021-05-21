@@ -31,6 +31,7 @@ public class OnWeaponHitXpEvent implements LuaEvent {
 	public final Float value;
 
 	public OnWeaponHitXpEvent(IsoGameCharacter player, HandWeapon weapon, IsoMovingObject target, Float value) {
+
 		this.player = player;
 		this.weapon = weapon;
 		this.target = target;

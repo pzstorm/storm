@@ -15,6 +15,7 @@ public class OnClientCommandEvent implements LuaEvent {
 	public final KahluaTable table;
 
 	public OnClientCommandEvent(String var1, String var2, IsoPlayer player, KahluaTable table) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 		this.player = player;

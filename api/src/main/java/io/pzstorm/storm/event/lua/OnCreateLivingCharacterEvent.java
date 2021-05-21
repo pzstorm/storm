@@ -15,6 +15,7 @@ public class OnCreateLivingCharacterEvent implements LuaEvent {
 	public final SurvivorDesc descriptor;
 
 	public OnCreateLivingCharacterEvent(IsoGameCharacter character, SurvivorDesc descriptor) {
+
 		this.character = character;
 		this.descriptor = descriptor;
 	}

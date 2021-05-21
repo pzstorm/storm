@@ -20,6 +20,7 @@ public class OnPlayerAttackFinishedEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnPlayerAttackFinishedEvent(IsoGameCharacter player, HandWeapon weapon) {
+
 		this.player = player;
 		this.weapon = weapon;
 	}

@@ -5,4 +5,5 @@ package io.pzstorm.storm.event.lua;
  */
 @SuppressWarnings("unused")
 public class OnGameStartEvent implements LuaEvent {
+
 }

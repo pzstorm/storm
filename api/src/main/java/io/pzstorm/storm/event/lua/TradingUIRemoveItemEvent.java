@@ -10,6 +10,7 @@ public class TradingUIRemoveItemEvent implements LuaEvent {
 	public final Integer var2;
 
 	public TradingUIRemoveItemEvent(IsoPlayer var1, Integer var2) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 	}

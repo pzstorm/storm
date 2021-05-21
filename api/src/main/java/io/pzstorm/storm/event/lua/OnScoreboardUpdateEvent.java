@@ -12,6 +12,7 @@ public class OnScoreboardUpdateEvent implements LuaEvent {
 	public final ArrayList<?> var1, var2, var3;
 
 	public OnScoreboardUpdateEvent(ArrayList<?> var1, ArrayList<?> var2, ArrayList<?> var3) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 		this.var3 = var3;

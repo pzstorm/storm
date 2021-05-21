@@ -1,20 +1,22 @@
 package io.pzstorm.storm.core;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import io.pzstorm.storm.IntegrationTest;
-import io.pzstorm.storm.mod.ModJar;
-import io.pzstorm.storm.mod.ModMetadata;
-import io.pzstorm.storm.mod.ModVersion;
-import org.junit.jupiter.api.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.junit.jupiter.api.*;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
+import io.pzstorm.storm.IntegrationTest;
+import io.pzstorm.storm.mod.ModJar;
+import io.pzstorm.storm.mod.ModMetadata;
+import io.pzstorm.storm.mod.ModVersion;
 
 /**
  * Run test methods in a certain order to ensure the tests pass on CI.

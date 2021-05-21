@@ -1,14 +1,16 @@
 package io.pzstorm.storm.core;
 
-import com.google.common.collect.ImmutableSet;
-import io.pzstorm.storm.logging.StormLogger;
-import io.pzstorm.storm.mod.ModMetadata;
-import io.pzstorm.storm.mod.ZomboidMod;
+import java.util.*;
+
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import com.google.common.collect.ImmutableSet;
+
+import io.pzstorm.storm.logging.StormLogger;
+import io.pzstorm.storm.mod.ModMetadata;
+import io.pzstorm.storm.mod.ZomboidMod;
 
 /**
  * This class is responsible for creating and registering {@link ZomboidMod} instances.

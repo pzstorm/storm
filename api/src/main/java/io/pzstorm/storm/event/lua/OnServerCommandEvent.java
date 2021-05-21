@@ -13,6 +13,7 @@ public class OnServerCommandEvent implements LuaEvent {
 	public final KahluaTable var3;
 
 	public OnServerCommandEvent(String var1, String var2, KahluaTable var3) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 		this.var3 = var3;

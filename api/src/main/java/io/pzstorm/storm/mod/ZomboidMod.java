@@ -6,6 +6,5 @@ package io.pzstorm.storm.mod;
  * registered and will not be eligible to subscribe to events.
  */
 public interface ZomboidMod {
-
 	void registerEventHandlers();
 }

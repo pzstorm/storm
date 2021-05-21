@@ -24,6 +24,7 @@ public class OnPostMapLoadEvent implements LuaEvent {
 	public final Integer y;
 
 	public OnPostMapLoadEvent(IsoCell isoCell, Integer x, Integer y) {
+
 		this.isoCell = isoCell;
 		this.x = x;
 		this.y = y;

@@ -24,6 +24,7 @@ public class OnFillContainerEvent implements LuaEvent {
 	public final ItemContainer container;
 
 	public OnFillContainerEvent(String roomName, String containerType, ItemContainer container) {
+
 		this.roomName = roomName;
 		this.containerType = containerType;
 		this.container = container;

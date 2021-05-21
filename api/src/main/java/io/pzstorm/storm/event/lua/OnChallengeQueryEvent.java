@@ -6,5 +6,4 @@ package io.pzstorm.storm.event.lua;
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnChallengeQueryEvent implements LuaEvent {
 
-
 }

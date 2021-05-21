@@ -21,6 +21,7 @@ public class OnLoadRadioScriptsEvent implements LuaEvent {
 	public final Boolean noSaveWorldVersion;
 
 	public OnLoadRadioScriptsEvent(RadioScriptManager scriptManager, Boolean noSaveWorldVersion) {
+
 		this.scriptManager = scriptManager;
 		this.noSaveWorldVersion = noSaveWorldVersion;
 	}

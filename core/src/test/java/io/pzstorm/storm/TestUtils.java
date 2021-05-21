@@ -1,10 +1,10 @@
 package io.pzstorm.storm;
 
-import io.pzstorm.storm.logging.StormLogger;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import io.pzstorm.storm.logging.StormLogger;
 
 public class TestUtils {
 

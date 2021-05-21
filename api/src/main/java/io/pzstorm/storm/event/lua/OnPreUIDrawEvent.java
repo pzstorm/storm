@@ -7,4 +7,5 @@ package io.pzstorm.storm.event.lua;
  */
 @SuppressWarnings("WeakerAccess")
 public class OnPreUIDrawEvent implements LuaEvent {
+
 }

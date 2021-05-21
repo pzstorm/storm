@@ -32,6 +32,7 @@ public class OnHitZombieEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnHitZombieEvent(IsoZombie zombie, IsoGameCharacter attacker, BodyPartType target, HandWeapon weapon) {
+
 		this.zombie = zombie;
 		this.attacker = attacker;
 		this.target = target;

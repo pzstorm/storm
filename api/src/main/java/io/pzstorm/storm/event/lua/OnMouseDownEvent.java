@@ -19,6 +19,7 @@ public class OnMouseDownEvent implements LuaEvent {
 	public final Integer y;
 
 	public OnMouseDownEvent(Integer x, Integer y) {
+
 		this.x = x;
 		this.y = y;
 	}

@@ -10,6 +10,7 @@ public class TradingUIUpdateStateEvent implements LuaEvent {
 	public final Integer var2;
 
 	public TradingUIUpdateStateEvent(IsoPlayer var1, Integer var2) {
+
 		this.var1 = var1;
 		this.var2 = var2;
 	}

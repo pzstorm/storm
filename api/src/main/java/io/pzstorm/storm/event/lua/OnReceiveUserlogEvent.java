@@ -1,6 +1,5 @@
 package io.pzstorm.storm.event.lua;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +13,7 @@ public class OnReceiveUserlogEvent implements LuaEvent {
 	public final ArrayList<?> userLogs;
 
 	public OnReceiveUserlogEvent(String identifier, ArrayList<?> userLogs) {
+
 		this.identifier = identifier;
 		this.userLogs = userLogs;
 	}

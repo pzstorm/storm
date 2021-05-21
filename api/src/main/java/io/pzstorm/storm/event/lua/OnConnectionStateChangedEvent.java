@@ -10,6 +10,7 @@ public class OnConnectionStateChangedEvent implements LuaEvent {
 	public final String state, message;
 
 	public OnConnectionStateChangedEvent(String state, String message) {
+
 		this.state = state;
 		this.message = message;
 	}

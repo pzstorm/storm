@@ -1,6 +1,5 @@
 package io.pzstorm.storm.event.lua;
 
-import zombie.erosion.ErosionMain;
 import zombie.erosion.season.ErosionSeason;
 
 /**

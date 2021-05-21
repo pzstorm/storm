@@ -21,6 +21,7 @@ public class OnWeaponHitTreeEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnWeaponHitTreeEvent(IsoGameCharacter owner, HandWeapon weapon) {
+
 		this.owner = owner;
 		this.weapon = weapon;
 	}

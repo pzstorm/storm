@@ -13,12 +13,12 @@ import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ObjectArrays;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 
 import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.mod.ModJar;
@@ -37,19 +37,17 @@ import io.pzstorm.storm.mod.ModVersion;
 public class StormModLoader extends URLClassLoader {
 
 	/**
-	 * This catalog stores {@link ModJar} instances mapped to directory names.
-	 */
-	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
-
-	/**
 	 * This catalog contains {@link ModMetadata} instances mapped to directory names.
 	 */
 	static final Map<String, ModMetadata> METADATA_CATALOG = new HashMap<>();
-
 	/**
 	 * This catalog stores {@link Class} instances mapped to directory names.
 	 */
 	static final Map<String, ImmutableSet<Class<?>>> CLASS_CATALOG = new HashMap<>();
+	/**
+	 * This catalog stores {@link ModJar} instances mapped to directory names.
+	 */
+	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
 
 	StormModLoader(URL[] urls) {
 		super(ObjectArrays.concat(urls, getJarResourcePaths(), URL.class));
@@ -224,7 +222,6 @@ public class StormModLoader extends URLClassLoader {
 	 * {@link #catalogModJars()} method, otherwise this method will only clear the class catalog.
 	 */
 	public static void loadModClasses() {
-
 		StormLogger.info(String.format("%s mod class catalog", JAR_CATALOG.isEmpty() ? "Building" : "Rebuilding"));
 
 		// clear map before entering new data

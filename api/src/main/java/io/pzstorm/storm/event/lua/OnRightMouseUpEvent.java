@@ -17,6 +17,7 @@ public class OnRightMouseUpEvent implements LuaEvent {
 	public final Integer y;
 
 	public OnRightMouseUpEvent(Integer x, Integer y) {
+
 		this.x = x;
 		this.y = y;
 	}

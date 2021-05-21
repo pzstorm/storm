@@ -1,8 +1,8 @@
 package io.pzstorm.storm.event.lua;
 
-import zombie.network.DBTicket;
-
 import java.util.ArrayList;
+
+import zombie.network.DBTicket;
 
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class ViewTicketsEvent implements LuaEvent {

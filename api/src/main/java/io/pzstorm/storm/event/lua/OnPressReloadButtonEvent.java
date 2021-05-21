@@ -20,6 +20,7 @@ public class OnPressReloadButtonEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnPressReloadButtonEvent(IsoPlayer player, HandWeapon weapon) {
+
 		this.player = player;
 		this.weapon = weapon;
 	}

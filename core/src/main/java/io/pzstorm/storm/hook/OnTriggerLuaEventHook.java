@@ -1,19 +1,20 @@
 package io.pzstorm.storm.hook;
 
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.*;
+
 import com.google.common.collect.ImmutableList;
+
 import io.pzstorm.storm.core.StormClassTransformer;
 import io.pzstorm.storm.event.OnTriggerLuaEvent;
 import io.pzstorm.storm.event.StormEventDispatcher;
 import io.pzstorm.storm.util.AsmUtils;
 import io.pzstorm.storm.util.StormUtils;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
 
 public class OnTriggerLuaEventHook implements StormHook {
 
 	@Override
 	public void installHook(StormClassTransformer transformer) {
-
 		String eventDescriptor = StormUtils.getClassAsPath(OnTriggerLuaEvent.class);
 
 		// new OnTriggerLuaEvent(Event)

@@ -20,6 +20,7 @@ public class OnEquipSecondaryEvent implements LuaEvent {
 	public final InventoryItem item;
 
 	public OnEquipSecondaryEvent(IsoGameCharacter player, InventoryItem item) {
+
 		this.player = player;
 		this.item = item;
 	}

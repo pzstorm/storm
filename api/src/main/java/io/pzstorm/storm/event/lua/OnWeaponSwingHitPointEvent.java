@@ -20,6 +20,7 @@ public class OnWeaponSwingHitPointEvent implements LuaEvent {
 	public final HandWeapon weapon;
 
 	public OnWeaponSwingHitPointEvent(IsoGameCharacter owner, HandWeapon weapon) {
+
 		this.owner = owner;
 		this.weapon = weapon;
 	}

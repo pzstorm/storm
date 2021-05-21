@@ -1,8 +1,8 @@
 package io.pzstorm.storm.core;
 
-import io.pzstorm.storm.logging.StormLogger;
-
 import java.lang.reflect.Method;
+
+import io.pzstorm.storm.logging.StormLogger;
 
 class StormLauncher {
 

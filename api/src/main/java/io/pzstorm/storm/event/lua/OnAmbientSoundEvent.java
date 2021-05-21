@@ -22,6 +22,7 @@ public class OnAmbientSoundEvent implements LuaEvent {
 	public final Float y;
 
 	public OnAmbientSoundEvent(String soundName, Float x, Float y) {
+
 		this.soundName = soundName;
 		this.x = x;
 		this.y = y;

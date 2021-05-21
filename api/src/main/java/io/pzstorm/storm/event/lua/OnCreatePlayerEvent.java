@@ -19,6 +19,7 @@ public class OnCreatePlayerEvent implements LuaEvent {
 	public final IsoPlayer player;
 
 	public OnCreatePlayerEvent(Integer playerIndex, IsoPlayer player) {
+
 		this.playerIndex = playerIndex;
 		this.player = player;
 	}

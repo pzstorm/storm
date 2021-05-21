@@ -36,18 +36,16 @@ public class StormClassLoader extends ClassLoader {
 			"io.pzstorm.storm.logging.StormLogger", "io.pzstorm.storm.core.StormBootstrap",
 			"io.pzstorm.storm.core.StormClassLoader"
 	);
-
-	/**
-	 * {@code URLClassLoader} responsible for loading mod classes and assets.
-	 */
-	private URLClassLoader modResourceLoader;
-
 	/**
 	 * {@code ClassLoader} that is the parent of this {@code ClassLoader}.
 	 * When loading classes, those classes not matching the whitelist pattern will have
 	 * their loading process delegated to this {@code ClassLoader}.
 	 */
 	private final ClassLoader parentClassLoader;
+	/**
+	 * {@code URLClassLoader} responsible for loading mod classes and assets.
+	 */
+	private URLClassLoader modResourceLoader;
 
 	/**
 	 * Create {@code StormClassLoader} with additional locations to search for resources.
@@ -68,21 +66,21 @@ public class StormClassLoader extends ClassLoader {
 	}
 
 	/**
-	 * Reinitialize mod resource loader instance. This method should be called
-	 * after new mods have been loaded by {@link StormModLoader} since new
-	 * {@code URL}s have to be added to loader classpath.
-	 */
-	void setModResourceLoader(URLClassLoader classLoader) {
-		modResourceLoader = classLoader;
-	}
-
-	/**
 	 * Returns {@code true} if at least one prefix pattern in blacklist matches the given name.
 	 * When a class name is considered <i>blacklisted</i> it will not be loaded by this {@code ClassLoader}.
 	 */
 	@Contract(pure = true)
 	static boolean isBlacklistedClass(String name) {
 		return CLASS_BLACKLIST.stream().anyMatch(name::startsWith);
+	}
+
+	/**
+	 * Reinitialize mod resource loader instance. This method should be called
+	 * after new mods have been loaded by {@link StormModLoader} since new
+	 * {@code URL}s have to be added to loader classpath.
+	 */
+	void setModResourceLoader(URLClassLoader classLoader) {
+		modResourceLoader = classLoader;
 	}
 
 	@Override

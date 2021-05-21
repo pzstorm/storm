@@ -1,6 +1,7 @@
 package io.pzstorm.storm.event.lua;
 
 import org.jetbrains.annotations.Nullable;
+
 import zombie.inventory.InventoryItem;
 import zombie.iso.IsoGridSquare;
 import zombie.iso.IsoObject;
@@ -27,7 +28,7 @@ public class OnContainerUpdateEvent implements LuaEvent {
 	public final @Nullable IsoObject object;
 
 	private OnContainerUpdateEvent(@Nullable IsoGridSquare gridSquare,
-								  @Nullable InventoryItem item, @Nullable IsoObject object) {
+								   @Nullable InventoryItem item, @Nullable IsoObject object) {
 
 		this.gridSquare = gridSquare;
 		this.item = item;

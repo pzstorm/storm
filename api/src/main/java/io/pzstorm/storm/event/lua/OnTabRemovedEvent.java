@@ -1,4 +1,5 @@
 package io.pzstorm.storm.event.lua;
+
 /**
  * Triggered when a chat tab has been removed.
  */
@@ -16,6 +17,7 @@ public class OnTabRemovedEvent implements LuaEvent {
 	public final Short tabID;
 
 	public OnTabRemovedEvent(String tabTitle, Short tabID) {
+
 		this.tabTitle = tabTitle;
 		this.tabID = tabID;
 	}
