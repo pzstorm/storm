@@ -255,10 +255,9 @@ public class LuaEventFactory {
 	 * @param eventClass {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @throws IllegalStateException if an error occurred while instantiating {@code LuaEvent}
-	 * 		or no registered constructors found for given event class.
 	 * @throws IllegalArgumentException if no constructor with parameters matching specified array of
-	 * 		arguments was found for given {@code LuaEvent} class.
+	 * 		arguments was found for given {@code LuaEvent} class, an error occurred while instantiating
+	 * 		{@code LuaEvent} or no registered constructors found for given event class.
 	 *
 	 * @return new instance of {@code LuaEvent} for given class.
 	 */
@@ -275,19 +274,15 @@ public class LuaEventFactory {
 			{
 				if (constructor.getParameterCount() == args.length)
 				{
-					Class<?>[] paramTypes = constructor.getParameterTypes();
-					for (int i = 0; i < paramTypes.length; i++)
-					{
-						// on parameter type mismatch skip to next constructor
-						if (paramTypes[i] != argTypes[i]) {
-							break;
-						}
+					// on parameter type mismatch skip to next constructor
+					if (!doesConstructorMatchArgTypes(constructor, argTypes)) {
+						continue;
 					}
 					try {
 						// if all parameter types match return this constructor
 						return (LuaEvent) constructor.newInstance(args);
 					}
-					catch (ReflectiveOperationException e) {
+					catch (ReflectiveOperationException | IllegalArgumentException e) {
 						throw new IllegalStateException(e);
 					}
 				}
@@ -299,16 +294,36 @@ public class LuaEventFactory {
 	}
 
 	/**
+	 * Returns {@code true} if given constructor parameter types match specified
+	 * array of classes exactly, or {@code false} otherwise.
+	 * 
+	 * @param constructor {@code Constructor} to match types for.
+	 * @param argTypes array of classes to match against constructor parameters.
+	 */
+	private static boolean doesConstructorMatchArgTypes(Constructor<?> constructor, Class<?>[] argTypes) {
+
+		Class<?>[] paramTypes = constructor.getParameterTypes();
+		for (int i = 0; i < paramTypes.length; i++)
+		{
+			Class<?> argType = argTypes[i];
+			// on parameter type mismatch skip to next constructor
+			if (argType != null && !paramTypes[i].isAssignableFrom(argType)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Construct a new instance of {@link LuaEvent} with given array of arguments.
 	 *
 	 * @param eventName name of the {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @throws IllegalStateException if no registered {@code LuaEvent} class found for given name
-	 * 		or an error occurred while instantiating {@code LuaEvent} or no registered
-	 * 		constructors found for event class resolved from given name.
-	 * @throws IllegalArgumentException if no constructor with parameters matching specified array of
-	 * 		arguments was found for {@code LuaEvent} class resolved from given name.
+	 * @throws IllegalStateException if no constructor with parameters matching specified array of
+	 * 	 	arguments was found for {@code LuaEvent} class resolved from given name, no registered
+	 * 	 	{@code LuaEvent} class found for given name, an error occurred while instantiating
+	 * 	 	{@code LuaEvent} or no registered constructors found for event class resolved from given name.
 	 *
 	 * @return new instance of {@code LuaEvent} for class of given name.
 	 */
