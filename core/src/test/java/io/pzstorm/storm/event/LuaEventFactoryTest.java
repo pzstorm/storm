@@ -32,20 +32,20 @@ class LuaEventFactoryTest implements UnitTest {
 							IsoPlayer.class, SurvivorDesc.class
 					})
 					.put(OnFETickEvent.class, new Class<?>[] {
-							int.class
+							Integer.class
 					})
 					.put(OnFillInventoryObjectContextMenuEvent.class, new Class<?>[] {})
 					.put(OnFillWorldObjectContextMenuEvent.class, new Class<?>[] {})
 					.put(OnGameBootEvent.class, new Class<?>[] {})
 					.put(OnGameStartEvent.class, new Class<?>[] {})
 					.put(OnJoypadActivateEvent.class, new Class<?>[] {
-							int.class
+							Integer.class
 					})
 					.put(OnKeyPressedEvent.class, new Class<?>[] {
-							int.class
+							Integer.class
 					})
 					.put(OnKeyStartPressedEvent.class, new Class<?>[] {
-							int.class
+							Integer.class
 					})
 					.put(OnLoadMapZonesEvent.class, new Class<?>[] {})
 					.put(OnMultiTriggerNPCEvent.class, new Class<?>[] {
@@ -62,16 +62,16 @@ class LuaEventFactoryTest implements UnitTest {
 					.put(OnPreUIDrawEvent.class, new Class<?>[] {})
 					.put(OnRefreshInventoryWindowContainersEvent.class, new Class<?>[] {})
 					.put(OnTickEvenPausedEvent.class, new Class<?>[] {
-							double.class
+							Double.class
 					})
 					.put(OnTickEvent.class, new Class<?>[] {
-							double.class
+							Double.class
 					})
 					.put(OnTriggerNPCEvent.class, new Class<?>[] {
 							String.class, KahluaTable.class, BuildingDef.class
 					})
 					.put(OnWeaponHitCharacterEvent.class, new Class<?>[] {
-							IsoGameCharacter.class, IsoGameCharacter.class, HandWeapon.class, float.class
+							IsoGameCharacter.class, IsoGameCharacter.class, HandWeapon.class, Float.class
 					})
 					.put(OnWeaponSwingEvent.class, new Class<?>[] {
 							IsoGameCharacter.class, HandWeapon.class
