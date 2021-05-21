@@ -1,5 +1,6 @@
 package io.pzstorm.storm.event.lua;
 
+import zombie.characters.IsoGameCharacter;
 import zombie.characters.IsoPlayer;
 import zombie.characters.IsoSurvivor;
 import zombie.characters.SurvivorDesc;
@@ -10,11 +11,11 @@ import zombie.characters.SurvivorDesc;
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnCreateLivingCharacterEvent implements LuaEvent {
 
-	public final IsoPlayer player;
+	public final IsoGameCharacter character;
 	public final SurvivorDesc descriptor;
 
-	public OnCreateLivingCharacterEvent(IsoPlayer player, SurvivorDesc descriptor) {
-		this.player = player;
+	public OnCreateLivingCharacterEvent(IsoGameCharacter character, SurvivorDesc descriptor) {
+		this.character = character;
 		this.descriptor = descriptor;
 	}
 }
