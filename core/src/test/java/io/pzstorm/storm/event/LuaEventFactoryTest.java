@@ -60,7 +60,9 @@ class LuaEventFactoryTest implements UnitTest {
 					.put(OnPostUIDrawEvent.class, new Class<?>[] {})
 					.put(OnPreFillInventoryObjectContextMenuEvent.class, new Class<?>[] {})
 					.put(OnPreUIDrawEvent.class, new Class<?>[] {})
-					.put(OnRefreshInventoryWindowContainersEvent.class, new Class<?>[] {})
+					.put(OnRefreshInventoryWindowContainersEvent.class, new Class<?>[] {
+							KahluaTable.class, String.class
+					})
 					.put(OnTickEvenPausedEvent.class, new Class<?>[] {
 							Double.class
 					})
