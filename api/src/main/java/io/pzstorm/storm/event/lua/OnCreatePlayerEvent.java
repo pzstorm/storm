@@ -11,14 +11,14 @@ public class OnCreatePlayerEvent implements LuaEvent {
 	/**
 	 * Index of player being created.
 	 */
-	public final int playerIndex;
+	public final Integer playerIndex;
 
 	/**
 	 * The player which was created.
 	 */
 	public final IsoPlayer player;
 
-	public OnCreatePlayerEvent(int playerIndex, IsoPlayer player) {
+	public OnCreatePlayerEvent(Integer playerIndex, IsoPlayer player) {
 		this.playerIndex = playerIndex;
 		this.player = player;
 	}

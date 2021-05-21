@@ -9,9 +9,9 @@ public class OnJoypadActivateEvent implements LuaEvent {
 	/**
 	 * The ID of the activated controller.
 	 */
-	public final int joypadID;
+	public final Integer joypadID;
 
-	public OnJoypadActivateEvent(int joypadID) {
+	public OnJoypadActivateEvent(Integer joypadID) {
 		this.joypadID = joypadID;
 	}
 }

@@ -9,9 +9,9 @@ package io.pzstorm.storm.event.lua;
 @SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnTickEvent implements LuaEvent {
 
-	public final double ticksElapsed;
+	public final Double ticksElapsed;
 
-	public OnTickEvent(double ticksElapsed) {
+	public OnTickEvent(Double ticksElapsed) {
 		this.ticksElapsed = ticksElapsed;
 	}
 }

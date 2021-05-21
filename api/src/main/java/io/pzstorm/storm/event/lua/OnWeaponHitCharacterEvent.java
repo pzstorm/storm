@@ -14,9 +14,9 @@ public class OnWeaponHitCharacterEvent implements LuaEvent {
 	public final IsoGameCharacter attacker;
 	public final IsoGameCharacter target;
 	public final HandWeapon weapon;
-	public final float damage;
+	public final Float damage;
 
-	public OnWeaponHitCharacterEvent(IsoGameCharacter attacker, IsoGameCharacter target, HandWeapon weapon, float damage) {
+	public OnWeaponHitCharacterEvent(IsoGameCharacter attacker, IsoGameCharacter target, HandWeapon weapon, Float damage) {
 
 		this.attacker = attacker;
 		this.target = target;

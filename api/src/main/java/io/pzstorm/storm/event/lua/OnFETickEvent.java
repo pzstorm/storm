@@ -9,6 +9,6 @@ public class OnFETickEvent implements LuaEvent {
 	/**
 	 * @param ticks always {@code 0}.
 	 */
-	public OnFETickEvent(int ticks) {
+	public OnFETickEvent(Integer ticks) {
 	}
 }

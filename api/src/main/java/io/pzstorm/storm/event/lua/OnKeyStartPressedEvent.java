@@ -12,9 +12,9 @@ public class OnKeyStartPressedEvent implements LuaEvent {
 	 * <p>Integer denoting the key being pressed.</p>
 	 * See {@code org.lwjgl.input.Keyboard} for list of key codes.
 	 */
-	public final int key;
+	public final Integer key;
 
-	public OnKeyStartPressedEvent(int key) {
+	public OnKeyStartPressedEvent(Integer key) {
 		this.key = key;
 	}
 }

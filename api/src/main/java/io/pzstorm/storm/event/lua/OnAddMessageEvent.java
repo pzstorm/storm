@@ -16,9 +16,9 @@ public class OnAddMessageEvent implements LuaEvent {
 	/**
 	 * Chat tab ID the message is being added to.
 	 */
-	public final short tabID;
+	public final Short tabID;
 
-	public OnAddMessageEvent(ChatMessage message, short tabID) {
+	public OnAddMessageEvent(ChatMessage message, Short tabID) {
 		this.message = message;
 		this.tabID = tabID;
 	}

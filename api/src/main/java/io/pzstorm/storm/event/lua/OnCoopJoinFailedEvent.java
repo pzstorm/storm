@@ -9,9 +9,9 @@ public class OnCoopJoinFailedEvent implements LuaEvent {
 	/**
 	 * Index of player who was denied access.
 	 */
-	public final int playerIndex;
+	public final Integer playerIndex;
 
-	public OnCoopJoinFailedEvent(int playerIndex) {
+	public OnCoopJoinFailedEvent(Integer playerIndex) {
 		this.playerIndex = playerIndex;
 	}
 }

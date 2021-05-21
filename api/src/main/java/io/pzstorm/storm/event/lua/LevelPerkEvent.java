@@ -22,14 +22,14 @@ public class LevelPerkEvent implements LuaEvent {
 	/**
 	 * Perk level after leveling up or down.
 	 */
-	public final int level;
+	public final Integer level;
 
 	/**
 	 * {@code true} if leveling perk up or {@code false} if leveling down.
 	 */
-	public final boolean levelingUp;
+	public final Boolean levelingUp;
 
-	public LevelPerkEvent(IsoGameCharacter player, PerkFactory.Perks perk, int level, boolean levelingUp) {
+	public LevelPerkEvent(IsoGameCharacter player, PerkFactory.Perks perk, Integer level, Boolean levelingUp) {
 		this.player = player;
 		this.perk = perk;
 		this.level = level;

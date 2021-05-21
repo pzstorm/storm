@@ -14,14 +14,14 @@ public class OnAmbientSoundEvent implements LuaEvent {
 	/**
 	 * Position of ambient sound along x-axis.
 	 */
-	public final float x;
+	public final Float x;
 
 	/**
 	 * Position of ambient sound along y-axis.
 	 */
-	public final float y;
+	public final Float y;
 
-	public OnAmbientSoundEvent(String soundName, float x, float y) {
+	public OnAmbientSoundEvent(String soundName, Float x, Float y) {
 		this.soundName = soundName;
 		this.x = x;
 		this.y = y;
