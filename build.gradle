@@ -76,6 +76,35 @@ subprojects.sort {
     }
 }
 
+// exclude configurations from distribution
+configurations {
+    excludeFromDist.extendsFrom(zomboidImplementation, zomboidRuntimeOnly, errorprone)
+}
+
+// these dependencies will be included as libraries in distribution
+dependencies {
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    runtimeOnly('com.google.guava:guava:30.1.1-jre') {
+        exclude group: 'com.google.code.findbugs'
+        exclude group: 'com.google.errorprone'
+        exclude group: 'org.checkerframework'
+        exclude module: 'failureaccess'
+        exclude module: 'listenablefuture'
+        exclude module: 'j2objc-annotations'
+    }
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    runtimeOnly 'org.ow2.asm:asm:9.1'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
+    runtimeOnly 'org.ow2.asm:asm-tree:9.1'
+
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-util
+    runtimeOnly 'org.ow2.asm:asm-util:9.1'
+
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.14.0'
+}
+
 capsid {
     isModProject = false
     setProjectRepository('pzstorm', 'storm')
