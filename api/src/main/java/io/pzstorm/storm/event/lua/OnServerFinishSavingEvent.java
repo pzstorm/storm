@@ -1,13 +1,13 @@
 package io.pzstorm.storm.event.lua;
 
 /**
- * Triggers after the game gets paused.
+ * Triggers after the game gets unpaused.
  */
 @SuppressWarnings({ "WeakerAccess", "unused" })
-public class OnPauseGameEvent implements LuaEvent {
+public class OnServerFinishSavingEvent implements LuaEvent {
 
 	@Override
 	public String getName() {
-		return "OnServerStartSaving";
+		return "OnServerFinishSaving";
 	}
 }
