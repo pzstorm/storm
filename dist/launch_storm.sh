@@ -10,6 +10,13 @@ PZ_HOME=\$(readlink -f "\${STORM_HOME}/../")
 cd "\${PZ_HOME}" || exit 1
 PZ_HOME=\$(pwd)
 
+# ensure Storm is installed in the right location
+if [ ! -f "\$PZ_HOME/ProjectZomboid64" ] && [ ! -f "\$PZ_HOME/ProjectZomboid32" ]; then
+  echo -e "\\nERROR: Unable to find Project Zomboid installation directory." \\
+    "Searched in directory '\${PZ_HOME}' as relative to Storm installation directory '\${STORM_HOME}/../'\\n"
+	exit 1
+fi
+
 # path to local game directory where logs, mods and configs are stored
 LOCAL_PZ_HOME="\${HOME}/Zomboid"
 
