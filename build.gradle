@@ -140,6 +140,12 @@ tasks.createRunConfigurations.configure {
     }
 }
 
-// root project does not produce any artifacts on it's own,
-// it is just an aggregate task for subproject jar tasks
-jar.actions.clear()
+// include modules classes and resources in jar
+def buildDirs = [ project(':core').buildDir, project(':api').buildDir ]
+jar {
+    from(new File(buildDirs[0], 'classes/java/main'),
+            new File(buildDirs[0], 'resources/main'),
+            new File(buildDirs[1], 'classes/java/main')
+    )
+}
+
