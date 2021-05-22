@@ -149,3 +149,20 @@ jar {
     )
 }
 
+distributions.main.contents {
+    it.from ('README.md', 'LICENSE.txt', 'CHANGELOG.md')
+    it.exclude {
+        File file = it.file
+        if (!isCI) {
+            // exclude Project Zomboid classes
+            if (file in configurations.excludeFromDist.files) {
+                return true
+            }
+            // exclude Project Zomboid libraries
+            if (file.toPath().startsWith(gameDir)) {
+                return true
+            }
+        }
+        return false
+    }
+}
