@@ -23,6 +23,8 @@ boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
 allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
+    group 'io.github.pzstorm'
+    version '0.1.0'
 }
 
 // make sure to configure zombie subproject first because other
@@ -31,9 +33,6 @@ def zombieProject = project(':zombie')
 subprojects.sort {
     return it.name.equals('zombie') ? 0 : 1
 }.each {
-    it.group 'io.github.pzstorm'
-    it.version '0.1.0'
-
     it.apply plugin: 'java'
     it.apply plugin: 'maven-publish'
     it.apply plugin: 'net.ltgt.errorprone'
