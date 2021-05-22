@@ -6,7 +6,9 @@ import io.pzstorm.capsid.setup.xml.LaunchRunConfig
 plugins {
     id 'io.pzstorm.capsid' version '0.4.0'
 
-    // Plugin that keeps your code spotless with Gradle
+    // https://docs.gradle.org/current/userguide/application_plugin.html
+    id 'application'
+
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
     id "com.diffplug.spotless" version "5.12.1"
 
