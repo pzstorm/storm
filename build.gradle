@@ -169,5 +169,5 @@ distributions.main.contents {
 
 // use a custom launch script template
 startScripts {
-    unixStartScriptGenerator.template = resources.text.fromFile('dist/launch_storm.sh')
+    unixStartScriptGenerator.template = resources.text.fromFile('dist/storm_linux.sh')
 }
