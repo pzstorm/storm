@@ -165,9 +165,9 @@ distributions.main.contents {
         }
         return false
     }
-}
+    // include additional distibution files
+    it.from 'dist'
 
-// use a custom launch script template
-startScripts {
-    unixStartScriptGenerator.template = resources.text.fromFile('dist/storm_linux.sh')
+    // exclude generated launch scripts
+    it.exclude '**/storm', '**/storm.bat'
 }
