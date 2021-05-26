@@ -6,3 +6,15 @@ Zomboid Storm is a Java modding toolchain for [Project Zomboid](https://projectz
 
 ![banner](https://raw.githubusercontent.com/pzstorm/storm/gh-pages/images/storm-banner.png)
 
+## Introduction
+
+Since the early days of Project Zomboid there was only ever two ways of modding the game; with Lua using the official API or with Java by modifying and recompiling game classes. For an in-depth analysis of Lua and Java modding you should read the [Unofficial Guide to Modding Project Zomboid](https://github.com/cocolabs/pz-modding-guide#writing-code). For now let's take a quickly look at and compare both approaches:
+
+- Lua modding is the officially supported way of modding. It is easy to learn and start with but has very limited scope of possible implementation and is much more difficult to debug when things eventually go wrong. It also has serious limitations due to simplistic language architecture. 
+
+- Java modding is more difficult to learn and start with but has a nearly unlimited scope of possible implementation and is very easy to inspect and debug during runtime. In addition to this, Java modders never had a way to interact with the game code in a standardized way (leading to mod incompatibility) or a way to load the mods in game (leading to limitations on how the mod can be used and distributed).
+
+Until now the preferred way of modding the game was with the use of Lua API, and looking at the brief comparison above it is clear why. It might seem that when choosing between these approaches you are choosing between usability and scope, but that is incorrect. From the community perspective you are choosing between developing mods for yourself or others, since Java mods were always incompatible with the whole concept of community modding.
+
+This is all in the past, now that Storm is here. Java mods can now use a community supported API to write their code without worrying about core compatibility issues, as well as an integrated mod loading system to load their classes during game execution. For more information read the [Features](#features) section to see an overview of all features currently implemented by Storm.
+
