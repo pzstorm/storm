@@ -25,3 +25,10 @@ This is all in the past, now that Storm is here. Java mods can now use a communi
 - Integrated mod loader system that allows loading mod classes during game runtime.
 - Log4j 2 logging system with custom layout that embeds the time and date to each logged message.
 
+## Installation
+
+- Download the [latest release](https://github.com/pzstorm/storm/releases/latest) from the project's Github repository.
+- Extract the archive in your Project Zomboid root directory.
+
+When updating an existing version remember to remove the contents of the old version before extracting the new version, as to avoid having redundant and possibly conflicting files in your installation directory. In future Storm versions this process will be automated for you.
+
