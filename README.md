@@ -95,6 +95,52 @@ Events are object instances that were created by in-game hooks. Events can have 
 
 Storm uses a dispatcher system to receive event calls from game and dispatch them to event handlers. Before mods can start receiving events then need to register an event handler. The following section explains how to register an event handler.
 
+#### Event handler
+
+Event handlers need to be registered from `ZomboidMod#registerEventHandlers` method. Multiple event handlers can be registered by a single mod, although this should be rarely needed and should be done mostly to organize different events into categories.
+
+To register an event handler when subscribed methods are static methods:   
+
+```java
+@Override
+public void registerEventHandlers() {
+    StormEventDispatcher.registerEventHandler(EventHandler.class);
+}
+```
+
+To register an event handler when subscribed methods are instance methods:   
+
+```java
+@Override
+public void registerEventHandlers() {
+    StormEventDispatcher.registerEventHandler(new EventHandler());
+}
+```
+
+There is no practical difference between registering event handlers in static or instance context. The only difference is that registering event handler instances allows you more flexibility as more then one event handler of the same class can be registered using the event dispatcher.
+
+All methods in registered event handlers annotated with `SubscribeEvent` annotation will be called by the dispatcher when an appropriate event is created. Each subscribed method has to have **exactly one parameter** that matches the type of event it wants to subscribe to. For example if a method wanted to subscribe to `OnRenderEvent` it would define itself in one of two ways depending on the handler registration method used:
+
+- Subscribe to `OnRenderEvent` from static context:
+
+  ```java
+  // handler must be registered as a class
+  public static void handleRenderEvent(OnRenderEvent event) {
+  	...
+  }
+  ```
+
+- Subscribe to `OnRenderEvent` from instance context:
+
+  ```java
+  // handler must be registered as an instance
+  public void handleRenderEvent(OnRenderEvent event) {
+  	...
+  }
+  ```
+
+**Do not mix static and instance subscribed methods**. Doing so will cause an exception and crash the game. Registered handler has to have all subscribed methods declared as either static or instance methods depending on the method use to register the handler.
+
 ## Contribute
 
 Anyone can contribute to the Storm project, here are a few ways to start:
