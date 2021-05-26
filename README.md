@@ -54,6 +54,21 @@ Here is an example of a correct Java mod directory structure:
 
 If you are a mod developer interested in developing Storm mods see [For developers](#for-developers) section.
 
+## For developers
+
+This section is intended for those interested in developing Storm mods or helping develop the Storm framework. 
+
+### Components
+
+Storm is comprised of the following integrated components:
+
+- `StormBootstrap` - bootstraps everything needed to launch the game with static initialization.
+- `StormLauncher`-  servers as an application entry point and starts Project Zomboid.  
+- `StormClassLoader` - used to define, transform and load Project Zomboid classes.
+- `StormModLoader` - responsible for loading mod metadata files and classes.
+- `StormModRegistry` - responsible for creating and registering mod main class instances.
+- `StormEventDispatcher` - responsible for registering event handlers and dispatching event instances.
+
 ## Contribute
 
 Anyone can contribute to the Storm project, here are a few ways to start:
