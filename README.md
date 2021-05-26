@@ -63,3 +63,6 @@ Anyone can contribute to the Storm project, here are a few ways to start:
 - **Spread the word** - Tell all your friends about the Storm project and how it changed your life (for the better).
 - **Join the community** - Join other Storm enthusiasts on [Discord](https://discord.gg/ZCmg9VsvSW) and discuss the future of this project.
 
+## License
+
+This project is licensed under [GNU General Public License v3.0](https://github.com/pzstorm/storm/blob/master/LICENSE).
