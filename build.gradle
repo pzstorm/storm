@@ -150,7 +150,7 @@ jar {
 }
 
 distributions.main.contents {
-    it.from ('README.md', 'LICENSE.txt', 'CHANGELOG.md')
+    it.from ('README.md', 'LICENSE', 'CHANGELOG.md')
     it.exclude {
         File file = it.file
         if (!isCI) {
