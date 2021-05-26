@@ -150,6 +150,7 @@ jar {
 }
 
 distributions.main {
+    distributionBaseName.set("storm-${zomboidVersion}")
     contents {
         it.from('README.md', 'LICENSE', 'CHANGELOG.md')
         it.exclude {
