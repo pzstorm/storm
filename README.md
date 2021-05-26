@@ -87,6 +87,14 @@ Here is an example of a valid `mod.info` file:
 
 The minimum requirement for valid metadata is the `name` property which has to be defined. Currently other properties are ignored, but support for more metadata definitions will be implemented in future releases.
 
+### Events
+
+Events are object instances that were created by in-game hooks. Events can have class fields that contain additional information about event context, which is very helpful when handling events. All events are located in `io.pzstorm.storm.event.*` package.
+
+*Example: an event can be used to preform an action after an item is consumed.* 
+
+Storm uses a dispatcher system to receive event calls from game and dispatch them to event handlers. Before mods can start receiving events then need to register an event handler. The following section explains how to register an event handler.
+
 ## Contribute
 
 Anyone can contribute to the Storm project, here are a few ways to start:
