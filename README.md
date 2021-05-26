@@ -32,3 +32,25 @@ This is all in the past, now that Storm is here. Java mods can now use a communi
 
 When updating an existing version remember to remove the contents of the old version before extracting the new version, as to avoid having redundant and possibly conflicting files in your installation directory. In future Storm versions this process will be automated for you.
 
+## How to use
+
+To launch Storm simply run one of the launch script available in `bin` directory.
+Choose the launch script that corresponds to your operating system and system architecture:
+
+- 32-bit Windows - `storm_win32.bat`
+- 64-bit Windows - `storm_win64.bat`
+- Any Linux distribution - `storm_linux.sh`
+
+Place the mods you want Storm to load in `~/Zomboid/mods` directory as you would normally do when installing local mods. Note that mods have to be assembled in `jar` files, loose mod loading is currently not supported.
+
+Here is an example of a correct Java mod directory structure:
+
+```
+├── default.txt
+└── sample
+    ├── mod.info
+    └── sample.jar
+```
+
+If you are a mod developer interested in developing Storm mods see [For developers](#for-developers) section.
+
