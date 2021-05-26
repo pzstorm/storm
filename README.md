@@ -16,7 +16,7 @@ Since the early days of Project Zomboid there was only ever two ways of modding 
 
 Until now the preferred way of modding the game was with the use of Lua API, and looking at the brief comparison above it is clear why. It might seem that when choosing between these approaches you are choosing between usability and scope, but that is incorrect. From the community perspective you are choosing between developing mods for yourself or others, since Java mods were always incompatible with the whole concept of community modding.
 
-This is all in the past, now that Storm is here. Java mods can now use a community supported API to write their code without worrying about core compatibility issues, as well as an integrated mod loading system to load their classes during game execution. For more information read the [Features](#features) section to see an overview of all features currently implemented by Storm.
+This is all in the past, now that Storm is here. Mod developers can now use a community supported API to write Java mods without worrying about core compatibility issues, as well as an integrated mod loading system to load Java mod classes during game execution. For more information read the [Features](#features) section to see an overview of all features currently implemented by Storm.
 
 ## Features
 
