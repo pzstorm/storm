@@ -18,3 +18,10 @@ Until now the preferred way of modding the game was with the use of Lua API, and
 
 This is all in the past, now that Storm is here. Java mods can now use a community supported API to write their code without worrying about core compatibility issues, as well as an integrated mod loading system to load their classes during game execution. For more information read the [Features](#features) section to see an overview of all features currently implemented by Storm.
 
+## Features
+
+- Comprehensive and easy to use API that allows modders to write fully functional Java mods.
+- 186 custom game events available to subscribe to when creating mods.
+- Integrated mod loader system that allows loading mod classes during game runtime.
+- Log4j 2 logging system with custom layout that embeds the time and date to each logged message.
+
