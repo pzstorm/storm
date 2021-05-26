@@ -1,39 +1,176 @@
+//file:noinspection SpellCheckingInspection
+
+import io.pzstorm.capsid.setup.VmParameter
+import io.pzstorm.capsid.setup.xml.LaunchRunConfig
+
 plugins {
-	id 'io.pzstorm.capsid' version '0.2.0'
+    id 'io.pzstorm.capsid' version '0.4.0'
 
-	// Plugin that keeps your code spotless with Gradle
-	// https://plugins.gradle.org/plugin/com.diffplug.spotless
-	id "com.diffplug.spotless" version "5.12.1"
+    // https://docs.gradle.org/current/userguide/application_plugin.html
+    id 'application'
 
-	// https://plugins.gradle.org/plugin/net.ltgt.errorprone
-	id 'net.ltgt.errorprone' version '2.0.1'
+    // https://plugins.gradle.org/plugin/com.diffplug.spotless
+    id "com.diffplug.spotless" version "5.12.1"
+
+    // https://plugins.gradle.org/plugin/net.ltgt.errorprone
+    id 'net.ltgt.errorprone' version '2.0.1'
+
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    id 'maven-publish'
 }
-apply plugin: 'com.diffplug.spotless'
-apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+// is gradle executing on CI server?
+String sIsCI = System.getenv("CI") ?: project.ext.has('CI') ? project.ext.get('CI') : null
+boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
 
-version '0.1.0'
+allprojects {
+    repositories { mavenCentral() }
+    project.ext.set('CI', isCI)
+    group 'io.github.pzstorm'
+    version '0.1.0'
+}
 
+// make sure to configure zombie subproject first because other
+// subprojects depend on including it's sourceset output
+def zombieProject = project(':zombie')
+subprojects.sort {
+    return it.name.equals('zombie') ? 0 : 1
+}.each {
+    it.apply plugin: 'java'
+    it.apply plugin: 'maven-publish'
+    it.apply plugin: 'net.ltgt.errorprone'
+    it.apply plugin: 'com.diffplug.spotless'
+    it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+
+    it.java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+    if (!it.name.equals('zombie'))
+    {
+        // add dummy zomboid classes to classpath when compiling on CI
+        if (isCI) {
+            it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+        }
+        // assemble project jars in root build directory
+        it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
+
+        it.publishing {
+            // enable publishing to mavenLocal repository
+            repositories { mavenLocal() }
+        }
+    }
+    // declare dependencies common to all subprojects
+    it.dependencies {
+        // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
+        errorprone 'com.google.errorprone:error_prone_core:2.6.0'
+
+        // https://mvnrepository.com/artifact/com.google.errorprone/javac
+        errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
+
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+        compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+
+        // https://mvnrepository.com/artifact/org.jetbrains/annotations
+        compileOnly 'org.jetbrains:annotations:20.1.0'
+    }
+}
+
+// exclude configurations from distribution
+configurations {
+    excludeFromDist.extendsFrom(zomboidImplementation, zomboidRuntimeOnly, errorprone)
+}
+
+// these dependencies will be included as libraries in distribution
 dependencies {
-	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    runtimeOnly('com.google.guava:guava:30.1.1-jre') {
+        exclude group: 'com.google.code.findbugs'
+        exclude group: 'com.google.errorprone'
+        exclude group: 'org.checkerframework'
+        exclude module: 'failureaccess'
+        exclude module: 'listenablefuture'
+        exclude module: 'j2objc-annotations'
+    }
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    runtimeOnly 'org.ow2.asm:asm:9.1'
 
-	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
+    runtimeOnly 'org.ow2.asm:asm-tree:9.1'
 
-	// https://mvnrepository.com/artifact/com.google.guava/guava
-	implementation 'com.google.guava:guava:30.1-jre'
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-util
+    runtimeOnly 'org.ow2.asm:asm-util:9.1'
 
-	// https://mvnrepository.com/artifact/org.jetbrains/annotations
-	compileOnly 'org.jetbrains:annotations:20.1.0'
-
-	// https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
-	errorprone 'com.google.errorprone:error_prone_core:2.6.0'
-
-	// https://mvnrepository.com/artifact/com.google.errorprone/javac
-	errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.14.0'
 }
 
-test {
-	useJUnitPlatform()
-	testLogging.events "passed", "skipped", "failed"
+capsid {
+    isModProject = false
+    setProjectRepository('pzstorm', 'storm')
+}
+
+sourceSets {
+    // remove media sourceSet created by capsid
+    def mediaSourceSet = sourceSets.findByName('media')
+    if (mediaSourceSet != null) {
+        remove(mediaSourceSet)
+    }
+}
+
+tasks.createRunConfigurations.configure {
+    actions.clear()
+    doLast {
+        def vmParameterBuilder = new VmParameter.Builder()
+        def os = org.gradle.internal.os.OperatingSystem.current()
+        if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
+            vmParameterBuilder = vmParameterBuilder
+                    .withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
+                    .withLwjglLibraryPaths(gameDir)
+        }
+        //@formatter:off
+        LaunchRunConfig launchStorm = new LaunchRunConfig(
+                "Launch Storm", "io.pzstorm.storm.core.StormLauncher",
+                vmParameterBuilder, [
+                Main: new File(file(gameDir), "logs/storm/main.log").toPath() ,
+                Debug: new File(file(gameDir), "logs/storm/debug.log").toPath()] as Map
+        )//@formatter:on
+        launchStorm.vmParamBuilder.build()
+        launchStorm.configure(getProject()).writeToFile()
+    }
+}
+
+// include modules classes and resources in jar
+def buildDirs = [ project(':core').buildDir, project(':api').buildDir ]
+jar {
+    from(new File(buildDirs[0], 'classes/java/main'),
+            new File(buildDirs[0], 'resources/main'),
+            new File(buildDirs[1], 'classes/java/main')
+    )
+}
+
+distributions.main {
+    distributionBaseName.set("storm-${zomboidVersion}")
+    contents {
+        it.from('README.md', 'LICENSE', 'CHANGELOG.md')
+        it.exclude {
+            File file = it.file
+            if (!isCI) {
+                // exclude Project Zomboid classes
+                if (file in configurations.excludeFromDist.files) {
+                    return true
+                }
+                // exclude Project Zomboid libraries
+                if (file.toPath().startsWith(gameDir)) {
+                    return true
+                }
+            }
+            return false
+        }
+        // include additional distibution files
+        it.from 'dist'
+
+        // exclude generated launch scripts
+        it.exclude '**/storm', '**/storm.bat'
+    }
 }

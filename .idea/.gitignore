@@ -1,12 +1,14 @@
 # User-specific stuff
 /dictionaries/
 /shelf/
+/scopes/
 workspace.xml
 tasks.xml
 usage.statistics.xml
 
 # Generated files
 contentModel.xml
+uiDesigner.xml
 
 # Gradle
 /libraries/
@@ -15,6 +17,9 @@ gradle.xml
 # Other stuff
 /artifacts/
 /modules/
+/runConfigurations/Launch_*
 compiler.xml
+libraries-with-intellij-classes.xml
 jarRepositories.xml
 modules.xml
+.name

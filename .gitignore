@@ -2,12 +2,16 @@
 local.properties
 version.properties
 
+# Temporary files
+*.java~
+*.gradle~
+
 ### Intellij ###
 
 # File-based project format
- *.iml
- *.ipr
- *.iws
+**/*.iml
+**/*.ipr
+**/*.iws
 
 # IntelliJ
 out/
@@ -15,6 +19,9 @@ out/
 ### Java ###
 # Compiled class file
 *.class
+
+# Exclude class files used as resources
+!**/resources/**/*.class
 
 # Log file
 *.log
@@ -27,6 +34,9 @@ out/
 *.zip
 *.tar.gz
 *.rar
+
+# Exclude jar files used as resources
+!**/resources/**/*.jar
 
 ### Windows ###
 # Windows thumbnail cache files

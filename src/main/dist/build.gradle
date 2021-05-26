@@ -1,7 +1,0 @@
-plugins {
-	id 'io.pzstorm.capsid' version '1.0.0'
-}
-
-capsid {
-
-}

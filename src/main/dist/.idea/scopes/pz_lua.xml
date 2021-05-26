@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="pz-lua" pattern="lib:media.lua..*" />
-</component>
