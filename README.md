@@ -54,3 +54,12 @@ Here is an example of a correct Java mod directory structure:
 
 If you are a mod developer interested in developing Storm mods see [For developers](#for-developers) section.
 
+## Contribute
+
+Anyone can contribute to the Storm project, here are a few ways to start:
+
+- **Help test Storm** - Simply launch and play the game using Storm. You can play with or without Lua and/or Java mods, but note that there is no need to install any mods, just running the game with Storm is enough to test the core framework. If you come across any issue please report them using the project [issue tracker](https://github.com/pzstorm/storm/issues/new). This helps developers know what issues they need to address in future releases.
+- **Create mods** - Create and publish Java mods that use the Storm framework. 
+- **Spread the word** - Tell all your friends about the Storm project and how it changed your life (for the better).
+- **Join the community** - Join other Storm enthusiasts on [Discord](https://discord.gg/ZCmg9VsvSW) and discuss the future of this project.
+
