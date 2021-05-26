@@ -2,6 +2,10 @@
 local.properties
 version.properties
 
+# Temporary files
+*.java~
+*.gradle~
+
 ### Intellij ###
 
 # File-based project format
@@ -15,9 +19,6 @@ out/
 ### Java ###
 # Compiled class file
 *.class
-
-# Temporary java file
-*.java~
 
 # Exclude class files used as resources
 !**/resources/**/*.class
