@@ -69,6 +69,24 @@ Storm is comprised of the following integrated components:
 - `StormModRegistry` - responsible for creating and registering mod main class instances.
 - `StormEventDispatcher` - responsible for registering event handlers and dispatching event instances.
 
+### Metadata
+
+Mods are detected by the presence of metadata in mod directory. Metadata has to be written in a `mod.info` file and included in the distribution. If a metadata file is not present in the mod directory the mod will not be loaded.
+
+Here is an example of a valid `mod.info` file:
+
+ ```
+ name=Sample mod
+ poster=poster.png
+ description=This is a sample mod.
+ id=pz-sample-mod
+ url=https://github.com/pzstorm/sample-mod
+ modversion=0.1.0
+ pzversion=41.50-IWBUMS
+ ```
+
+The minimum requirement for valid metadata is the `name` property which has to be defined. Currently other properties are ignored, but support for more metadata definitions will be implemented in future releases.
+
 ## Contribute
 
 Anyone can contribute to the Storm project, here are a few ways to start:
