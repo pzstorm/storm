@@ -172,3 +172,12 @@ distributions.main {
         it.exclude '**/storm', '**/storm.bat'
     }
 }
+
+// collect all publications from main projects and sign them
+signing {
+    Set<Publication> allPublications = new HashSet<>()
+    mainProjects.each {
+        allPublications.addAll(it.publishing.publications.getAsMap().values().toArray())
+    }
+    sign allPublications.toArray() as Publication[]
+}
