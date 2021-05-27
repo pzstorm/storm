@@ -24,6 +24,8 @@ plugins {
     // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
     id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
+apply from: 'publish.gradle'
+
 // is gradle executing on CI server?
 String sIsCI = System.getenv("CI") ?: project.ext.has('CI') ? project.ext.get('CI') : null
 boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
@@ -175,14 +177,69 @@ distributions.main {
     }
 }
 
-// collect all publications from main projects and sign them
-signing {
-    Set<Publication> allPublications = new HashSet<>()
-    mainProjects.each {
-        allPublications.addAll(it.publishing.publications.getAsMap().values().toArray())
+publishing {
+    publications {
+        coreMavenJava(MavenPublication) {
+            from project(':core').components.java
+            artifactId 'storm-core'
+            pom {
+                name = 'Zomboid Storm Core'
+                description = 'Project Zomboid Storm Implementation'
+                url = 'https://github.com/pzstorm/storm'
+                scm {
+                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
+                    url = 'https://github.com/pzstorm/storm'
+                }
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yooksi'
+                        name = 'Matthew Cain'
+                        email = 'yooks@tuta.io'
+                    }
+                }
+            }
+        }
+        apiMavenJava(MavenPublication) {
+            from project(':api').components.java
+            artifactId 'storm-api'
+            pom {
+                name = 'Zomboid Storm API'
+                description = 'Project Zomboid Storm API'
+                url = 'https://github.com/pzstorm/storm'
+                scm {
+                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
+                    url = 'https://github.com/pzstorm/storm'
+                }
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yooksi'
+                        name = 'Matthew Cain'
+                        email = 'yooks@tuta.io'
+                    }
+                }
+            }
+        }
     }
-    sign allPublications.toArray() as Publication[]
 }
+
+signing {
+    sign(publishing.publications.apiMavenJava, publishing.publications.coreMavenJava)
+}
+
 nexusPublishing {
     repositories {
         sonatype {

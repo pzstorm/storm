@@ -39,17 +39,4 @@ test {
     useJUnitPlatform()
     testLogging.events "passed", "skipped", "failed"
 }
-
 jar.archiveBaseName.set('storm-core')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId 'storm-core'
-            pom {
-                name = 'Zomboid Storm Core'
-                description = 'Project Zomboid Storm Implementation'
-            }
-        }
-    }
-}

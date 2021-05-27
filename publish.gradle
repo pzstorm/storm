@@ -21,33 +21,3 @@ java {
 artifacts {
     archives javadocJar, sourcesJar
 }
-
-publishing {
-    publications {
-        //noinspection GroovyAssignabilityCheck
-        mavenJava(MavenPublication) {
-            from components.java
-            pom {
-                url = 'https://github.com/pzstorm/storm'
-                scm {
-                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
-                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
-                    url = 'https://github.com/pzstorm/storm'
-                }
-                licenses {
-                    license {
-                        name = 'GNU General Public License v3.0'
-                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'yooksi'
-                        name = 'Matthew Cain'
-                        email = 'yooks@tuta.io'
-                    }
-                }
-            }
-        }
-    }
-}

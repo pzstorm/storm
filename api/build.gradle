@@ -18,17 +18,4 @@ dependencies {
         }
     }
 }
-
 jar.archiveBaseName.set('storm-api')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId 'storm-api'
-            pom {
-                name = 'Zomboid Storm API'
-                description = 'Project Zomboid Storm API'
-            }
-        }
-    }
-}
