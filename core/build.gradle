@@ -1,3 +1,5 @@
+apply from: '../publish.gradle'
+
 def apiProject = project(':api')
 def zombieProject = project(':zombie')
 
@@ -43,8 +45,11 @@ jar.archiveBaseName.set('storm-core')
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
             artifactId 'storm-core'
+            pom {
+                name = 'Zomboid Storm Core'
+                description = 'Project Zomboid Storm Implementation'
+            }
         }
     }
 }
