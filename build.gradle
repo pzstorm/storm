@@ -9,14 +9,18 @@ plugins {
     // https://docs.gradle.org/current/userguide/application_plugin.html
     id 'application'
 
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    id 'maven-publish'
+
+    // https://docs.gradle.org/current/userguide/signing_plugin.html
+    id 'signing'
+
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
     id "com.diffplug.spotless" version "5.12.1"
 
     // https://plugins.gradle.org/plugin/net.ltgt.errorprone
     id 'net.ltgt.errorprone' version '2.0.1'
 
-    // https://docs.gradle.org/current/userguide/publishing_maven.html
-    id 'maven-publish'
 }
 // is gradle executing on CI server?
 String sIsCI = System.getenv("CI") ?: project.ext.has('CI') ? project.ext.get('CI') : null
