@@ -31,7 +31,6 @@ allprojects {
 
 // make sure to configure zombie subproject first because other
 // subprojects depend on including it's sourceset output
-def zombieProject = project(':zombie')
 subprojects.sort {
     return it.name.equals('zombie') ? 0 : 1
 }.each {
@@ -44,20 +43,6 @@ subprojects.sort {
     it.java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
-        }
-    }
-    if (!it.name.equals('zombie'))
-    {
-        // add dummy zomboid classes to classpath when compiling on CI
-        if (isCI) {
-            it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
-        }
-        // assemble project jars in root build directory
-        it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
-
-        it.publishing {
-            // enable publishing to mavenLocal repository
-            repositories { mavenLocal() }
         }
     }
     // declare dependencies common to all subprojects
@@ -74,6 +59,17 @@ subprojects.sort {
         // https://mvnrepository.com/artifact/org.jetbrains/annotations
         compileOnly 'org.jetbrains:annotations:20.1.0'
     }
+}
+
+def zombieProject = project(':zombie')
+def mainProjects = [ project(':api'), project(':core') ]
+mainProjects.each {
+    // add dummy zomboid classes to classpath when compiling on CI
+    if (isCI) {
+        it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+    }
+    // assemble project jars in root build directory
+    it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
 }
 
 // exclude configurations from distribution
@@ -140,13 +136,11 @@ tasks.createRunConfigurations.configure {
     }
 }
 
-// include modules classes and resources in jar
-def buildDirs = [ project(':core').buildDir, project(':api').buildDir ]
 jar {
-    from(new File(buildDirs[0], 'classes/java/main'),
-            new File(buildDirs[0], 'resources/main'),
-            new File(buildDirs[1], 'classes/java/main')
-    )
+    // include modules classes and resources in jar
+    mainProjects.each {
+        from(new File(it.buildDir, 'classes/java/main'), new File(it.buildDir, 'resources/main'))
+    }
 }
 
 distributions.main {
