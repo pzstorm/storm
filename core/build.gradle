@@ -1,3 +1,5 @@
+apply from: '../publish.gradle'
+
 def apiProject = project(':api')
 def zombieProject = project(':zombie')
 
@@ -37,14 +39,4 @@ test {
     useJUnitPlatform()
     testLogging.events "passed", "skipped", "failed"
 }
-
 jar.archiveBaseName.set('storm-core')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifactId 'storm-core'
-        }
-    }
-}

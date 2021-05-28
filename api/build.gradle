@@ -1,4 +1,5 @@
 apply plugin: 'java-library'
+apply from: '../publish.gradle'
 
 def rootConfigurations = rootProject.configurations
 dependencies {
@@ -17,14 +18,4 @@ dependencies {
         }
     }
 }
-
 jar.archiveBaseName.set('storm-api')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifactId 'storm-api'
-        }
-    }
-}

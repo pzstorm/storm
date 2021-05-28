@@ -9,15 +9,23 @@ plugins {
     // https://docs.gradle.org/current/userguide/application_plugin.html
     id 'application'
 
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    id 'maven-publish'
+
+    // https://docs.gradle.org/current/userguide/signing_plugin.html
+    id 'signing'
+
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
     id "com.diffplug.spotless" version "5.12.1"
 
     // https://plugins.gradle.org/plugin/net.ltgt.errorprone
     id 'net.ltgt.errorprone' version '2.0.1'
 
-    // https://docs.gradle.org/current/userguide/publishing_maven.html
-    id 'maven-publish'
+    // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
+    id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
+apply from: 'publish.gradle'
+
 // is gradle executing on CI server?
 String sIsCI = System.getenv("CI") ?: project.ext.has('CI') ? project.ext.get('CI') : null
 boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
@@ -31,7 +39,6 @@ allprojects {
 
 // make sure to configure zombie subproject first because other
 // subprojects depend on including it's sourceset output
-def zombieProject = project(':zombie')
 subprojects.sort {
     return it.name.equals('zombie') ? 0 : 1
 }.each {
@@ -44,20 +51,6 @@ subprojects.sort {
     it.java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
-        }
-    }
-    if (!it.name.equals('zombie'))
-    {
-        // add dummy zomboid classes to classpath when compiling on CI
-        if (isCI) {
-            it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
-        }
-        // assemble project jars in root build directory
-        it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
-
-        it.publishing {
-            // enable publishing to mavenLocal repository
-            repositories { mavenLocal() }
         }
     }
     // declare dependencies common to all subprojects
@@ -74,6 +67,17 @@ subprojects.sort {
         // https://mvnrepository.com/artifact/org.jetbrains/annotations
         compileOnly 'org.jetbrains:annotations:20.1.0'
     }
+}
+
+def zombieProject = project(':zombie')
+def mainProjects = [ project(':api'), project(':core') ]
+mainProjects.each {
+    // add dummy zomboid classes to classpath when compiling on CI
+    if (isCI) {
+        it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
+    }
+    // assemble project jars in root build directory
+    it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
 }
 
 // exclude configurations from distribution
@@ -140,13 +144,11 @@ tasks.createRunConfigurations.configure {
     }
 }
 
-// include modules classes and resources in jar
-def buildDirs = [ project(':core').buildDir, project(':api').buildDir ]
 jar {
-    from(new File(buildDirs[0], 'classes/java/main'),
-            new File(buildDirs[0], 'resources/main'),
-            new File(buildDirs[1], 'classes/java/main')
-    )
+    // include modules classes and resources in jar
+    mainProjects.each {
+        from(new File(it.buildDir, 'classes/java/main'), new File(it.buildDir, 'resources/main'))
+    }
 }
 
 distributions.main {
@@ -172,5 +174,77 @@ distributions.main {
 
         // exclude generated launch scripts
         it.exclude '**/storm', '**/storm.bat'
+    }
+}
+
+publishing {
+    publications {
+        coreMavenJava(MavenPublication) {
+            from project(':core').components.java
+            artifactId 'storm-core'
+            pom {
+                name = 'Zomboid Storm Core'
+                description = 'Project Zomboid Storm Implementation'
+                url = 'https://github.com/pzstorm/storm'
+                scm {
+                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
+                    url = 'https://github.com/pzstorm/storm'
+                }
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yooksi'
+                        name = 'Matthew Cain'
+                        email = 'yooks@tuta.io'
+                    }
+                }
+            }
+        }
+        apiMavenJava(MavenPublication) {
+            from project(':api').components.java
+            artifactId 'storm-api'
+            pom {
+                name = 'Zomboid Storm API'
+                description = 'Project Zomboid Storm API'
+                url = 'https://github.com/pzstorm/storm'
+                scm {
+                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
+                    url = 'https://github.com/pzstorm/storm'
+                }
+                licenses {
+                    license {
+                        name = 'GNU General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yooksi'
+                        name = 'Matthew Cain'
+                        email = 'yooks@tuta.io'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications.apiMavenJava, publishing.publications.coreMavenJava)
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
     }
 }
