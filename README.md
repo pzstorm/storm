@@ -1,6 +1,6 @@
 # Zomboid Storm
 
-[![build](https://github.com/pzstorm/storm/actions/workflows/java-ci.yaml/badge.svg?branch=dev)](https://github.com/pzstorm/storm/actions/workflows/java-ci.yaml) [![License](https://img.shields.io/github/license/pzstorm/storm?logo=gnu)](https://www.gnu.org/licenses/) [![Discord](https://img.shields.io/discord/823907021178798150?color=7289DA&label=discord&logo=discord&logoColor=white)](https://discord.gg/ZCmg9VsvSW)
+[![build](https://github.com/pzstorm/storm/actions/workflows/java-ci.yaml/badge.svg?branch=dev)](https://github.com/pzstorm/storm/actions/workflows/java-ci.yaml) [![Maven Central](https://img.shields.io/maven-central/v/io.github.pzstorm/storm-api?color=blue&logo=Apache%20Maven)](https://search.maven.org/search?q=g:%22io.github.pzstorm%22%20AND%20a:%22storm-api%22?color=informational) [![License](https://img.shields.io/github/license/pzstorm/storm?logo=gnu)](https://www.gnu.org/licenses/) [![Discord](https://img.shields.io/discord/823907021178798150?color=7289DA&label=discord&logo=discord&logoColor=white)](https://discord.gg/ZCmg9VsvSW)
 
 Zomboid Storm is a Java modding toolchain for [Project Zomboid](https://projectzomboid.com/blog/).
 
