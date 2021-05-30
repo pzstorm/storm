@@ -35,8 +35,12 @@ class LuaEventFactoryTest implements UnitTest {
 					.put(OnFETickEvent.class, new Class<?>[] {
 							Integer.class
 					})
-					.put(OnFillInventoryObjectContextMenuEvent.class, new Class<?>[] {})
-					.put(OnFillWorldObjectContextMenuEvent.class, new Class<?>[] {})
+					.put(OnFillInventoryObjectContextMenuEvent.class, new Class<?>[] {
+							Double.class, KahluaTable.class, KahluaTable.class
+					})
+					.put(OnFillWorldObjectContextMenuEvent.class, new Class<?>[] {
+							Double.class, KahluaTable.class, KahluaTable.class, Boolean.class
+					})
 					.put(OnGameBootEvent.class, new Class<?>[] {})
 					.put(OnGameStartEvent.class, new Class<?>[] {})
 					.put(OnJoypadActivateEvent.class, new Class<?>[] {
@@ -59,7 +63,9 @@ class LuaEventFactoryTest implements UnitTest {
 							IsoPlayer.class
 					})
 					.put(OnPostUIDrawEvent.class, new Class<?>[] {})
-					.put(OnPreFillInventoryObjectContextMenuEvent.class, new Class<?>[] {})
+					.put(OnPreFillInventoryObjectContextMenuEvent.class, new Class<?>[] {
+							Double.class, KahluaTable.class, KahluaTable.class
+					})
 					.put(OnPreUIDrawEvent.class, new Class<?>[] {})
 					.put(OnRefreshInventoryWindowContainersEvent.class, new Class<?>[] {
 							KahluaTable.class, String.class
