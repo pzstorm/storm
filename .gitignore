@@ -6,6 +6,10 @@ version.properties
 *.java~
 *.gradle~
 
+# Ruby files
+Gemfile
+Gemfile.lock
+
 ### Intellij ###
 
 # File-based project format
