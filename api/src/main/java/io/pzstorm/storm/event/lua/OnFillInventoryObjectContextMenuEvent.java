@@ -18,9 +18,26 @@
 
 package io.pzstorm.storm.event.lua;
 
+import se.krka.kahlua.vm.KahluaTable;
+
 /**
+ * <p>Triggered when a player right clicks an inventory item.</p>
  * Use this event to add items to context menu without mod conflicts.
  */
+@SuppressWarnings({ "WeakerAccess", "unused" })
 public class OnFillInventoryObjectContextMenuEvent implements LuaEvent {
-	// TODO: finish writing this event
+
+	/**
+	 * Index of player that triggered the event.
+	 */
+	public final Double playerIndex;
+
+	// TODO: finish documenting this event
+	public final KahluaTable context, items;
+
+	public OnFillInventoryObjectContextMenuEvent(Double playerIndex, KahluaTable context, KahluaTable items) {
+		this.playerIndex = playerIndex;
+		this.context = context;
+		this.items = items;
+	}
 }
