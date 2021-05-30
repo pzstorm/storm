@@ -45,7 +45,7 @@ public class StormEventHandler {
 				Object internal = ((KahluaTableImpl) table).delegate.get("internal");
 				if (internal instanceof String && internal.equals("VERSIONDETAIL"))
 				{
-					String text = "Storm version 0.1.0-alpha";
+					String text = "Storm version 0.1.1-alpha";
 					TextManager.instance.DrawString(UIFont.Small, Core.width - 235.0,
 							Core.height - 50.0, text, 1.0, 1.0, 1.0, 0.7);
 				}
