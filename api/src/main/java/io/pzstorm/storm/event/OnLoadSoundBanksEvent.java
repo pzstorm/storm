@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.pzstorm.storm.event.lua;
+package io.pzstorm.storm.event;
+
+import io.pzstorm.storm.event.lua.LuaEvent;
 
 /**
  * Triggered after sound banks have been loaded.
