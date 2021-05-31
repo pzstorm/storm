@@ -100,7 +100,6 @@ public class LuaEventFactory {
 				OnLoginStateEvent.class,
 				OnLoginStateSuccessEvent.class,
 				OnCharacterCreateStatsEvent.class,
-				OnLoadSoundBanksEvent.class,
 				OnObjectLeftMouseButtonDownEvent.class,
 				OnObjectLeftMouseButtonUpEvent.class,
 				OnObjectRightMouseButtonDownEvent.class,
