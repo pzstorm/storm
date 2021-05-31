@@ -21,6 +21,7 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pzstorm.storm.patch.GameWindowPatch;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.MethodVisitor;
@@ -80,6 +81,7 @@ public class StormClassTransformers {
 										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
 						.build()
 		);
+		registerTransformer("zombie.GameWindow", new GameWindowPatch());
 
 		///////////////////////
 		// REGISTER PATCHES //
