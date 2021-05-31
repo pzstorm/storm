@@ -184,6 +184,7 @@ public class LuaEventFactory {
 				OnObjectAboutToBeRemovedEvent.class,
 				onLoadModDataFromServerEvent.class,
 				OnGameTimeLoadedEvent.class,
+				OnGameWindowInitEvent.class,
 				OnCGlobalObjectSystemInitEvent.class,
 				OnSGlobalObjectSystemInitEvent.class,
 				OnWorldMessageEvent.class,
