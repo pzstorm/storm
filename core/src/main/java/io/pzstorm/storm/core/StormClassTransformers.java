@@ -91,6 +91,7 @@ public class StormClassTransformers {
 								"(Ljava/lang/String;)J"), new MethodMaxs(3, 2))
 						.build()
 		);
+		registerTransformer("fmod.fmod.FMODManager", new OnLoadSoundBanksHook());
 
 		///////////////////////
 		// REGISTER PATCHES //
