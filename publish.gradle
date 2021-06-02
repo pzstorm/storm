@@ -1,5 +1,8 @@
 // This script applies common project publishing configuration
 
+// exclude javadoc warnings from console
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
 task javadocJar(type: Jar) {
     archiveClassifier.set('javadoc')
     from javadoc
