@@ -85,6 +85,13 @@ public class StormClassTransformers {
 						.build()
 		);
 		registerTransformer("zombie.GameWindow", new GameWindowPatch());
+		registerTransformer("fmod.javafmod",
+				new OnLoadSoundBankHook(), ImmutableMap.<MethodData, MethodMaxs>builder()
+						.put(new MethodData("FMOD_Studio_System_LoadBankFile",
+								"(Ljava/lang/String;)J"), new MethodMaxs(3, 2))
+						.build()
+		);
+		registerTransformer("fmod.fmod.FMODManager", new OnLoadSoundBanksHook());
 
 		///////////////////////
 		// REGISTER PATCHES //
