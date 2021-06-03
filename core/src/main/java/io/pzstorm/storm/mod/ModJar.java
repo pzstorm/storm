@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
@@ -57,6 +58,13 @@ public class ModJar extends JarFile {
 		catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	/**
+	 * Returns {@code Path} to file representing this {@code ModJar}.
+	 */
+	public Path getFilePath() {
+		return jarFile.toPath();
 	}
 
 	@Override

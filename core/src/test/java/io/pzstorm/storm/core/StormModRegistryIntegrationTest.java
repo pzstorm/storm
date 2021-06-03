@@ -41,7 +41,7 @@ class StormModRegistryIntegrationTest extends ModLoaderTestFixture {
 			STORM_MOD_LOADER_CONSTRUCTOR = STORM_MOD_LOADER_CLASS.getDeclaredConstructor();
 			STORM_MOD_LOADER_CONSTRUCTOR.setAccessible(true);
 
-			GET_JAR_RESOURCE_PATHS = STORM_MOD_LOADER_CLASS.getDeclaredMethod("getJarResourcePaths");
+			GET_JAR_RESOURCE_PATHS = STORM_MOD_LOADER_CLASS.getDeclaredMethod("getResourcePaths");
 			GET_JAR_RESOURCE_PATHS.setAccessible(true);
 
 			CATALOG_MOD_JARS = STORM_MOD_LOADER_CLASS.getDeclaredMethod("catalogModJars");
