@@ -40,7 +40,7 @@ public final class StormLogoState extends GameState {
 	/**
 	 * Path to the Storm logo image resource.
 	 */
-	private static final String LOGO_RESOURCE_PATH = "storm_logo.png";
+	private static final String LOGO_RESOURCE_PATH = "storm-logo.png";
 
 	/**
 	 * Determines how long the logo stays on screen.
