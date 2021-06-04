@@ -57,6 +57,7 @@ public final class StormLogoState extends GameState {
 
 	private boolean bNoRender;
 
+	@Override
 	public void enter() {
 
 		UIManager.bSuspend = true;
@@ -64,10 +65,12 @@ public final class StormLogoState extends GameState {
 		this.targetAlpha = 1.0F;
 	}
 
+	@Override
 	public void exit() {
 		UIManager.bSuspend = false;
 	}
 
+	@Override
 	public void render() {
 
 		if (this.bNoRender)
@@ -123,6 +126,7 @@ public final class StormLogoState extends GameState {
 		}
 	}
 
+	@Override
 	public StateAction update() {
 
 		float alphaStep = 0.02F;
