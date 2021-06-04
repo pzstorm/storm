@@ -20,11 +20,18 @@ package io.pzstorm.storm.event;
 
 import io.pzstorm.storm.event.lua.LuaEvent;
 import io.pzstorm.storm.event.lua.OnGameWindowInitEvent;
+import io.pzstorm.storm.game.StormLogoState;
+import io.pzstorm.storm.logging.StormLogger;
 import se.krka.kahlua.j2se.KahluaTableImpl;
 import se.krka.kahlua.vm.KahluaTable;
+import zombie.GameWindow;
 import zombie.core.Core;
+import zombie.gameStates.GameState;
+import zombie.gameStates.TISLogoState;
 import zombie.ui.TextManager;
 import zombie.ui.UIFont;
+
+import java.util.List;
 
 /**
  * This class responds to all events needed for Storm to implement custom features.
@@ -62,7 +69,28 @@ public class StormEventHandler {
 		);
 		StormEventDispatcher.dispatchEvent(luaEvent);
 	}
+
 	@SubscribeEvent
 	public static void handleOnGameWindowInit(OnGameWindowInitEvent event) {
+
+		List<GameState> states = GameWindow.states.States;
+		GameState tisLogoState = states.get(0);
+
+		if (tisLogoState instanceof TISLogoState)
+		{
+			// add StormLogoState which will play after TISLogoState
+			GameWindow.states.States.add(1, new StormLogoState());
+			GameWindow.states.LoopToState = 2;
+
+			// increase TIS logo delay values
+			((TISLogoState)tisLogoState).leavedelay = 40;
+			((TISLogoState)tisLogoState).logoDelay = 60.0F;
+		}
+		else {
+			StormLogger.error(String.format(
+					"Unexpected GameState found at index 0 (%s) expected %s",
+					tisLogoState.getClass().getName(), TISLogoState.class.getName())
+			);
+		}
 	}
 }
