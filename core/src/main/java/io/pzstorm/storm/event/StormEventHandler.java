@@ -19,6 +19,7 @@
 package io.pzstorm.storm.event;
 
 import io.pzstorm.storm.event.lua.LuaEvent;
+import io.pzstorm.storm.event.lua.OnGameWindowInitEvent;
 import se.krka.kahlua.j2se.KahluaTableImpl;
 import se.krka.kahlua.vm.KahluaTable;
 import zombie.core.Core;
@@ -60,5 +61,8 @@ public class StormEventHandler {
 				event.luaEvent.name, event.args.toArray(new Object[0])
 		);
 		StormEventDispatcher.dispatchEvent(luaEvent);
+	}
+	@SubscribeEvent
+	public static void handleOnGameWindowInit(OnGameWindowInitEvent event) {
 	}
 }
