@@ -41,6 +41,9 @@ jobs:
           file: "zomboid-41.50.jar"
           target: "lib/zomboid-41.50.jar"
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      # Apply correct permissions for lib directory
+      - name: Apply directory permissions
+        run: chmod a+rwx ./lib
       # Assemble main classes with gradle
       - name: Assemble classes
         uses: burrunan/gradle-cache-action@v1
