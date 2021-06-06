@@ -12,10 +12,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.ow2.asm/asm-tree
     implementation 'org.ow2.asm:asm-tree:9.1'
 
-    if (!CI) {
-        compileOnly files(rootConfigurations.zomboidImplementation.files).filter {
-            return !(it.name.equals('media'))
-        }
+    compileOnly files(rootConfigurations.zomboidImplementation.files).filter {
+        return !(it.name.equals('media'))
     }
 }
 jar.archiveBaseName.set('storm-api')
