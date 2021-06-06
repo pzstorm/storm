@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./lib/zomboid.jar
-          key: PZ-${{ env.PZ_VERSION }}
+          key: PZ-${{ env.PZ_VERSION }}-${{ secrets.CACHE_VERSION }}
       # Install Project Zomboid classes
       - name: Install Zomboid classes
         if: steps.pz-cache.outputs.cache-hit != 'true'
@@ -55,7 +55,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./lib/zomboid.jar
-          key: PZ-${{ env.PZ_VERSION }}
+          key: PZ-${{ env.PZ_VERSION }}-${{ secrets.CACHE_VERSION }}
       # Apply correct permissions for lib directory
       - name: Apply directory permissions
         run: sudo chmod a+rwx ./lib
