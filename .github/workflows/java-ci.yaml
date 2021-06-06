@@ -32,6 +32,15 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      # Install Project Zomboid classes
+      - name: Install Zomboid classes
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: "pzstorm/zomboid"
+          version: "tags/v{{$ env.PZ_VERSION}}"
+          file: "zomboid-{{$ env.PZ_VERSION}}.jar"
+          target: "lib/zomboid.jar"
+          token: ${{ secrets.GITHUB_TOKEN }}
       # Assemble main classes with gradle
       - name: Assemble classes
         uses: burrunan/gradle-cache-action@v1
