@@ -72,10 +72,6 @@ subprojects.sort {
 def zombieProject = project(':zombie')
 def mainProjects = [ project(':api'), project(':core') ]
 mainProjects.each {
-    // add dummy zomboid classes to classpath when compiling on CI
-    if (isCI) {
-        it.sourceSets.main.compileClasspath += zombieProject.sourceSets.main.output
-    }
     // assemble project jars in root build directory
     it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
 }
