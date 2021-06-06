@@ -32,8 +32,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      # Cache Project Zomboid classes
+      - name: Cache Zomboid classes
+        id: pz-cache
+        uses: actions/cache@v2
+        with:
+          path: ./lib/zomboid.jar
+          key: ${{ env.PZ_VERSION }}
       # Install Project Zomboid classes
       - name: Install Zomboid classes
+        if: steps.pz-cache.outputs.cache-hit != 'true'
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: "pzstorm/zomboid"
