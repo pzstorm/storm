@@ -40,7 +40,7 @@ jobs:
           version: "tags/v41.50"
           file: "zomboid-41.50.jar"
           target: "lib/zomboid-41.50.jar"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       # Assemble main classes with gradle
       - name: Assemble classes
         uses: burrunan/gradle-cache-action@v1
