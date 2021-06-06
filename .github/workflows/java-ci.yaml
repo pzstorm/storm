@@ -33,12 +33,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       # Cache Project Zomboid classes
-      - name: Cache Zomboid classes
+      - name: Read Zomboid classes cache
         id: pz-cache
         uses: actions/cache@v2
         with:
           path: ./lib/zomboid.jar
-          key: ${{ env.PZ_VERSION }}
+          key: PZ-${{ env.PZ_VERSION }}
       # Install Project Zomboid classes
       - name: Install Zomboid classes
         if: steps.pz-cache.outputs.cache-hit != 'true'
@@ -49,6 +49,13 @@ jobs:
           file: "zomboid-${{ env.PZ_VERSION }}.jar"
           target: "lib/zomboid-${{ env.PZ_VERSION }}.jar"
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      # Cache Project Zomboid classes
+      - name: Cache Zomboid classes
+        if: steps.pz-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: ./lib/zomboid.jar
+          key: PZ-${{ env.PZ_VERSION }}
       # Apply correct permissions for lib directory
       - name: Apply directory permissions
         run: sudo chmod a+rwx ./lib
