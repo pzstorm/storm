@@ -12,11 +12,10 @@ name: build
 
 jobs:
   build:
-    name: Unit test on platforms
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ windows-latest, ubuntu-latest ]
+    name: Build and test on Linux
+    runs-on: ubuntu-latest
+    env:
+      PZ_VERSION: 41.50
     steps:
       # Checkout repository
       - uses: actions/checkout@v2
