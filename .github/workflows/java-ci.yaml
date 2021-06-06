@@ -37,9 +37,9 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@0.06
         with:
           repo: "pzstorm/zomboid"
-          version: "tags/v41.50"
-          file: "zomboid-41.50.jar"
-          target: "lib/zomboid-41.50.jar"
+          version: "tags/v${{ env.PZ_VERSION }}"
+          file: "zomboid-${{ env.PZ_VERSION }}.jar"
+          target: "lib/zomboid-${{ env.PZ_VERSION }}.jar"
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       # Apply correct permissions for lib directory
       - name: Apply directory permissions
