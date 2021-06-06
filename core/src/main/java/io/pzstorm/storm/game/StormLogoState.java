@@ -23,6 +23,7 @@ import io.pzstorm.storm.util.StormUtils;
 import zombie.GameTime;
 import zombie.core.Core;
 import zombie.core.SpriteRenderer;
+import zombie.core.input.Input;
 import zombie.core.textures.Texture;
 import zombie.gameStates.GameState;
 import zombie.gameStates.GameStateMachine.StateAction;
@@ -31,6 +32,7 @@ import zombie.input.Mouse;
 import zombie.ui.UIManager;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * This class represents the screen state where Storm logo is rendered before entering the main menu.
@@ -41,6 +43,13 @@ public final class StormLogoState extends GameState {
 	 * Path to the Storm logo image resource.
 	 */
 	private static final String LOGO_RESOURCE_PATH = "storm-logo.png";
+
+	/**
+	 * When one of these keys is pressed during StormLogoState the state will be interrupted.
+	 */
+	private static final int[] INTERRUPT_KEYS = {
+			Input.KEY_RETURN, Input.KEY_SPACE, Input.KEY_ESCAPE
+	};
 
 	/**
 	 * Determines how long the logo stays on screen.
@@ -101,10 +110,9 @@ public final class StormLogoState extends GameState {
 				++this.stage;
 				this.targetAlpha = 1.0F;
 			}
-			ClassLoader classLoader = getClass().getClassLoader();
 			Texture texture;
 			try {
-				texture = StormUtils.getTextureResourceFromStream(LOGO_RESOURCE_PATH, classLoader);
+				texture = StormUtils.getTextureResourceFromStream(LOGO_RESOURCE_PATH, getClass().getClassLoader());
 				if (texture == null)
 				{
 					StormLogger.error("Unable to read 'storm-logo.png' resource from stream.");
@@ -131,7 +139,8 @@ public final class StormLogoState extends GameState {
 
 		float alphaStep = 0.02F;
 
-		if (Mouse.isLeftDown() || GameKeyboard.isKeyDown(28) || GameKeyboard.isKeyDown(57) || GameKeyboard.isKeyDown(1))
+
+		if (Mouse.isLeftDown() || Arrays.stream(INTERRUPT_KEYS).anyMatch(GameKeyboard::isKeyDown))
 		{
 			this.targetAlpha = 0.0F;
 			this.stage = 2;
