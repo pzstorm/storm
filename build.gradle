@@ -4,7 +4,7 @@ import io.pzstorm.capsid.setup.VmParameter
 import io.pzstorm.capsid.setup.xml.LaunchRunConfig
 
 plugins {
-    id 'io.pzstorm.capsid' version '0.4.1'
+    id 'io.pzstorm.capsid' version '0.4.2'
 
     // https://docs.gradle.org/current/userguide/application_plugin.html
     id 'application'
