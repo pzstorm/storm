@@ -95,9 +95,6 @@ public class StormModLoader extends URLClassLoader {
 					throw new RuntimeException(e);
 				}
 			}
-			modJars.forEach(j -> result.add(
-					j.getResourcePath())
-			);
 		}
 		return result.toArray(new URL[0]);
 	}
