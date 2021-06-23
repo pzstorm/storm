@@ -41,7 +41,7 @@ allprojects {
 // make sure to configure zombie subproject first because other
 // subprojects depend on including it's sourceset output
 subprojects.sort {
-    return it.name.equals('zombie') ? 0 : 1
+    return it.name == 'zombie' ? 0 : 1
 }.each {
     it.apply plugin: 'java'
     it.apply plugin: 'maven-publish'
@@ -69,8 +69,6 @@ subprojects.sort {
         compileOnly 'org.jetbrains:annotations:20.1.0'
     }
 }
-
-def zombieProject = project(':zombie')
 def mainProjects = [ project(':api'), project(':core') ]
 mainProjects.each {
     // assemble project jars in root build directory
