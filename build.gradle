@@ -1,4 +1,5 @@
 //file:noinspection SpellCheckingInspection
+//file:noinspection GroovyAssignabilityCheck
 
 import io.pzstorm.capsid.setup.VmParameter
 import io.pzstorm.capsid.setup.xml.LaunchRunConfig
