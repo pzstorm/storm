@@ -18,12 +18,11 @@
 
 package io.pzstorm.storm.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +31,7 @@ import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.io.CharStreams;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 
@@ -56,6 +56,11 @@ import io.pzstorm.storm.mod.ModVersion;
 public class StormModLoader extends URLClassLoader {
 
 	/**
+	 * Version of Storm used by Project Zomboid.
+	 */
+	public static final String STORM_VERSION;
+
+	/**
 	 * This catalog contains {@link ModMetadata} instances mapped to directory names.
 	 */
 	static final Map<String, ModMetadata> METADATA_CATALOG = new HashMap<>();
@@ -67,6 +72,20 @@ public class StormModLoader extends URLClassLoader {
 	 * This catalog stores {@link ModJar} instances mapped to directory names.
 	 */
 	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
+
+	static
+	{
+		InputStream resource = StormBootstrap.CLASS_LOADER.getResourceAsStream("version.txt");
+		if (resource == null) {
+			throw new IllegalStateException("Version.txt file not found in Storm root directory");
+		}
+		try (Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8)) {
+			STORM_VERSION = CharStreams.toString(reader);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	StormModLoader(URL[] urls) {
 		super(ObjectArrays.concat(urls, getResourcePaths(), URL.class));
