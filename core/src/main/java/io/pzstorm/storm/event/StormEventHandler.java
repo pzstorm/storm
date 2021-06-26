@@ -18,6 +18,7 @@
 
 package io.pzstorm.storm.event;
 
+import io.pzstorm.storm.core.StormBootstrap;
 import io.pzstorm.storm.event.lua.LuaEvent;
 import io.pzstorm.storm.event.lua.OnGameWindowInitEvent;
 import io.pzstorm.storm.game.StormLogoState;
@@ -31,6 +32,8 @@ import zombie.gameStates.TISLogoState;
 import zombie.ui.TextManager;
 import zombie.ui.UIFont;
 
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -68,6 +71,19 @@ public class StormEventHandler {
 				event.luaEvent.name, event.args.toArray(new Object[0])
 		);
 		StormEventDispatcher.dispatchEvent(luaEvent);
+	}
+
+	@SubscribeEvent
+	public static void handleOnLoadSoundBankEvent(OnLoadSoundBankEvent event) {
+
+		URL soundBankResource = StormBootstrap.CLASS_LOADER.getResource(event.soundBankPath.toString());
+		if (soundBankResource != null)
+		{
+//			event.soundBankPath.delete(0, event.soundBankPath.length());
+//			event.soundBankPath.append(Paths.get(soundBankResource.getPath()).toAbsolutePath());
+
+			StormLogger.info("Loaded override sound bank from '" + soundBankResource + '\'');
+		}
 	}
 
 	@SubscribeEvent
