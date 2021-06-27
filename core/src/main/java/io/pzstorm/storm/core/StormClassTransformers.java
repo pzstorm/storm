@@ -21,6 +21,8 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pzstorm.storm.hook.*;
+import io.pzstorm.storm.patch.GameWindowPatch;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.MethodVisitor;
@@ -30,10 +32,6 @@ import org.objectweb.asm.tree.MethodNode;
 
 import com.google.common.collect.ImmutableMap;
 
-import io.pzstorm.storm.hook.OnMainScreenRenderHook;
-import io.pzstorm.storm.hook.OnTriggerLuaEventHook;
-import io.pzstorm.storm.hook.OnUIElementPreRenderHook;
-import io.pzstorm.storm.hook.StormHook;
 import io.pzstorm.storm.patch.DebugLogPatch;
 import io.pzstorm.storm.patch.DebugLogStreamPatch;
 import io.pzstorm.storm.patch.ZomboidPatch;
@@ -61,25 +59,39 @@ public class StormClassTransformers {
 		registerTransformer("zombie.gameStates.MainScreenState", new OnMainScreenRenderHook());
 		registerTransformer("zombie.ui.UIElement", new OnUIElementPreRenderHook());
 		registerTransformer("zombie.Lua.LuaEventManager",
-				new OnTriggerLuaEventHook(), ImmutableMap.<MethodData, Integer>builder()
+				new OnTriggerLuaEventHook(), ImmutableMap.<MethodData, MethodMaxs>builder()
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;)V"), 7)
-						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
-						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+								"(Ljava/lang/String;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
 								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"), 7)
+										"Ljava/lang/Object;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
+						.put(new MethodData("triggerEvent",
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
+						.put(new MethodData("triggerEvent",
+								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"),
+								new MethodMaxs(7))
 						.build()
 		);
+		registerTransformer("zombie.GameWindow", new GameWindowPatch());
+		registerTransformer("fmod.javafmod",
+				new OnLoadSoundBankHook(), ImmutableMap.<MethodData, MethodMaxs>builder()
+						.put(new MethodData("FMOD_Studio_System_LoadBankFile",
+								"(Ljava/lang/String;)J"), new MethodMaxs(3, 2))
+						.build()
+		);
+		registerTransformer("fmod.fmod.FMODManager", new OnLoadSoundBanksHook());
 
 		///////////////////////
 		// REGISTER PATCHES //
@@ -128,7 +140,7 @@ public class StormClassTransformers {
 	 * @param hook {@link StormHook} to install with transformation.
 	 * @param maxStacks maximum stack size mapped to method data.
 	 */
-	private static void registerTransformer(String className, StormHook hook, Map<MethodData, Integer> maxStacks) {
+	private static void registerTransformer(String className, StormHook hook, Map<MethodData, MethodMaxs> maxStacks) {
 
 		ClassNode visitor = new ClassNode(Opcodes.ASM9) {
 
@@ -136,15 +148,17 @@ public class StormClassTransformers {
 			public MethodVisitor visitMethod(int access, String name, String descriptor,
 											 String signature, String[] exceptions) {
 
-				for (Map.Entry<MethodData, Integer> entry : maxStacks.entrySet())
+				for (Map.Entry<MethodData, MethodMaxs> entry : maxStacks.entrySet())
 				{
 					MethodData data = entry.getKey();
 					if (name.equals(data.name) && descriptor.equals(data.descriptor))
 					{
+						MethodMaxs maxData = entry.getValue();
 						MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature, exceptions) {
 							@Override
 							public void visitMaxs(int maxStack, int maxLocals) {
-								super.visitMaxs(entry.getValue(), maxLocals);
+								super.visitMaxs(maxData.maxStack > 0 ? maxData.maxStack : maxStack,
+										maxData.maxLocal > 0 ? maxData.maxLocal : maxLocals);
 							}
 						};
 						methods.add(method);
@@ -204,6 +218,31 @@ public class StormClassTransformers {
 
 			this.name = name;
 			this.descriptor = descriptor;
+		}
+	}
+
+	private static class MethodMaxs {
+
+		/**
+		 * <p>Maximum stack size of the method.</p>
+		 * Value of {@code 0} indicates that original value should be used.
+		 */
+		private final int maxStack;
+
+		/**
+		 * <p>Maximum number of local variables for the method.</p>
+		 * Value of {@code 0} indicates that original value should be used.
+		 */
+		private final int maxLocal;
+
+		private MethodMaxs(int maxStack, int maxLocal) {
+			this.maxStack = maxStack;
+			this.maxLocal = maxLocal;
+		}
+
+		private MethodMaxs(int maxStack) {
+			this.maxStack = maxStack;
+			this.maxLocal = 0;
 		}
 	}
 }

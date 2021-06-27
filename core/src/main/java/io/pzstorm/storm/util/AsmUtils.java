@@ -85,10 +85,12 @@ public class AsmUtils {
 	 *
 	 * @param list {@link InsnList} to get the label node from.
 	 * @param n index of the node to retrieve from list. The value of the index
-	 * 		has to larger then {@code 1} otherwise an exception will be thrown.
+	 * 		has to larger then {@code 0} otherwise an exception will be thrown.
 	 *
 	 * @return {@code LabelNode} found under the specified index or {@code null}
 	 * 		if no {@code LabelNode} for that index was found.
+	 *
+	 * @throws IllegalArgumentException if node index is a number lower then {@code 1}.
 	 */
 	public static @Nullable LabelNode getNthLabelNode(InsnList list, int n) {
 

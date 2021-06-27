@@ -200,9 +200,9 @@ public class ZomboidLogger {
 	}
 
 	/**
-	 * Logs a message at the designated {@link LogSeverity LogSeverity}.
+	 * Logs a message at the designated {@code LogSeverity LogSeverity}.
 	 *
-	 * @param level {@link LogSeverity LogSeverity} formatted as {@code String}.
+	 * @param level {@code LogSeverity LogSeverity} formatted as {@code String}.
 	 * @param message the message to log.
 	 */
 	public static void printf(String level, String message) {

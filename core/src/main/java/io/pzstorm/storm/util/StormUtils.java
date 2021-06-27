@@ -18,7 +18,15 @@
 
 package io.pzstorm.storm.util;
 
+import io.pzstorm.storm.core.StormClassLoader;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+import zombie.core.textures.Texture;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class StormUtils {
 
@@ -31,5 +39,25 @@ public class StormUtils {
 	@Contract(pure = true)
 	public static String getClassAsPath(Class<?> clazz) {
 		return clazz.getName().replace('.', '/');
+	}
+
+	/**
+	 * Get game texture by reading the resource with specified name from stream.
+	 *
+	 * @param name the resource name.
+	 * @param classLoader {@code ClassLoader} used to search the resource.
+	 *
+	 * @throws IOException if an error occurred while decoding the texture image.
+	 * @see StormClassLoader#getResourceAsStream(String)
+	 */
+	public static @Nullable Texture getTextureResourceFromStream(String name, ClassLoader classLoader) throws IOException {
+		Objects.requireNonNull(name);
+		try {
+			InputStream resource = classLoader.getResourceAsStream(name);
+			return resource != null ? new Texture(name, new BufferedInputStream(resource), false) : null;
+		}
+		catch (Exception e) {
+			throw new IOException(e);
+		}
 	}
 }

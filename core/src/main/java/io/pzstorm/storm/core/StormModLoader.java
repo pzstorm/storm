@@ -21,6 +21,7 @@ package io.pzstorm.storm.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -68,22 +69,32 @@ public class StormModLoader extends URLClassLoader {
 	private static final Map<String, ImmutableSet<ModJar>> JAR_CATALOG = new HashMap<>();
 
 	StormModLoader(URL[] urls) {
-		super(ObjectArrays.concat(urls, getJarResourcePaths(), URL.class));
+		super(ObjectArrays.concat(urls, getResourcePaths(), URL.class));
 	}
 
 	public StormModLoader() {
-		super(getJarResourcePaths());
+		super(getResourcePaths());
 	}
 
 	/**
-	 * Returns an array of paths pointing to cataloged jars.
+	 * <p>Returns an array of paths pointing to resources loaded by {@code StormModLoader}.</p>
 	 * This method will return an empty array if no jars are cataloged.
 	 */
-	private static URL[] getJarResourcePaths() {
+	private static URL[] getResourcePaths() {
 
 		List<URL> result = new ArrayList<>();
-		for (Set<ModJar> modJars : JAR_CATALOG.values()) {
-			modJars.forEach(j -> result.add(j.getResourcePath()));
+		for (Set<ModJar> modJars : JAR_CATALOG.values())
+		{
+			for (ModJar modJar : modJars)
+			{
+				result.add(modJar.getResourcePath());
+				try {
+					result.add(modJar.getFilePath().getParent().toUri().toURL());
+				}
+				catch (MalformedURLException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		return result.toArray(new URL[0]);
 	}

@@ -2,6 +2,9 @@ package io.pzstorm.storm.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -96,6 +99,22 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 
 	@Test
 	@Order(4)
+	void shouldIncludeModDirectoryPathsInResourcePaths() {
+
+		StormModLoader modLoader = new StormModLoader();
+		HashSet<Path> classLoaderURLs = new HashSet<>();
+		for (URL resourcePath : modLoader.getURLs()) {
+			classLoaderURLs.add(Paths.get(resourcePath.getPath()).toAbsolutePath());
+		}
+		for (String modDirName : new String[] { "A", "B", "C" })
+		{
+			File modDir = new File(ZOMBOID_MODS_DIR, modDirName).getAbsoluteFile();
+			Assertions.assertTrue(classLoaderURLs.contains(modDir.toPath()));
+		}
+	}
+
+	@Test
+	@Order(5)
 	void shouldLoadAllModClasses() throws IOException {
 
 		String[] expectedLoadedClasses = new String[] {
@@ -111,7 +130,7 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 	}
 
 	@Test
-	@Order(5)
+	@Order(6)
 	void shouldCorrectlyLoadAllModMetadata() throws Throwable {
 
 		Map<String, ModMetadata> expectedModEntries = ImmutableMap.of(
@@ -141,7 +160,7 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 	}
 
 	@Test
-	@Order(6)
+	@Order(7)
 	void shouldNotLoadModMetadataWhenMissingProperties() throws Throwable {
 
 		Map<String, ModMetadata> modEntries = ImmutableMap.of(

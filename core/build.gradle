@@ -23,16 +23,17 @@ dependencies {
     implementation apiProject
     testImplementation apiProject, zombieProject
 
+    def zomboidImplementationFiles = files(rootConfigurations.zomboidImplementation.files).filter {
+        return !(it.name.equals('media'))
+    }
+    implementation zomboidImplementationFiles
+    testImplementation zomboidImplementationFiles
+
     if (!CI) {
-        implementation files(rootConfigurations.zomboidImplementation.files).filter {
-            return !(it.name.equals('media'))
-        }
         runtimeOnly files(rootConfigurations.zomboidRuntimeOnly.files).filter {
             return !(it.name.contains('test') || it.name.contains('junit'))
         }
     }
-    // depend on dummy zombie classes when building on CI
-    else implementation zombieProject
 }
 
 test {
