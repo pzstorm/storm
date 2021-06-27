@@ -69,7 +69,7 @@ subprojects.sort {
         compileOnly 'org.jetbrains:annotations:20.1.0'
     }
 }
-def mainProjects = [ project(':api'), project(':core') ]
+def mainProjects = [ project(':storm-api'), project(':storm-core') ]
 mainProjects.each {
     // assemble project jars in root build directory
     it.jar.getDestinationDirectory().set(new File(buildDir, 'libs'))
@@ -175,8 +175,8 @@ distributions.main {
 publishing {
     publications {
         coreMavenJava(MavenPublication) {
-            from project(':core').components.java
-            artifactId 'storm-core'
+            from project(':storm-core').components.java
+            artifactId project(':storm-core').jar.archiveBaseName.get()
             pom {
                 name = 'Zomboid Storm Core'
                 description = 'Project Zomboid Storm Implementation'
@@ -202,8 +202,8 @@ publishing {
             }
         }
         apiMavenJava(MavenPublication) {
-            from project(':api').components.java
-            artifactId 'storm-api'
+            from project(':storm-api').components.java
+            artifactId project(':storm-api').jar.archiveBaseName.get()
             pom {
                 name = 'Zomboid Storm API'
                 description = 'Project Zomboid Storm API'
