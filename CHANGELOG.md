@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.2.0](https://github.com/pzstorm/storm/tree/v0.2.0) (2021-06-27)
+
+[Full Changelog](https://github.com/pzstorm/storm/compare/v0.1.1...v0.2.0)
+
+**Implemented enhancements:**
+
+- Accessible mod resource files [\#15](https://github.com/pzstorm/storm/issues/15)
+- Show project logo before main menu [\#8](https://github.com/pzstorm/storm/issues/8)
+- Support for custom FMOD sound banks [\#7](https://github.com/pzstorm/storm/issues/7)
+
 ## [v0.1.1](https://github.com/pzstorm/storm/tree/v0.1.1) (2021-05-30)
 
 [Full Changelog](https://github.com/pzstorm/storm/compare/v0.1.0...v0.1.1)
