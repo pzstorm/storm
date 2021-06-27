@@ -18,6 +18,7 @@
 
 package io.pzstorm.storm.event;
 
+import fmod.javafmod;
 import io.pzstorm.storm.core.StormBootstrap;
 import io.pzstorm.storm.event.lua.LuaEvent;
 import io.pzstorm.storm.event.lua.OnGameWindowInitEvent;
@@ -79,8 +80,8 @@ public class StormEventHandler {
 		URL soundBankResource = StormBootstrap.CLASS_LOADER.getResource(event.soundBankPath.toString());
 		if (soundBankResource != null)
 		{
-//			event.soundBankPath.delete(0, event.soundBankPath.length());
-//			event.soundBankPath.append(Paths.get(soundBankResource.getPath()).toAbsolutePath());
+			event.soundBankPath.delete(0, event.soundBankPath.length());
+			event.soundBankPath.append(Paths.get(soundBankResource.getPath()).toAbsolutePath());
 
 			StormLogger.info("Loaded override sound bank from '" + soundBankResource + '\'');
 		}
