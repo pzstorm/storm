@@ -37,6 +37,7 @@ public class OnFillWorldObjectContextMenuEvent implements LuaEvent {
 	public final Boolean isTest;
 
 	public OnFillWorldObjectContextMenuEvent(Double arg1, KahluaTable context, KahluaTable worldObjects, Boolean isTest) {
+
 		this.playerIndex = arg1;
 		this.context = context;
 		this.worldObjects = worldObjects;

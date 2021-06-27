@@ -18,7 +18,10 @@
 
 package io.pzstorm.storm.event;
 
-import fmod.javafmod;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.List;
+
 import io.pzstorm.storm.core.StormBootstrap;
 import io.pzstorm.storm.event.lua.LuaEvent;
 import io.pzstorm.storm.event.lua.OnGameWindowInitEvent;
@@ -32,10 +35,6 @@ import zombie.gameStates.GameState;
 import zombie.gameStates.TISLogoState;
 import zombie.ui.TextManager;
 import zombie.ui.UIFont;
-
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * This class responds to all events needed for Storm to implement custom features.
@@ -100,8 +99,8 @@ public class StormEventHandler {
 			GameWindow.states.LoopToState = 2;
 
 			// increase TIS logo delay values
-			((TISLogoState)tisLogoState).leavedelay = 40;
-			((TISLogoState)tisLogoState).logoDelay = 60.0F;
+			((TISLogoState) tisLogoState).leavedelay = 40;
+			((TISLogoState) tisLogoState).logoDelay = 60.0F;
 		}
 		else {
 			StormLogger.error(String.format(

@@ -18,15 +18,16 @@
 
 package io.pzstorm.storm.util;
 
-import io.pzstorm.storm.core.StormClassLoader;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
-import zombie.core.textures.Texture;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+
+import io.pzstorm.storm.core.StormClassLoader;
+import zombie.core.textures.Texture;
 
 public class StormUtils {
 
@@ -51,6 +52,7 @@ public class StormUtils {
 	 * @see StormClassLoader#getResourceAsStream(String)
 	 */
 	public static @Nullable Texture getTextureResourceFromStream(String name, ClassLoader classLoader) throws IOException {
+
 		Objects.requireNonNull(name);
 		try {
 			InputStream resource = classLoader.getResourceAsStream(name);

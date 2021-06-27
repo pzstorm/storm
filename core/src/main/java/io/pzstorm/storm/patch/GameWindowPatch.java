@@ -18,10 +18,11 @@
 
 package io.pzstorm.storm.patch;
 
-import io.pzstorm.storm.core.StormClassTransformer;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.LdcInsnNode;
+
+import io.pzstorm.storm.core.StormClassTransformer;
 
 public class GameWindowPatch implements ZomboidPatch {
 
@@ -34,7 +35,7 @@ public class GameWindowPatch implements ZomboidPatch {
 			// replace OnLoadSoundBanks with OnGameWindowInit event
 			if (instruction instanceof LdcInsnNode)
 			{
-				LdcInsnNode ldcNode = ((LdcInsnNode)instruction);
+				LdcInsnNode ldcNode = ((LdcInsnNode) instruction);
 				if (ldcNode.cst.equals("OnLoadSoundBanks")) {
 					ldcNode.cst = "OnGameWindowInit";
 				}

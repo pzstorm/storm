@@ -18,6 +18,9 @@
 
 package io.pzstorm.storm.game;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.util.StormUtils;
 import zombie.GameTime;
@@ -30,9 +33,6 @@ import zombie.gameStates.GameStateMachine.StateAction;
 import zombie.input.GameKeyboard;
 import zombie.input.Mouse;
 import zombie.ui.UIManager;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * This class represents the screen state where Storm logo is rendered before entering the main menu.
@@ -136,9 +136,7 @@ public final class StormLogoState extends GameState {
 
 	@Override
 	public StateAction update() {
-
 		float alphaStep = 0.02F;
-
 
 		if (Mouse.isLeftDown() || Arrays.stream(INTERRUPT_KEYS).anyMatch(GameKeyboard::isKeyDown))
 		{

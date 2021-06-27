@@ -21,8 +21,6 @@ package io.pzstorm.storm.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.pzstorm.storm.hook.*;
-import io.pzstorm.storm.patch.GameWindowPatch;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.MethodVisitor;
@@ -32,8 +30,10 @@ import org.objectweb.asm.tree.MethodNode;
 
 import com.google.common.collect.ImmutableMap;
 
+import io.pzstorm.storm.hook.*;
 import io.pzstorm.storm.patch.DebugLogPatch;
 import io.pzstorm.storm.patch.DebugLogStreamPatch;
+import io.pzstorm.storm.patch.GameWindowPatch;
 import io.pzstorm.storm.patch.ZomboidPatch;
 
 /**
@@ -61,26 +61,27 @@ public class StormClassTransformers {
 		registerTransformer("zombie.Lua.LuaEventManager",
 				new OnTriggerLuaEventHook(), ImmutableMap.<MethodData, MethodMaxs>builder()
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;)V"),
 								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"),
 								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;" +
+												"Ljava/lang/Object;Ljava/lang/Object;)V"),
 								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+												"Ljava/lang/Object;Ljava/lang/Object;)V"),
 								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+												"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"),
 								new MethodMaxs(7))
 						.put(new MethodData("triggerEvent",
-								"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
-										"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V"),
+										"(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;" +
+												"Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)" +
+												"V"),
 								new MethodMaxs(7))
 						.build()
 		);
@@ -236,11 +237,13 @@ public class StormClassTransformers {
 		private final int maxLocal;
 
 		private MethodMaxs(int maxStack, int maxLocal) {
+
 			this.maxStack = maxStack;
 			this.maxLocal = maxLocal;
 		}
 
 		private MethodMaxs(int maxStack) {
+
 			this.maxStack = maxStack;
 			this.maxLocal = 0;
 		}

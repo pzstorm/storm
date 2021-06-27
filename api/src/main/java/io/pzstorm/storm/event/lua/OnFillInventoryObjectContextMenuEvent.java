@@ -36,6 +36,7 @@ public class OnFillInventoryObjectContextMenuEvent implements LuaEvent {
 	public final KahluaTable context, items;
 
 	public OnFillInventoryObjectContextMenuEvent(Double playerIndex, KahluaTable context, KahluaTable items) {
+
 		this.playerIndex = playerIndex;
 		this.context = context;
 		this.items = items;
