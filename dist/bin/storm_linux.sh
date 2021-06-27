@@ -45,7 +45,8 @@ if [ -n "$JAVA_HOME" ]; then
     JAVA_CMD="$JAVA_HOME/bin/java"
   fi
   if [ ! -x "$JAVA_CMD" ]; then
-    if [ "$(exportGameJava "$PZ_HOME")" != 0 ]; then
+    exportGameJava $PZ_HOME
+    if [ $? != 0 ]; then
       echo -e "\nERROR: JAVA_HOME is set to an invalid directory ($JAVA_HOME) and no Java distribution" \
         "found in game directory.\nPlease reinstall Project Zomboid or set the JAVA_HOME variable" \
         "to match the location of your Java installation if you want to run Storm" \
@@ -54,7 +55,8 @@ if [ -n "$JAVA_HOME" ]; then
     fi
   fi
 else
-  if [ "$(exportGameJava "$PZ_HOME")" != 0 ]; then
+  exportGameJava $PZ_HOME
+  if [ $? != 0 ]; then
     JAVA_CMD="java"
     which java >/dev/null 2>&1 || echo -e "\nERROR: JAVA_HOME is not set and no 'java' command" \
       "could be found in your PATH.\nPlease set the JAVA_HOME variable in your environment" \
