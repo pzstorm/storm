@@ -1,0 +1,11 @@
+version: '3'
+services:
+  gh-changelog-generator:
+    image: githubchangeloggenerator/github-changelog-generator:latest
+    environment:
+      - CHANGELOG_GITHUB_TOKEN=${CHANGELOG_GITHUB_TOKEN}
+    volumes:
+      - ./:/usr/local/src/storm
+    build:
+      context: ./
+      dockerfile: Dockerfile
