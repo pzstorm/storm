@@ -2,6 +2,7 @@ version: '3'
 services:
   gh-changelog-generator:
     image: githubchangeloggenerator/github-changelog-generator:latest
+    user: "1000:1000"
     environment:
       - CHANGELOG_GITHUB_TOKEN=${CHANGELOG_GITHUB_TOKEN}
     volumes:
