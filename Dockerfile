@@ -27,4 +27,4 @@ VOLUME [ "$SRC_PATH" ]
 WORKDIR $SRC_PATH
 
 ENTRYPOINT ["github_changelog_generator"]
-CMD ["--help"]
+CMD ["--user", "pzstorm", "--project", "storm"]
