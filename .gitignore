@@ -1,6 +1,7 @@
 ### User specific ###
 local.properties
 version.properties
+.env
 
 # Temporary files
 *.java~
