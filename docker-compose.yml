@@ -9,3 +9,5 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    command: [ "--user", "pzstorm", "--project", "storm", "--no-issues-wo-label", "--no-unreleased", \
+        "--exclude-labels", "duplicate,invalid,question,wontfix,documentation,workflow" ]

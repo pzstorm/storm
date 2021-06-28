@@ -27,5 +27,4 @@ VOLUME [ "$SRC_PATH" ]
 WORKDIR $SRC_PATH
 
 ENTRYPOINT ["github_changelog_generator"]
-CMD ["--user", "pzstorm", "--project", "storm", "--no-issues-wo-label", "--no-unreleased", \
-"--exclude-labels", "duplicate,invalid,question,wontfix,documentation,workflow"]
+CMD ["--help"]
