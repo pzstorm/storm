@@ -1,0 +1,14 @@
+version: '3'
+services:
+  gh-changelog-generator:
+    image: githubchangeloggenerator/github-changelog-generator:latest
+    user: "1000:1000"
+    environment:
+      - CHANGELOG_GITHUB_TOKEN=${CHANGELOG_GITHUB_TOKEN}
+    volumes:
+      - ./:/usr/local/src/storm
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: [ "--user", "pzstorm", "--project", "storm", "--no-issues-wo-label", "--no-unreleased", \
+        "--exclude-labels", "duplicate,invalid,question,wontfix,documentation,workflow" ]
