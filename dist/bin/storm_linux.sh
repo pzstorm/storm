@@ -86,6 +86,9 @@ CLASSPATH="${LIB_PATH}/storm-0.2.0.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-a
 ${LIB_PATH}/asm-tree-9.1.jar:${LIB_PATH}/asm-util-9.1.jar:${LIB_PATH}/guava-30.1.1-jre.jar:\
 ${LIB_PATH}/log4j-api-2.14.0.jar:${LIB_PATH}/log4j-core-2.14.0.jar:${PZ_HOME}:${PZ_HOME}/*"
 
+# Project Zomboid properties
+PZ_OPTS="-Dzomboid.steam=1 -Dzomboid.znetlog=1"
+
 # Java command-line options
 JAVA_OPTS="-XX:+UseConcMarkSweepGC -XX:-CreateMinidumpOnCrash \
 -XX:-OmitStackTraceInFastThrow -Xms1800m -Xmx2048m"
@@ -97,7 +100,7 @@ ${PZ_HOME}/jre64/lib/amd64 -Dorg.lwjgl.librarypath=${PZ_HOME}"
 echo "Launching Zomboid Storm..."
 
 # Collect all arguments for the java command, following the shell quoting and substitution rules
-eval set -- $JAVA_OPTS $SYS_PROPS -classpath "$CLASSPATH" io.pzstorm.storm.core.StormLauncher
+eval set -- $PZ_OPTS $JAVA_OPTS $SYS_PROPS -classpath "$CLASSPATH" io.pzstorm.storm.core.StormLauncher
 
 # Execute Java command to launch Storm
 exec "$JAVA_CMD" "$@"
