@@ -70,7 +70,10 @@ public class StormEventHandler {
 		LuaEvent luaEvent = LuaEventFactory.constructLuaEvent(
 				event.luaEvent.name, event.args.toArray(new Object[0])
 		);
-		StormEventDispatcher.dispatchEvent(luaEvent);
+		if (luaEvent != null) {
+			StormEventDispatcher.dispatchEvent(luaEvent);
+		}
+		else StormLogger.debug("Skip handling non-registered event '%s'", event.getName());
 	}
 
 	@SubscribeEvent

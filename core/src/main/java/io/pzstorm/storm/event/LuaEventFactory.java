@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import io.pzstorm.storm.event.lua.*;
@@ -339,20 +340,18 @@ public class LuaEventFactory {
 	 * @param eventName name of the {@code Class} denoting the {@code LuaEvent} to construct.
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
-	 * @return new instance of {@code LuaEvent} for class of given name.
+	 * @return new instance of {@code LuaEvent} for class of given name or {@code null} if no
+	 *		 registered {@code LuaEvent} class was found for given name.
 	 *
 	 * @throws IllegalStateException if no constructor with parameters matching specified array of
-	 * 		arguments was found for {@code LuaEvent} class resolved from given name, no registered
-	 *        {@code LuaEvent} class found for given name, an error occurred while instantiating
-	 *        {@code LuaEvent} or no registered constructors found for event class resolved from given name.
+	 * 		arguments was found for {@code LuaEvent} class resolved from given name, an error
+	 * 		occurred while instantiating {@code LuaEvent} or no registered constructors found
+	 * 		for event class resolved from given name.
 	 */
-	public static LuaEvent constructLuaEvent(String eventName, Object... args) {
+	public static @Nullable LuaEvent constructLuaEvent(String eventName, Object... args) {
 
 		Class<? extends LuaEvent> eventClass = EVENT_CLASSES.get(eventName);
-		if (eventClass == null) {
-			throw new IllegalStateException("No registered LuaEvent class found for name '" + eventName + '\'');
-		}
-		return constructLuaEvent(eventClass, args);
+		return eventClass != null ? constructLuaEvent(eventClass, args) : null;
 	}
 
 	/**
