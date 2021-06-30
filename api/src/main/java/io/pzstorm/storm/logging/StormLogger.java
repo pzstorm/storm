@@ -25,6 +25,8 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
+import java.io.PrintStream;
+
 /**
  * <p>Wrapper class for printing Storm logs with Log4j 2 logger.
  * To configure console logging level launch Storm with {@code JVM_PROPERTY}
@@ -208,5 +210,25 @@ public class StormLogger {
 	 */
 	public static void printf(Level level, String format, Object... params) {
 		LOGGER.printf(level, format, params);
+	}
+
+	/**
+	 * This handler will log an error with Log4J when a Thread abruptly terminates due
+	 * to an uncaught exception. We need to log unhandled exceptions with Log4J otherwise
+	 * they will not appear in the log file.
+	 */
+	public static class Log4JUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+		/**
+		 * Handle uncaught exception thrown by Storm by printing an error with Log4J.
+		 * The error will include the exception stack trace and will be included in the log file.
+		 *
+		 * @param t {@code Thread} that is throwing the exception.
+		 * @param e exception being thrown by thread.
+		 */
+		@Override
+		public void uncaughtException(Thread t, Throwable e) {
+			StormLogger.error("Uncaught exception was thrown", e);
+		}
 	}
 }

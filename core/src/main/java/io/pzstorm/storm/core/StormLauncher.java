@@ -54,6 +54,9 @@ class StormLauncher {
 		Class.forName("io.pzstorm.storm.core.StormClassTransformers", true, classLoader);
 		Class.forName("io.pzstorm.storm.logging.ZomboidLogger", true, classLoader);
 
+		// redirect uncaught exception logs to Log4J
+		Thread.setDefaultUncaughtExceptionHandler(new StormLogger.Log4JUncaughtExceptionHandler());
+
 		// load and register all local mods found in user.home
 		StormBootstrap.loadAndRegisterMods();
 
