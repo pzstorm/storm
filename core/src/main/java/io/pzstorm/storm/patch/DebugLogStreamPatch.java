@@ -190,6 +190,75 @@ public class DebugLogStreamPatch implements ZomboidPatch {
 						Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
 						"info", "(Ljava/lang/String;)V"))
 		);
+		// public void printException(Throwable var1, String var2, String var3, LogSeverity var4)
+		InsnList printException = transformer.getInstructionsForMethod("printException",
+				"(Ljava/lang/Throwable;Ljava/lang/String;Ljava/lang/String;Lzombie/debug/LogSeverity;)V"
+		);
+		printException.clear();
+
+		LabelNode switch1 = new LabelNode();
+		LabelNode switch2 = new LabelNode();
+		LabelNode switch3 = new LabelNode();
+		LabelNode switchDefault = new LabelNode();
+		LabelNode label6 = new LabelNode();
+
+		AsmUtils.addToInsnList(printException, new LabelNode(),
+				new FieldInsnNode(Opcodes.GETSTATIC,
+						"zombie/debug/DebugLogStream$1", "$SwitchMap$zombie$debug$LogSeverity", "[I"),
+				new VarInsnNode(Opcodes.ALOAD, 4),
+				new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "zombie/debug/LogSeverity",
+						"ordinal", "()I"
+				),
+				new InsnNode(Opcodes.IALOAD),
+				new TableSwitchInsnNode(1, 4, switchDefault, switch1, switch1, switch2, switch3),
+				switch1, new FrameNode(Opcodes.F_SAME, 0, null, 0, null),
+				new MethodInsnNode(Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
+						"get", "()Lorg/apache/logging/log4j/Logger;"),
+				new VarInsnNode(Opcodes.ALOAD, 2),
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(Opcodes.INVOKEINTERFACE, "org/apache/logging/log4j/Logger",
+						"info", "(Ljava/lang/String;Ljava/lang/Throwable;)V"),
+				new LabelNode(),
+				new JumpInsnNode(Opcodes.GOTO, label6),
+				switch2, new FrameNode(Opcodes.F_SAME, 0, null, 0, null),
+				new MethodInsnNode(Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
+						"get", "()Lorg/apache/logging/log4j/Logger;"),
+				new VarInsnNode(Opcodes.ALOAD, 2),
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(Opcodes.INVOKEINTERFACE, "org/apache/logging/log4j/Logger",
+						"warn", "(Ljava/lang/String;Ljava/lang/Throwable;)V"),
+				new LabelNode(),
+				new JumpInsnNode(Opcodes.GOTO, label6),
+				switch3, new FrameNode(Opcodes.F_SAME, 0, null, 0, null),
+				new MethodInsnNode(Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
+						"get", "()Lorg/apache/logging/log4j/Logger;"),
+				new VarInsnNode(Opcodes.ALOAD, 2),
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(Opcodes.INVOKEINTERFACE, "org/apache/logging/log4j/Logger",
+						"error", "(Ljava/lang/String;Ljava/lang/Throwable;)V"),
+				new LabelNode(),
+				new JumpInsnNode(Opcodes.GOTO, label6),
+				switchDefault, new FrameNode(Opcodes.F_SAME, 0, null, 0, null),
+				new LdcInsnNode("Unhandled exception was thrown (%s)"),
+				new InsnNode(Opcodes.ICONST_1),
+				new TypeInsnNode(Opcodes.ANEWARRAY, "java/lang/Object"),
+				new InsnNode(Opcodes.DUP),
+				new InsnNode(Opcodes.ICONST_0),
+				new VarInsnNode(Opcodes.ALOAD, 4),
+				new InsnNode(Opcodes.AASTORE),
+				new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/String",
+						"format", "(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"),
+				new VarInsnNode(Opcodes.ASTORE, 5),
+				new LabelNode(),
+				new MethodInsnNode(Opcodes.INVOKESTATIC, "io/pzstorm/storm/logging/ZomboidLogger",
+						"get", "()Lorg/apache/logging/log4j/Logger;"),
+				new VarInsnNode(Opcodes.ALOAD, 5),
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(Opcodes.INVOKEINTERFACE, "org/apache/logging/log4j/Logger",
+						"error", "(Ljava/lang/String;Ljava/lang/Throwable;)V"),
+				label6, new FrameNode(Opcodes.F_SAME, 0, null, 0, null),
+				new InsnNode(Opcodes.RETURN)
+		);
 	}
 
 	private void replaceMethodNode(InsnList instructions, int labelIndex, List<AbstractInsnNode> content) {

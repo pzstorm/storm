@@ -17,3 +17,9 @@ include 'core'
 // module containing zomboid dummy classes and classes used in testing
 // this module is only required when testing or building on CI server
 include 'zombie'
+
+// rename each project so that it has 'storm' prefix
+// this is important so that maven generates artifacts with correct names
+rootProject.children.each {
+    it.name = 'storm-' + it.name
+}

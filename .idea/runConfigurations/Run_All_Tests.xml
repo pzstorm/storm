@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run All Tests" type="JUnit" factoryName="JUnit">
-    <module name="storm.core.test" />
+    <module name="storm.storm-core.test" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="directory" />

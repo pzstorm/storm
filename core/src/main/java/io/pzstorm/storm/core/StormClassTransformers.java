@@ -99,7 +99,14 @@ public class StormClassTransformers {
 		/////////////////////
 
 		registerTransformer("zombie.debug.DebugLog", new DebugLogPatch());
-		registerTransformer("zombie.debug.DebugLogStream", new DebugLogStreamPatch());
+		registerTransformer("zombie.debug.DebugLogStream", new DebugLogStreamPatch(),
+				ImmutableMap.<MethodData, MethodMaxs>builder()
+						.put(new MethodData("printException",
+										"(Ljava/lang/Throwable;Ljava/lang/String;" +
+												"Ljava/lang/String;Lzombie/debug/LogSeverity;)V"),
+								new MethodMaxs(5, 6))
+						.build()
+		);
 	}
 
 	/**
@@ -130,6 +137,48 @@ public class StormClassTransformers {
 				return this;
 			}
 		});
+	}
+
+	/**
+	 * Create and register a new {@link StormClassTransformer} with given name that applies
+	 * a {@link ZomboidPatch} designated by method parameter. Additionally this method
+	 * also defines the maximum stack size of methods in visited class.
+	 *
+	 * @param className name of the target class to transform.
+	 * @param patch {@code ZomboidPatch} to apply with transformation.
+	 * @param maxStacks maximum stack size mapped to method data.
+	 */
+	private static void registerTransformer(String className, ZomboidPatch patch,
+											Map<MethodData, MethodMaxs> maxStacks) {
+
+		ClassNode visitor = new ClassNode(Opcodes.ASM9) {
+
+			@Override
+			public MethodVisitor visitMethod(int access, String name, String descriptor,
+											 String signature, String[] exceptions) {
+
+				for (Map.Entry<MethodData, MethodMaxs> entry : maxStacks.entrySet())
+				{
+					MethodData data = entry.getKey();
+					if (name.equals(data.name) && descriptor.equals(data.descriptor))
+					{
+						MethodMaxs maxData = entry.getValue();
+						MethodNode method = new MethodNode(Opcodes.ASM9, access, name, descriptor, signature
+								, exceptions) {
+							@Override
+							public void visitMaxs(int maxStack, int maxLocals) {
+								super.visitMaxs(maxData.maxStack > 0 ? maxData.maxStack : maxStack,
+										maxData.maxLocal > 0 ? maxData.maxLocal : maxLocals);
+							}
+						};
+						methods.add(method);
+						return method;
+					}
+				}
+				return super.visitMethod(access, name, descriptor, signature, exceptions);
+			}
+		};
+		registerTransformer(className, patch);
 	}
 
 	/**

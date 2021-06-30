@@ -1,0 +1,6 @@
+dependencies {
+    implementation files(rootProject.configurations.zomboidImplementation.files).filter {
+        return !(it.name == 'media')
+    }
+    implementation project(':storm-api'), project(':storm-core')
+}

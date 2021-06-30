@@ -3,6 +3,7 @@ package io.pzstorm.storm.event;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -113,8 +114,15 @@ class LuaEventFactoryTest implements UnitTest {
 			String eventName = LuaEventFactory.getEventName(eventClass);
 
 			LuaEvent event = LuaEventFactory.constructLuaEvent(eventName, constructorArgs.toArray());
-			Assertions.assertTrue(eventClass.isAssignableFrom(event.getClass()));
+			Assertions.assertTrue(eventClass.isAssignableFrom(Objects.requireNonNull(event).getClass()));
 		}
+	}
+
+	@Test
+	void shouldGetNullLuaEventWithNonExistingClassName() {
+
+		String eventName = "nonExistingEvent";
+		Assertions.assertNull(LuaEventFactory.constructLuaEvent(eventName, new ArrayList<>().toArray()));
 	}
 
 	@Test

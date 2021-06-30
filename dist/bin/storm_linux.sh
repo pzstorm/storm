@@ -45,7 +45,8 @@ if [ -n "$JAVA_HOME" ]; then
     JAVA_CMD="$JAVA_HOME/bin/java"
   fi
   if [ ! -x "$JAVA_CMD" ]; then
-    if [ "$(exportGameJava "$PZ_HOME")" != 0 ]; then
+    exportGameJava $PZ_HOME
+    if [ $? != 0 ]; then
       echo -e "\nERROR: JAVA_HOME is set to an invalid directory ($JAVA_HOME) and no Java distribution" \
         "found in game directory.\nPlease reinstall Project Zomboid or set the JAVA_HOME variable" \
         "to match the location of your Java installation if you want to run Storm" \
@@ -54,7 +55,8 @@ if [ -n "$JAVA_HOME" ]; then
     fi
   fi
 else
-  if [ "$(exportGameJava "$PZ_HOME")" != 0 ]; then
+  exportGameJava $PZ_HOME
+  if [ $? != 0 ]; then
     JAVA_CMD="java"
     which java >/dev/null 2>&1 || echo -e "\nERROR: JAVA_HOME is not set and no 'java' command" \
       "could be found in your PATH.\nPlease set the JAVA_HOME variable in your environment" \
@@ -80,9 +82,12 @@ fi
 # Path to Storm jar library directory
 LIB_PATH="${STORM_HOME}/lib"
 
-CLASSPATH="${LIB_PATH}/storm-0.2.0.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-analysis-9.1.jar:\
+CLASSPATH="${LIB_PATH}/storm-0.2.1.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-analysis-9.1.jar:\
 ${LIB_PATH}/asm-tree-9.1.jar:${LIB_PATH}/asm-util-9.1.jar:${LIB_PATH}/guava-30.1.1-jre.jar:\
 ${LIB_PATH}/log4j-api-2.14.0.jar:${LIB_PATH}/log4j-core-2.14.0.jar:${PZ_HOME}:${PZ_HOME}/*"
+
+# Project Zomboid properties
+PZ_OPTS="-Dzomboid.steam=1 -Dzomboid.znetlog=1"
 
 # Java command-line options
 JAVA_OPTS="-XX:+UseConcMarkSweepGC -XX:-CreateMinidumpOnCrash \
@@ -95,7 +100,7 @@ ${PZ_HOME}/jre64/lib/amd64 -Dorg.lwjgl.librarypath=${PZ_HOME}"
 echo "Launching Zomboid Storm..."
 
 # Collect all arguments for the java command, following the shell quoting and substitution rules
-eval set -- $JAVA_OPTS $SYS_PROPS -classpath "$CLASSPATH" io.pzstorm.storm.core.StormLauncher
+eval set -- $PZ_OPTS $JAVA_OPTS $SYS_PROPS -classpath "$CLASSPATH" io.pzstorm.storm.core.StormLauncher
 
 # Execute Java command to launch Storm
 exec "$JAVA_CMD" "$@"
