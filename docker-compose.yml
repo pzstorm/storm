@@ -10,5 +10,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    command: [ "--user", "pzstorm", "--project", "storm", "--no-issues-wo-label", "--no-unreleased", \
-        "--exclude-labels", "duplicate,invalid,question,wontfix,documentation,workflow" ]
+    command: [ "--user", "pzstorm", "--project", "storm", "--token", "${CHANGELOG_GITHUB_TOKEN}",
+               "--no-issues-wo-label", "--no-unreleased", "--exclude-labels",
+               "duplicate,invalid,question,wontfix,documentation,workflow" ]
