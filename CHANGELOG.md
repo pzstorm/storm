@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.2.1](https://github.com/pzstorm/storm/tree/v0.2.1) (2021-06-30)
+
+[Full Changelog](https://github.com/pzstorm/storm/compare/v0.2.0...v0.2.1)
+
+**Implemented enhancements:**
+
+- Add event for loading sound banks [\#14](https://github.com/pzstorm/storm/issues/14)
+
+**Fixed bugs:**
+
+- Storm Linux launcher script doesn't activate Steam support [\#22](https://github.com/pzstorm/storm/issues/22)
+- Storm core has invalid artifactId dependency  [\#21](https://github.com/pzstorm/storm/issues/21)
+- Missing registered LuaEvent class \(OnSteamServerFailedToRespond2\) [\#20](https://github.com/pzstorm/storm/issues/20)
+- Linux launch script not working [\#18](https://github.com/pzstorm/storm/issues/18)
+- Log4j not printing error stack trace to log file [\#17](https://github.com/pzstorm/storm/issues/17)
+
 ## [v0.2.0](https://github.com/pzstorm/storm/tree/v0.2.0) (2021-06-27)
 
 [Full Changelog](https://github.com/pzstorm/storm/compare/v0.1.1...v0.2.0)
