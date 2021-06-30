@@ -99,7 +99,14 @@ public class StormClassTransformers {
 		/////////////////////
 
 		registerTransformer("zombie.debug.DebugLog", new DebugLogPatch());
-		registerTransformer("zombie.debug.DebugLogStream", new DebugLogStreamPatch());
+		registerTransformer("zombie.debug.DebugLogStream", new DebugLogStreamPatch(),
+				ImmutableMap.<MethodData, MethodMaxs>builder()
+						.put(new MethodData("printException",
+										"(Ljava/lang/Throwable;Ljava/lang/String;" +
+												"Ljava/lang/String;Lzombie/debug/LogSeverity;)V"),
+								new MethodMaxs(5, 6))
+						.build()
+		);
 	}
 
 	/**
