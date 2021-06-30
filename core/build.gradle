@@ -24,7 +24,7 @@ dependencies {
     testImplementation apiProject, zombieProject
 
     def zomboidImplementationFiles = files(rootConfigurations.zomboidImplementation.files).filter {
-        return !(it.name.equals('media'))
+        return !(it.name == 'media')
     }
     implementation zomboidImplementationFiles
     testImplementation zomboidImplementationFiles
