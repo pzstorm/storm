@@ -1,0 +1,7 @@
+def rootConfigurations = rootProject.configurations
+dependencies {
+    def zomboidImplementationFiles = files(rootConfigurations.zomboidImplementation.files).filter {
+        return !(it.name == 'media')
+    }
+    implementation zomboidImplementationFiles
+}
