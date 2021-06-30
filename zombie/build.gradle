@@ -1,7 +1,6 @@
-def rootConfigurations = rootProject.configurations
 dependencies {
-    def zomboidImplementationFiles = files(rootConfigurations.zomboidImplementation.files).filter {
+    implementation files(rootProject.configurations.zomboidImplementation.files).filter {
         return !(it.name == 'media')
     }
-    implementation zomboidImplementationFiles
+    implementation project(':storm-api'), project(':storm-core')
 }
