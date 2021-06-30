@@ -167,7 +167,6 @@ public class StormClassTransformers {
 								, exceptions) {
 							@Override
 							public void visitMaxs(int maxStack, int maxLocals) {
-
 								super.visitMaxs(maxData.maxStack > 0 ? maxData.maxStack : maxStack,
 										maxData.maxLocal > 0 ? maxData.maxLocal : maxLocals);
 							}

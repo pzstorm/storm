@@ -341,7 +341,7 @@ public class LuaEventFactory {
 	 * @param args array of arguments to use when instantiating {@code LuaEvent}.
 	 *
 	 * @return new instance of {@code LuaEvent} for class of given name or {@code null} if no
-	 *		 registered {@code LuaEvent} class was found for given name.
+	 * 		registered {@code LuaEvent} class was found for given name.
 	 *
 	 * @throws IllegalStateException if no constructor with parameters matching specified array of
 	 * 		arguments was found for {@code LuaEvent} class resolved from given name, an error

@@ -25,8 +25,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
-import java.io.PrintStream;
-
 /**
  * <p>Wrapper class for printing Storm logs with Log4j 2 logger.
  * To configure console logging level launch Storm with {@code JVM_PROPERTY}

@@ -204,7 +204,7 @@ public class DebugLogStreamPatch implements ZomboidPatch {
 
 		AsmUtils.addToInsnList(printException, new LabelNode(),
 				new FieldInsnNode(Opcodes.GETSTATIC,
-				"zombie/debug/DebugLogStream$1", "$SwitchMap$zombie$debug$LogSeverity", "[I"),
+						"zombie/debug/DebugLogStream$1", "$SwitchMap$zombie$debug$LogSeverity", "[I"),
 				new VarInsnNode(Opcodes.ALOAD, 4),
 				new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "zombie/debug/LogSeverity",
 						"ordinal", "()I"
