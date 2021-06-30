@@ -35,7 +35,7 @@ allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
     group 'io.github.pzstorm'
-    version '0.2.0'
+    version '0.2.1'
 }
 
 // make sure to configure zombie subproject first because other
