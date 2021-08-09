@@ -8,13 +8,13 @@ Zomboid Storm is a Java modding toolchain for [Project Zomboid](https://projectz
 
 ## Introduction
 
-Since the early days of Project Zomboid there was only ever two ways of modding the game; with Lua using the official API or with Java by modifying and recompiling game classes. For an in-depth analysis of Lua and Java modding you should read the [Unofficial Guide to Modding Project Zomboid](https://github.com/cocolabs/pz-modding-guide#writing-code). For now let's take a quickly look at and compare both approaches:
+Since the early days of Project Zomboid, there has only ever two ways of modding the game: with Lua using the official API or with Java by modifying and recompiling game classes. For an in-depth analysis of Lua and Java modding you should read the [Unofficial Guide to Modding Project Zomboid](https://github.com/cocolabs/pz-modding-guide#writing-code). For now let's take a quickly look at and compare both approaches:
 
 - Lua modding is the officially supported way of modding. It is easy to learn and start with but has very limited scope of possible implementation and is much more difficult to debug when things eventually go wrong. It also has serious limitations due to simplistic language architecture. 
 
 - Java modding is more difficult to learn and start with but has a nearly unlimited scope of possible implementation and is very easy to inspect and debug during runtime. In addition to this, Java modders never had a way to interact with the game code in a standardized way (leading to mod incompatibility) or a way to load the mods in game (leading to limitations on how the mod can be used and distributed).
 
-Until now the preferred way of modding the game was with the use of Lua API, and looking at the brief comparison above it is clear why. It might seem that when choosing between these approaches you are choosing between usability and scope, but that is incorrect. From the community perspective you are choosing between developing mods for yourself or others, since Java mods were always incompatible with the whole concept of community modding.
+Until now, the preferred way of modding the game was with the use of Lua API. Looking at the brief comparison above, it is clear why. It might seem that, when choosing between these approaches, you are choosing between usability and scope. That is incorrect. From the community perspective, you are choosing between developing mods for yourself or for others, since Java mods have always been incompatible with the whole concept of community modding.
 
 This is all in the past, now that Storm is here. Mod developers can now use a community supported API to write Java mods without worrying about core compatibility issues, as well as an integrated mod loading system to load Java mod classes during game execution. For more information read the [Features](#features) section to see an overview of all features currently implemented by Storm.
 
@@ -30,11 +30,11 @@ This is all in the past, now that Storm is here. Mod developers can now use a co
 - Download the [latest release](https://github.com/pzstorm/storm/releases/latest) from the project's Github repository.
 - Extract the archive in your Project Zomboid root directory.
 
-When updating an existing version remember to remove the contents of the old version before extracting the new version, as to avoid having redundant and possibly conflicting files in your installation directory. In future Storm versions this process will be automated for you.
+When updating an existing version, remember to remove the contents of the old version before extracting the new version as to avoid having redundant and possibly conflicting files in your installation directory. In future Storm versions, this process will be automated for you.
 
 ## How to use
 
-To launch Storm simply run one of the launch script available in `bin` directory.
+To launch Storm, simply run one of the launch script available in `bin` directory.
 Choose the launch script that corresponds to your operating system and system architecture:
 
 - 32-bit Windows - `storm_win32.bat`
@@ -52,7 +52,7 @@ Here is an example of a correct Java mod directory structure:
     └── sample.jar
 ```
 
-If you are a mod developer interested in developing Storm mods see [For developers](#for-developers) section.
+If you are a mod developer interested in developing Storm mods, see [For developers](#for-developers) section.
 
 ## For developers
 
@@ -63,7 +63,7 @@ This section is intended for those interested in developing Storm mods or helpin
 Storm is comprised of the following integrated components:
 
 - `StormBootstrap` - bootstraps everything needed to launch the game with static initialization.
-- `StormLauncher`-  servers as an application entry point and starts Project Zomboid.  
+- `StormLauncher`-  serves as an application entry point and starts Project Zomboid.
 - `StormClassLoader` - used to define, transform and load Project Zomboid classes.
 - `StormModLoader` - responsible for loading mod metadata files and classes.
 - `StormModRegistry` - responsible for creating and registering mod main class instances.
@@ -85,19 +85,19 @@ Here is an example of a valid `mod.info` file:
  pzversion=41.50-IWBUMS
  ```
 
-The minimum requirement for valid metadata is the `name` property which has to be defined. Currently other properties are ignored, but support for more metadata definitions will be implemented in future releases.
+The minimum requirement for valid metadata is the `name` property which has to be defined. Currently, other properties are ignored, but support for more metadata definitions will be implemented in future releases.
 
 ### Events
 
-Events are object instances that were created by in-game hooks. Events can have class fields that contain additional information about event context, which is very helpful when handling events. All events are located in `io.pzstorm.storm.event.*` package.
+Events are object instances that were created by in-game hooks. Events can have class fields that contain additional information about event context which is very helpful for handling. All events are located in `io.pzstorm.storm.event.*` package.
 
-*Example: an event can be used to preform an action after an item is consumed.* 
+*Example: an event can be used to perform an action after an item is consumed.* 
 
-Storm uses a dispatcher system to receive event calls from game and dispatch them to event handlers. Before mods can start receiving events then need to register an event handler. The following section explains how to register an event handler.
+Storm uses a dispatcher system to receive event calls from game and dispatch them to event handlers. Before mods can start receiving events, they need to register an event handler. The following section explains how to register an event handler.
 
 #### Event handler
 
-Event handlers need to be registered from `ZomboidMod#registerEventHandlers` method. Multiple event handlers can be registered by a single mod, although this should be rarely needed and should be done mostly to organize different events into categories.
+Event handlers need to be registered from `ZomboidMod#registerEventHandlers` method. Although multiple event handlers can be registered by a single mod, this should rarely be needed and should be done mostly to organize different events into categories.
 
 To register an event handler when subscribed methods are static methods:   
 
@@ -117,7 +117,7 @@ public void registerEventHandlers() {
 }
 ```
 
-There is no practical difference between registering event handlers in static or instance context. The only difference is that registering event handler instances allows you more flexibility as more then one event handler of the same class can be registered using the event dispatcher.
+There is no practical difference between registering event handlers in static or instance context. The only difference is that registering event handler instances allows you more flexibility as more than one event handler of the same class can be registered using the event dispatcher.
 
 All methods in registered event handlers annotated with `SubscribeEvent` annotation will be called by the dispatcher when an appropriate event is created. Each subscribed method has to have **exactly one parameter** that matches the type of event it wants to subscribe to. For example if a method wanted to subscribe to `OnRenderEvent` it would define itself in one of two ways depending on the handler registration method used:
 
@@ -145,7 +145,7 @@ All methods in registered event handlers annotated with `SubscribeEvent` annotat
 
 Anyone can contribute to the Storm project, here are a few ways to start:
 
-- **Help test Storm** - Simply launch and play the game using Storm. You can play with or without Lua and/or Java mods, but note that there is no need to install any mods, just running the game with Storm is enough to test the core framework. If you come across any issue please report them using the project [issue tracker](https://github.com/pzstorm/storm/issues/new). This helps developers know what issues they need to address in future releases.
+- **Help test Storm** - Simply launch and play the game using Storm. You can play with or without Lua and/or Java mods. Note that there is no need to install any mods, just running the game with Storm is enough to test the core framework. If you come across any issue please report them using the project [issue tracker](https://github.com/pzstorm/storm/issues/new). This helps developers know what issues they need to address in future releases.
 - **Create mods** - Create and publish Java mods that use the Storm framework. 
 - **Spread the word** - Tell all your friends about the Storm project and how it changed your life (for the better).
 - **Join the community** - Join other Storm enthusiasts on [Discord](https://discord.gg/ZCmg9VsvSW) and discuss the future of this project.
