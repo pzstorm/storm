@@ -38,6 +38,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    testLogging.events "passed", "skipped", "failed"
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
 }
 jar.archiveBaseName.set('storm-core')

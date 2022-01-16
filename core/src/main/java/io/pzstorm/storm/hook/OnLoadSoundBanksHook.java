@@ -43,14 +43,15 @@ public class OnLoadSoundBanksHook implements StormHook {
 				new TypeInsnNode(Opcodes.NEW, eventDescriptor), new InsnNode(Opcodes.DUP),
 				new MethodInsnNode(Opcodes.INVOKESPECIAL, eventDescriptor, "<init>", "()V")
 		));
-		// javafmod.FMOD_Studio_System_LoadBankFile(...);
+		// javafmod.FMOD_System_Set3DSettings(1.0f, 1.0f, 1.0f);
 		// -> insert <-
-		// javafmod.FMOD_Studio_LoadSampleData(var3);
+		// this.loadBank("ZomboidSound.strings");
 		// ...
 		LabelNode target = AsmUtils.getFirstMatchingLabelNode(instructions, ImmutableList.of(
-				new VarInsnNode(Opcodes.LLOAD, 3),
-				new MethodInsnNode(Opcodes.INVOKESTATIC, "fmod/javafmod",
-						"FMOD_Studio_LoadSampleData", "(J)V")
+				new VarInsnNode(Opcodes.ALOAD, 0),
+				new LdcInsnNode("ZomboidSound.strings"),
+				new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "fmod/fmod/FMODManager",
+						"loadBank", "(Ljava/lang/String;)J")
 		));
 		instructions.insertBefore(target, dispatchOnLoadSoundBanksEvent);
 	}

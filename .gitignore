@@ -84,3 +84,7 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
+core/bin/
+
+### VS Code ###
+.vscode
