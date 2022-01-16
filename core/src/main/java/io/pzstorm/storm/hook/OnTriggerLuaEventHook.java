@@ -36,20 +36,25 @@ public class OnTriggerLuaEventHook implements StormHook {
 		String eventDescriptor = StormUtils.getClassAsPath(OnTriggerLuaEvent.class);
 
 		// new OnTriggerLuaEvent(Event)
-		InsnList onTriggerLuaEvent1 = StormEventDispatcher.callDispatchEvent(ImmutableList.of(
-				new TypeInsnNode(Opcodes.NEW, eventDescriptor),
-				new InsnNode(Opcodes.DUP),
-				new VarInsnNode(Opcodes.ALOAD, 2),
-				new InsnNode(Opcodes.ICONST_0),
-				new TypeInsnNode(Opcodes.ANEWARRAY, "java/lang/Object"),
-				new MethodInsnNode(Opcodes.INVOKESPECIAL, eventDescriptor, "<init>",
-						"(Lzombie/Lua/Event;[Ljava/lang/Object;)V")
+		InsnList onTriggerLuaEvent1 =  new InsnList();
+		onTriggerLuaEvent1.add(new TypeInsnNode(Opcodes.NEW, eventDescriptor));
+		onTriggerLuaEvent1.add(new InsnNode(Opcodes.DUP));
+		onTriggerLuaEvent1.add(new VarInsnNode(Opcodes.ALOAD, 2));
+		onTriggerLuaEvent1.add(new InsnNode(Opcodes.ICONST_0));
+		onTriggerLuaEvent1.add(new TypeInsnNode(Opcodes.ANEWARRAY, "java/lang/Object"));
+		onTriggerLuaEvent1.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, eventDescriptor, "<init>","(Lzombie/Lua/Event;[Ljava/lang/Object;)V"));
+		onTriggerLuaEvent1.add(new MethodInsnNode(
+			Opcodes.INVOKESTATIC, "io/pzstorm/storm/event/StormEventDispatcher",
+			"dispatchEvent", "(Lio/pzstorm/storm/event/ZomboidEvent;)V"
 		));
+		onTriggerLuaEvent1.add(new LabelNode());
+
 		// public static void triggerEvent(String)
 		InsnList triggerEvent1 = transformer.getInstructionsForMethod("triggerEvent",
 				"(Ljava/lang/String;)V"
 		);
 		LabelNode target1 = AsmUtils.getFirstMatchingLabelNode(triggerEvent1, ImmutableList.of(
+				new FrameNode(Opcodes.F_APPEND, 2, new String[]{"java/lang/Object","zombie/Lua/Event"}, 0, new String[]{} ),
 				new VarInsnNode(Opcodes.ALOAD, 2),
 				new FieldInsnNode(Opcodes.GETSTATIC, "zombie/Lua/LuaManager", "env",
 						"Lse/krka/kahlua/vm/KahluaTable;"),
@@ -58,9 +63,10 @@ public class OnTriggerLuaEventHook implements StormHook {
 				new InsnNode(Opcodes.ACONST_NULL),
 				new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "zombie/Lua/Event", "trigger",
 						"(Lse/krka/kahlua/vm/KahluaTable;" +
-								"Lse/krka/kahlua/integration/LuaCaller;[Ljava/lang/Object;)Z"))
-		);
-		triggerEvent1.insertBefore(target1, onTriggerLuaEvent1);
+								"Lse/krka/kahlua/integration/LuaCaller;[Ljava/lang/Object;)Z")
+		));
+
+		triggerEvent1.insert(target1.getNext().getNext(), onTriggerLuaEvent1);
 
 		// new OnTriggerLuaEvent(Event,Object)
 		InsnList onTriggerLuaEvent2 = StormEventDispatcher.callDispatchEvent(ImmutableList.of(

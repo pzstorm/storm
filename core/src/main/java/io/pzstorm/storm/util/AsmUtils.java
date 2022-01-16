@@ -18,12 +18,18 @@
 
 package io.pzstorm.storm.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
+import org.objectweb.asm.util.Printer;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceMethodVisitor;
 
 /**
  * This class contains an assortment of helpful methods when working with ASM.
@@ -220,8 +226,14 @@ public class AsmUtils {
 		}
 		if (a instanceof FrameNode)
 		{
-			return ((FrameNode) a).local.equals(((FrameNode) b).local) &&
-					((FrameNode) a).stack.equals(((FrameNode) b).stack);
+			return
+			((FrameNode) a).local.equals(((FrameNode) b).local) && (
+				(
+					(((FrameNode) a).stack == null || ((FrameNode) a).stack.isEmpty())  &&
+					(((FrameNode) b).stack == null || ((FrameNode) b).stack.isEmpty())
+				) ||
+				((FrameNode) a).stack.equals(((FrameNode) b).stack)
+			);
 		}
 		if (a instanceof IincInsnNode)
 		{
@@ -300,5 +312,15 @@ public class AsmUtils {
 			return ((VarInsnNode) a).var == ((VarInsnNode) b).var;
 		}
 		return true;
+	}
+
+	public static void dumpIsns(InsnList list){
+		Printer printer = new Textifier();
+		TraceMethodVisitor visitor = new TraceMethodVisitor(printer); 
+		list.accept(visitor);
+		StringWriter writer = new StringWriter();
+		printer.print(new PrintWriter(writer));
+		printer.getText().clear();
+		Logger.getGlobal().info(() -> "DUMP:\n" + writer.toString());
 	}
 }

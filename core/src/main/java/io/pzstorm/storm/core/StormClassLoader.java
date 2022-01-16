@@ -52,7 +52,7 @@ public class StormClassLoader extends ClassLoader {
 			"java.", "org.objectweb.asm.", "sun.", "com.sun.", "org.xml.", "org.w3c.",
 			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.",
 			"io.pzstorm.storm.logging.StormLogger", "io.pzstorm.storm.core.StormBootstrap",
-			"io.pzstorm.storm.core.StormClassLoader"
+			"io.pzstorm.storm.core.StormClassLoader", "com.github.difflib", "com.google.common", "jdk."
 	);
 	/**
 	 * {@code ClassLoader} that is the parent of this {@code ClassLoader}.
@@ -80,7 +80,7 @@ public class StormClassLoader extends ClassLoader {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
-		modResourceLoader = (URLClassLoader) getParent();
+		modResourceLoader = new URLClassLoader(new URL[0],parentClassLoader);
 	}
 
 	/**

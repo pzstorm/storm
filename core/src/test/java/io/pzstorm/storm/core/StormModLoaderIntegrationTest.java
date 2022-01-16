@@ -2,6 +2,7 @@ package io.pzstorm.storm.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -99,11 +100,17 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 
 	@Test
 	@Order(4)
-	void shouldIncludeModDirectoryPathsInResourcePaths() {
+	void shouldIncludeModDirectoryPathsInResourcePaths() throws MalformedURLException {
 
 		StormModLoader modLoader = new StormModLoader();
 		HashSet<Path> classLoaderURLs = new HashSet<>();
 		for (URL resourcePath : modLoader.getURLs()) {
+			if(resourcePath.getPath().startsWith("file:")){
+				resourcePath = new URL(resourcePath.getPath());
+			}
+			if(resourcePath.getPath().startsWith("/") && System.getProperty("os.name").startsWith("Windows")){
+				resourcePath = new URL("file:" + resourcePath.getPath().substring(1));
+			}
 			classLoaderURLs.add(Paths.get(resourcePath.getPath()).toAbsolutePath());
 		}
 		for (String modDirName : new String[] { "A", "B", "C" })
