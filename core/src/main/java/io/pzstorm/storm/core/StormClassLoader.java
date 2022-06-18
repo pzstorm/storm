@@ -80,7 +80,7 @@ public class StormClassLoader extends ClassLoader {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
-		modResourceLoader = (URLClassLoader) getParent();
+		modResourceLoader = new URLClassLoader("modResourceLoader", new URL[0], getParent());
 	}
 
 	/**

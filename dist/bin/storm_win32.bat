@@ -100,7 +100,7 @@ set CLASSPATH=%LIB_PATH%\storm-0.2.1.jar;%LIB_PATH%\asm-9.1.jar;%LIB_PATH%\asm-a
 
 echo Launching Zomboid Storm...
 echo.
-"%JAVA_EXE%" -Dzomboid.steam=1 -Dzomboid.znetlog=1 -Xms768m -Xmx1200m -XX:+UseConcMarkSweepGC -XX:-CreateMinidumpOnCrash -XX:-OmitStackTraceInFastThrow -Djava.library.path="%PZ_HOME%" -classpath "%CLASSPATH%" io.pzstorm.storm.core.StormLauncher %*
+"%JAVA_EXE%" -Dzomboid.steam=1 -Dzomboid.znetlog=1 -XX:-CreateCoredumpOnCrash -XX:-OmitStackTraceInFastThrow -Xms768m -Xmx1200m -Djava.library.path="%PZ_HOME%/win32/;%PZ_HOME%" -classpath "%CLASSPATH%" io.pzstorm.storm.core.StormLauncher %*
 
 :finish
 exit /b 0

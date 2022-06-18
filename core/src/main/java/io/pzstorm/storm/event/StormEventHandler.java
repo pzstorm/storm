@@ -102,8 +102,7 @@ public class StormEventHandler {
 			GameWindow.states.LoopToState = 2;
 
 			// increase TIS logo delay values
-			((TISLogoState) tisLogoState).leavedelay = 40;
-			((TISLogoState) tisLogoState).logoDelay = 60.0F;
+			((TISLogoState) tisLogoState).logoDisplayTime = 60.0F;
 		}
 		else {
 			StormLogger.error(String.format(
