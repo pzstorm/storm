@@ -49,7 +49,7 @@ public class OnTriggerLuaEventHook implements StormHook {
 		InsnList triggerEvent1 = transformer.getInstructionsForMethod("triggerEvent",
 				"(Ljava/lang/String;)V"
 		);
-		LabelNode target1 = AsmUtils.getFirstMatchingLabelNode(triggerEvent1, ImmutableList.of(
+		AbstractInsnNode target1 = AsmUtils.getFirstNode(triggerEvent1, ImmutableList.of(
 				new VarInsnNode(Opcodes.ALOAD, 2),
 				new FieldInsnNode(Opcodes.GETSTATIC, "zombie/Lua/LuaManager", "env",
 						"Lse/krka/kahlua/vm/KahluaTable;"),

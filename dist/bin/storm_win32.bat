@@ -74,9 +74,9 @@ set /p JAVA_VERSION_INFO=<version.tmp
 del version.tmp
 
 set JAVA_VERSION=%JAVA_VERSION_INFO:"=%
-for /f "tokens=3,4 delims=., " %%v in ("%JAVA_VERSION%") do (
-	@rem Only valid version is java 1.8
-    if not %%v%%w == 18 goto wrongJavaVersion
+for /f "tokens=3 delims=., " %%v in ("%JAVA_VERSION%") do (
+	@rem Only valid version is java 17
+    if not %%v == 17 goto wrongJavaVersion
 )
 if "%ERRORLEVEL%" == "0" goto execute
 
@@ -100,7 +100,7 @@ set CLASSPATH=%LIB_PATH%\storm-0.2.1.jar;%LIB_PATH%\asm-9.1.jar;%LIB_PATH%\asm-a
 
 echo Launching Zomboid Storm...
 echo.
-"%JAVA_EXE%" -Dzomboid.steam=1 -Dzomboid.znetlog=1 -Xms768m -Xmx1200m -XX:+UseConcMarkSweepGC -XX:-CreateMinidumpOnCrash -XX:-OmitStackTraceInFastThrow -Djava.library.path="%PZ_HOME%" -classpath "%CLASSPATH%" io.pzstorm.storm.core.StormLauncher %*
+"%JAVA_EXE%" -Dzomboid.steam=1 -Dzomboid.znetlog=1 -XX:-CreateCoredumpOnCrash -XX:-OmitStackTraceInFastThrow -Xms768m -Xmx1200m -Djava.library.path="%PZ_HOME%/win32/;%PZ_HOME%" -classpath "%CLASSPATH%" io.pzstorm.storm.core.StormLauncher %*
 
 :finish
 exit /b 0

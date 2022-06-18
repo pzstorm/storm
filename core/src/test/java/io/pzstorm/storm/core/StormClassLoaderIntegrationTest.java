@@ -68,8 +68,6 @@ class StormClassLoaderIntegrationTest extends StormClassLoader implements Integr
 		ImmutableSet<String> dummyClasses = ImmutableSet.of(
 				"java.util.concurrent.CountDownLatch",
 				"org.objectweb.asm.ClassWriter",
-				"sun.reflect.FieldInfo",
-				"com.sun.java.util.jar.pack.DriverResource",
 				"javax.imageio.IIOImage",
 				"javax.xml.XMLConstants",
 				"org.w3c.dom.Attr"

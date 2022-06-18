@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.google.common.io.RecursiveDeleteOption;
 import org.junit.jupiter.api.Assertions;
 
 import com.google.common.collect.ImmutableList;
@@ -33,7 +34,7 @@ class ModLoaderTestFixture implements IntegrationTest {
 		if (tempDir.exists())
 		{
 			// clean temporary directory from last test run
-			MoreFiles.deleteDirectoryContents(tempDir.toPath());
+			MoreFiles.deleteDirectoryContents(tempDir.toPath(), RecursiveDeleteOption.ALLOW_INSECURE);
 			Assertions.assertEquals(0, Objects.requireNonNull(tempDir.listFiles()).length);
 		}
 		File zomboidModsDir = new File(tempDir, "Zomboid/mods");

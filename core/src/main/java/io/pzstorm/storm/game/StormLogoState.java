@@ -23,6 +23,7 @@ import java.util.Arrays;
 
 import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.util.StormUtils;
+import org.lwjglx.input.Keyboard;
 import zombie.GameTime;
 import zombie.core.Core;
 import zombie.core.SpriteRenderer;
@@ -48,7 +49,7 @@ public final class StormLogoState extends GameState {
 	 * When one of these keys is pressed during StormLogoState the state will be interrupted.
 	 */
 	private static final int[] INTERRUPT_KEYS = {
-			Input.KEY_RETURN, Input.KEY_SPACE, Input.KEY_ESCAPE
+			Keyboard.KEY_RETURN, Keyboard.KEY_SPACE, Keyboard.KEY_ESCAPE
 	};
 
 	/**
