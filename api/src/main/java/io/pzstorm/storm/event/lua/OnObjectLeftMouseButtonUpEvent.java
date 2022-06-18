@@ -36,14 +36,14 @@ public class OnObjectLeftMouseButtonUpEvent implements LuaEvent {
 	/**
 	 * Position of mouse along x-axis.
 	 */
-	public final Integer x;
+	public final Double x;
 
 	/**
 	 * Position of mouse along y-axis.
 	 */
-	public final Integer y;
+	public final Double y;
 
-	public OnObjectLeftMouseButtonUpEvent(IsoObject object, Integer x, Integer y) {
+	public OnObjectLeftMouseButtonUpEvent(IsoObject object, Double x, Double y) {
 
 		this.object = object;
 		this.x = x;

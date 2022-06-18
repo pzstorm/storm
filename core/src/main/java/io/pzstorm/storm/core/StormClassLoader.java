@@ -50,7 +50,7 @@ public class StormClassLoader extends ClassLoader {
 	@SuppressWarnings("SpellCheckingInspection")
 	private static final ImmutableSet<String> CLASS_BLACKLIST = ImmutableSet.of(
 			"java.", "org.objectweb.asm.", "sun.", "com.sun.", "org.xml.", "org.w3c.",
-			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.",
+			"javax.script.", "javax.management.", "javax.imageio.", "javax.xml.", "jdk.internal.reflect.",
 			"io.pzstorm.storm.logging.StormLogger", "io.pzstorm.storm.core.StormBootstrap",
 			"io.pzstorm.storm.core.StormClassLoader"
 	);
@@ -80,7 +80,7 @@ public class StormClassLoader extends ClassLoader {
 
 		StormLogger.debug("Initialized StormClassLoader");
 		parentClassLoader = getClass().getClassLoader();
-		modResourceLoader = (URLClassLoader) getParent();
+		modResourceLoader = new URLClassLoader("modResourceLoader", new URL[0], getParent());
 	}
 
 	/**

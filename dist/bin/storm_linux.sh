@@ -82,7 +82,7 @@ fi
 # Path to Storm jar library directory
 LIB_PATH="${STORM_HOME}/lib"
 
-CLASSPATH="${LIB_PATH}/storm-0.2.1.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-analysis-9.1.jar:\
+CLASSPATH="${LIB_PATH}/storm-0.2.2.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-analysis-9.1.jar:\
 ${LIB_PATH}/asm-tree-9.1.jar:${LIB_PATH}/asm-util-9.1.jar:${LIB_PATH}/guava-30.1.1-jre.jar:\
 ${LIB_PATH}/log4j-api-2.14.0.jar:${LIB_PATH}/log4j-core-2.14.0.jar:${PZ_HOME}:${PZ_HOME}/*"
 

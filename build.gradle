@@ -35,7 +35,7 @@ allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
     group 'io.github.pzstorm'
-    version '0.2.1'
+    version '0.2.2'
 }
 
 // make sure to configure zombie subproject first because other
@@ -47,17 +47,17 @@ subprojects.sort {
     it.apply plugin: 'maven-publish'
     it.apply plugin: 'net.ltgt.errorprone'
     it.apply plugin: 'com.diffplug.spotless'
-    it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+    it.apply from: "${project.projectDir}/spotless.gradle"
 
     it.java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
     // declare dependencies common to all subprojects
     it.dependencies {
         // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
-        errorprone 'com.google.errorprone:error_prone_core:2.6.0'
+        errorprone 'com.google.errorprone:error_prone_core:2.14.0'
 
         // https://mvnrepository.com/artifact/com.google.errorprone/javac
         errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
@@ -125,6 +125,10 @@ tasks.createRunConfigurations.configure {
         if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
             vmParameterBuilder = vmParameterBuilder
                     .withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
+                    .withLwjglLibraryPaths(gameDir)
+        } else if(os == org.gradle.internal.os.OperatingSystem.WINDOWS) {
+            vmParameterBuilder = vmParameterBuilder
+                    .withJavaLibraryPaths(gameDir as String, "${gameDir}/win64" as String, "${gameDir}/jre64/lib" as String)
                     .withLwjglLibraryPaths(gameDir)
         }
         //@formatter:off

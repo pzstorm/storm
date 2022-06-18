@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharSink;
 import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 
 import io.pzstorm.storm.IntegrationTest;
 
@@ -33,7 +34,7 @@ class ModLoaderTestFixture implements IntegrationTest {
 		if (tempDir.exists())
 		{
 			// clean temporary directory from last test run
-			MoreFiles.deleteDirectoryContents(tempDir.toPath());
+			MoreFiles.deleteDirectoryContents(tempDir.toPath(), RecursiveDeleteOption.ALLOW_INSECURE);
 			Assertions.assertEquals(0, Objects.requireNonNull(tempDir.listFiles()).length);
 		}
 		File zomboidModsDir = new File(tempDir, "Zomboid/mods");

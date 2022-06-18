@@ -18,6 +18,7 @@
 
 package io.pzstorm.storm.hook;
 
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -47,10 +48,10 @@ public class OnLoadSoundBanksHook implements StormHook {
 		// -> insert <-
 		// javafmod.FMOD_Studio_LoadSampleData(var3);
 		// ...
-		LabelNode target = AsmUtils.getFirstMatchingLabelNode(instructions, ImmutableList.of(
-				new VarInsnNode(Opcodes.LLOAD, 3),
-				new MethodInsnNode(Opcodes.INVOKESTATIC, "fmod/javafmod",
-						"FMOD_Studio_LoadSampleData", "(J)V")
+		AbstractInsnNode target = AsmUtils.getFirstMatchingLabelNode(instructions, ImmutableList.of(
+				new VarInsnNode(Opcodes.ALOAD, 0),
+				new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "fmod/fmod/FMODManager",
+						"initEvents", "()V")
 		));
 		instructions.insertBefore(target, dispatchOnLoadSoundBanksEvent);
 	}
