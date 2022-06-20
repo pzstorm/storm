@@ -52,8 +52,6 @@ public class OnLoadSoundBanksHook implements StormHook {
 				new MethodInsnNode(Opcodes.INVOKESTATIC, "fmod/javafmod",
 						"FMOD_Studio_LoadSampleData", "(J)V")
 		));
-		if(target != null) {
-			instructions.insertBefore(target, dispatchOnLoadSoundBanksEvent);
-		}
+		instructions.insertBefore(target, dispatchOnLoadSoundBanksEvent);
 	}
 }
