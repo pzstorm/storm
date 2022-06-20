@@ -74,9 +74,9 @@ set /p JAVA_VERSION_INFO=<version.tmp
 del version.tmp
 
 set JAVA_VERSION=%JAVA_VERSION_INFO:"=%
-for /f "tokens=3,4 delims=., " %%v in ("%JAVA_VERSION%") do (
-	@rem Only valid version is java 1.8
-    if not %%v%%w == 18 goto wrongJavaVersion
+for /f "tokens=3 delims=., " %%v in ("%JAVA_VERSION%") do (
+	@rem Only valid version is java 17
+    if not %%v == 17 goto wrongJavaVersion
 )
 if "%ERRORLEVEL%" == "0" goto execute
 

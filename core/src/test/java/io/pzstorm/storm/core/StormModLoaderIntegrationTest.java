@@ -104,13 +104,21 @@ class StormModLoaderIntegrationTest extends ModLoaderTestFixture {
 		StormModLoader modLoader = new StormModLoader();
 		HashSet<Path> classLoaderURLs = new HashSet<>();
 		for (URL resourcePath : modLoader.getURLs()) {
-			classLoaderURLs.add(Paths.get(resourcePath.getPath()).toAbsolutePath());
+			classLoaderURLs.add(Paths.get(toPath(resourcePath)).toAbsolutePath());
 		}
 		for (String modDirName : new String[] { "A", "B", "C" })
 		{
 			File modDir = new File(ZOMBOID_MODS_DIR, modDirName).getAbsoluteFile();
 			Assertions.assertTrue(classLoaderURLs.contains(modDir.toPath()));
 		}
+	}
+
+	private String toPath(URL resourcePath) {
+
+		return resourcePath.getPath().substring(
+				resourcePath.getPath().indexOf(":") + 1,
+				resourcePath.getPath().indexOf("!") != -1 ? resourcePath.getPath().indexOf("!") :
+						resourcePath.getPath().length());
 	}
 
 	@Test
