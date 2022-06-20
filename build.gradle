@@ -56,8 +56,6 @@ subprojects.sort {
 
         // https://mvnrepository.com/artifact/org.jetbrains/annotations
         compileOnly 'org.jetbrains:annotations:20.1.0'
-
-        implementation files('lib/zomboid.jar')
     }
 }
 def mainProjects = [ project(':storm-api'), project(':storm-core') ]
@@ -116,6 +114,10 @@ tasks.createRunConfigurations.configure {
         if (os == org.gradle.internal.os.OperatingSystem.LINUX) {
             vmParameterBuilder = vmParameterBuilder
                     .withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
+                    .withLwjglLibraryPaths(gameDir)
+        } else if(os == org.gradle.internal.os.OperatingSystem.WINDOWS) {
+            vmParameterBuilder = vmParameterBuilder
+                    .withJavaLibraryPaths(gameDir as String, "${gameDir}/win64" as String, "${gameDir}/jre64/lib" as String)
                     .withLwjglLibraryPaths(gameDir)
         }
         //@formatter:off
