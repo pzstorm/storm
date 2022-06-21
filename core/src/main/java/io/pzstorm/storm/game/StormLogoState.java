@@ -21,13 +21,13 @@ package io.pzstorm.storm.game;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.lwjglx.input.Keyboard;
+
 import io.pzstorm.storm.logging.StormLogger;
 import io.pzstorm.storm.util.StormUtils;
-import org.lwjglx.input.Keyboard;
 import zombie.GameTime;
 import zombie.core.Core;
 import zombie.core.SpriteRenderer;
-import zombie.core.input.Input;
 import zombie.core.textures.Texture;
 import zombie.gameStates.GameState;
 import zombie.gameStates.GameStateMachine.StateAction;
