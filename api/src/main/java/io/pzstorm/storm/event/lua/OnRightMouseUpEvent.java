@@ -27,14 +27,14 @@ public class OnRightMouseUpEvent implements LuaEvent {
 	/**
 	 * Position of mouse along x-axis.
 	 */
-	public final Integer x;
+	public final Double x;
 
 	/**
 	 * Position of mouse along y-axis.
 	 */
-	public final Integer y;
+	public final Double y;
 
-	public OnRightMouseUpEvent(Integer x, Integer y) {
+	public OnRightMouseUpEvent(Double x, Double y) {
 
 		this.x = x;
 		this.y = y;

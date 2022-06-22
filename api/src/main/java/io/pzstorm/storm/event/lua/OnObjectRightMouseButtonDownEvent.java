@@ -36,14 +36,14 @@ public class OnObjectRightMouseButtonDownEvent implements LuaEvent {
 	/**
 	 * Position of mouse along x-axis.
 	 */
-	public final Integer x;
+	public final Double x;
 
 	/**
 	 * Position of mouse along y-axis.
 	 */
-	public final Integer y;
+	public final Double y;
 
-	public OnObjectRightMouseButtonDownEvent(IsoObject object, Integer x, Integer y) {
+	public OnObjectRightMouseButtonDownEvent(IsoObject object, Double x, Double y) {
 
 		this.object = object;
 		this.x = x;

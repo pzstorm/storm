@@ -56,9 +56,9 @@ public class StormEventHandler {
 				Object internal = ((KahluaTableImpl) table).delegate.get("internal");
 				if (internal instanceof String && internal.equals("VERSIONDETAIL"))
 				{
-					String text = "Storm version 0.2.1-alpha";
+					String text = "Storm version 0.2.2-alpha";
 					TextManager.instance.DrawString(UIFont.Small, Core.width - 235.0,
-							Core.height - 50.0, text, 1.0, 1.0, 1.0, 0.7);
+							Core.height - 70.0, text, 1.0, 1.0, 1.0, 0.7);
 				}
 			}
 		}
@@ -102,8 +102,7 @@ public class StormEventHandler {
 			GameWindow.states.LoopToState = 2;
 
 			// increase TIS logo delay values
-			((TISLogoState) tisLogoState).leavedelay = 40;
-			((TISLogoState) tisLogoState).logoDelay = 60.0F;
+			((TISLogoState) tisLogoState).logoDisplayTime = 60.0F;
 		}
 		else {
 			StormLogger.error(String.format(

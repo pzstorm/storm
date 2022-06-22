@@ -1,0 +1,54 @@
+spotless {
+	/*
+     * Read Spotless Java documentation here:
+     * https://diffplug.github.io/spotless/javadoc/spotless-plugin-gradle/3.25.0/
+     */
+	java {
+		// Include only java source files
+		target 'src/*/java/**/*.java'
+		
+		// A sequence of package names
+		importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', '', '\\#'
+
+		replaceRegex 'Inline else lines', '(\\s+?)else\\n\\s+(.*)', '$1else $2'
+
+		replaceRegex 'Remove empty line in empty method declaration',
+				'(\\(.*\\)\\s*\\{\\s*\\n)\\s*\\n(\\s*\\})', '$1$2'
+
+		replaceRegex 'Remove empty line separating method declaration and single code line',
+				'(\\(.*\\)\\s*\\{\\s*\\n)\\s*\\n(\\s*[\\w\\/]+.*\\n\\s*\\n\\s*[\\w\\/]+.*)', '$1$2'
+
+		replaceRegex 'Remove empty lines separating single javadoc tags',
+				'(\\s*\\*\\s*[^@].*\\n\\s*\\*\\s*\\n\\s*\\*\\s*\\@.*\\n)(\\s*\\*\\s*\\n)(\\s*\\*\\s*\\@.*\\n\\s*\\*\\/)', '$1$3'
+
+		replaceRegex 'Remove nl between javadoc tags when only two statements',
+				'(\\/\\*\\*\\s*\\n\\s*\\*\\s*\\@.*\\n)(\\s*\\*(?:\\n|\\s+))(\\s*\\*\\s*\\@.*\\n\\s*\\*\\/)', '$1$3'
+
+		replaceRegex 'Bracket on same line as else statement',
+				'(\\}\\s*\\s*else)(\\s+|\\n\\s*)\\{', '$1 \\{'
+
+		replaceRegex 'Remove new lines from simple blocks',
+				'(\\{.*\\n)(\\s*\\n)([^\\n].*\\s*\\n\\s*\\})', '$1$3'
+
+		replaceRegex 'Place braces on EOL when not singleline',
+				'(\\s*\\n\\s*)(\\{\\s*\\n.*\\n\\s*\\})', ' $2'
+
+		replaceRegex 'Place braces on EOL for try blocks',
+				'(try)(\\s*\\n\\s*)\\{', '$1 {'
+
+		replaceRegex 'Place braces on EOL for multiline (2 lines) blocks',
+				'(\\))\\s*(\\{\\n\\s*|\\n\\s*\\{)(\\s*\\n)(\\s*)(.*[\\+\\,]\\s*\\n\\s*.*\\s*\\n\\s*\\})', '$1 {\n$4$5'
+
+		replaceRegex 'Separate JavaDoc params and throws tags with newline',
+				'(\\@param.*)\n(\\s*\\*)(\\s*\\@throws)', '$1\n$2\n$2$3'
+
+		// Removes trailing whitespace.
+		trimTrailingWhitespace()
+
+		// Ensures that the files are indented using tabs
+		//indentWithTabs()
+
+		// Ensures that files end with a single newline
+		endWithNewline()
+	}
+}
