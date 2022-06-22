@@ -58,7 +58,7 @@ public class StormEventHandler {
 				{
 					String text = "Storm version 0.2.2-alpha";
 					TextManager.instance.DrawString(UIFont.Small, Core.width - 235.0,
-							Core.height - 50.0, text, 1.0, 1.0, 1.0, 0.7);
+							Core.height - 70.0, text, 1.0, 1.0, 1.0, 0.7);
 				}
 			}
 		}

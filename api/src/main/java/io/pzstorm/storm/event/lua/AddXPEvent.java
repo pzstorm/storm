@@ -35,14 +35,14 @@ public class AddXPEvent implements LuaEvent {
 	/**
 	 * Perk to earn experience for.
 	 */
-	public final PerkFactory.Perks perk;
+	public final PerkFactory.Perk perk;
 
 	/**
 	 * Amount of experience to earn.
 	 */
 	public final Float xpAmount;
 
-	public AddXPEvent(IsoGameCharacter player, PerkFactory.Perks perk, Float xpAmount) {
+	public AddXPEvent(IsoGameCharacter player, PerkFactory.Perk perk, Float xpAmount) {
 
 		this.player = player;
 		this.perk = perk;

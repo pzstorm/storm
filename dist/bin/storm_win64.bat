@@ -95,9 +95,38 @@ echo Executing with %JAVA_VERSION_INFO:"=%
 @rem Path to Storm jar library directory
 set LIB_PATH=%STORM_HOME%\lib
 
+@rem Classpath of Project Zomboid libraries
+set PZ_CLASSPATH=%PZ_HOME%\commons-compress-1.18.jar;^
+%PZ_HOME%\istack-commons-runtime.jar;^
+%PZ_HOME%\jassimp.jar;^
+%PZ_HOME%\javacord-2.0.17-shaded.jar;^
+%PZ_HOME%\javax.activation-api.jar;^
+%PZ_HOME%\jaxb-api.jar;^
+%PZ_HOME%\jaxb-runtime.jar;^
+%PZ_HOME%\lwjgl.jar;^
+%PZ_HOME%\lwjgl-natives-windows.jar;^
+%PZ_HOME%\lwjgl-glfw.jar;^
+%PZ_HOME%\lwjgl-glfw-natives-windows.jar;^
+%PZ_HOME%\lwjgl-jemalloc.jar;^
+%PZ_HOME%\lwjgl-jemalloc-natives-windows.jar;^
+%PZ_HOME%\lwjgl-opengl.jar;^
+%PZ_HOME%\lwjgl-opengl-natives-windows.jar;^
+%PZ_HOME%\lwjgl_util.jar;^
+%PZ_HOME%\sqlite-jdbc-3.27.2.1.jar;^
+%PZ_HOME%\trove-3.0.3.jar;^
+%PZ_HOME%\uncommons-maths-1.2.3.jar;^
+%PZ_HOME%
+
 @rem Setup the command line
-set CLASSPATH=%LIB_PATH%\storm-0.2.2.jar;%LIB_PATH%\asm-9.1.jar;%LIB_PATH%\asm-analysis-9.1.jar;%LIB_PATH%\asm-tree-9.1.jar;
-%LIB_PATH%\asm-util-9.1.jar;%LIB_PATH%\guava-30.1.1-jre.jar;%LIB_PATH%\log4j-api-2.14.0.jar;%LIB_PATH%\log4j-core-2.14.0.jar;%PZ_HOME%;%PZ_HOME%\jinput.jar;%PZ_HOME%\lwjgl.jar;%PZ_HOME%\lwjgl_util.jar;%PZ_HOME%\sqlite-jdbc-3.27.2.1.jar;%PZ_HOME%\uncommons-maths-1.2.3.jar;%PZ_HOME%\trove-3.0.3.jar;%PZ_HOME%\javacord-2.0.17-shaded.jar;%PZ_HOME%\guava-23.0.jar;%PZ_HOME%\jassimp.jar
+set CLASSPATH=%LIB_PATH%\storm-0.2.2.jar;^
+%LIB_PATH%\asm-9.1.jar;^
+%LIB_PATH%\asm-analysis-9.1.jar;^
+%LIB_PATH%\asm-tree-9.1.jar;^
+%LIB_PATH%\asm-util-9.1.jar;^
+%LIB_PATH%\guava-30.1.1-jre.jar;^
+%LIB_PATH%\log4j-api-2.14.0.jar;^
+%LIB_PATH%\log4j-core-2.14.0.jar;^
+%PZ_CLASSPATH%
 
 echo Launching Zomboid Storm...
 echo.
