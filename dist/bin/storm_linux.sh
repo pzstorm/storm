@@ -66,7 +66,7 @@ else
 fi
 
 # This is the Java version we want
-JAVA_TARGET_VERSION="1.8"
+JAVA_TARGET_VERSION="17"
 
 # Determine which Java version is used
 JAVA_VERSION_INFO=$("$JAVA_CMD" -version 2>&1 | awk -F '"' '/version/ {print $2}')
@@ -82,15 +82,22 @@ fi
 # Path to Storm jar library directory
 LIB_PATH="${STORM_HOME}/lib"
 
-CLASSPATH="${LIB_PATH}/storm-0.2.2.jar:${LIB_PATH}/asm-9.1.jar:${LIB_PATH}/asm-analysis-9.1.jar:\
-${LIB_PATH}/asm-tree-9.1.jar:${LIB_PATH}/asm-util-9.1.jar:${LIB_PATH}/guava-30.1.1-jre.jar:\
-${LIB_PATH}/log4j-api-2.14.0.jar:${LIB_PATH}/log4j-core-2.14.0.jar:${PZ_HOME}:${PZ_HOME}/*"
+CLASSPATH="${LIB_PATH}/storm-@stormVersion@.jar:\
+${LIB_PATH}/asm-9.1.jar:\
+${LIB_PATH}/asm-analysis-9.1.jar:\
+${LIB_PATH}/asm-tree-9.1.jar:\
+${LIB_PATH}/asm-util-9.1.jar:\
+${LIB_PATH}/guava-30.1.1-jre.jar:\
+${LIB_PATH}/log4j-api-2.14.0.jar:\
+${LIB_PATH}/log4j-core-2.14.0.jar:\
+${PZ_HOME}:\
+${PZ_HOME}/*"
 
 # Project Zomboid properties
 PZ_OPTS="-Dzomboid.steam=1 -Dzomboid.znetlog=1"
 
 # Java command-line options
-JAVA_OPTS="-XX:+UseConcMarkSweepGC -XX:-CreateMinidumpOnCrash \
+JAVA_OPTS="-XX:-CreateMinidumpOnCrash \
 -XX:-OmitStackTraceInFastThrow -Xms1800m -Xmx2048m"
 
 # Java system properties

@@ -3,6 +3,7 @@
 
 import io.pzstorm.capsid.setup.VmParameter
 import io.pzstorm.capsid.setup.xml.LaunchRunConfig
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'io.pzstorm.capsid' version '0.4.2'
@@ -35,7 +36,7 @@ allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
     group 'io.github.pzstorm'
-    version '0.2.2'
+    version '0.2.2-mlem'
 }
 
 // make sure to configure zombie subproject first because other
@@ -169,7 +170,10 @@ distributions.main {
             return false
         }
         // include additional distibution files
-        it.from 'dist'
+        it.from('dist') {
+            include '**/*.*'
+            filter(ReplaceTokens, tokens: [stormVersion: rootProject.version])
+        }
 
         // exclude generated launch scripts
         it.exclude '**/storm', '**/storm.bat'
@@ -184,11 +188,11 @@ publishing {
             pom {
                 name = 'Zomboid Storm Core'
                 description = 'Project Zomboid Storm Implementation'
-                url = 'https://github.com/pzstorm/storm'
+                url = 'https://github.com/mlem/storm'
                 scm {
-                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
-                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
-                    url = 'https://github.com/pzstorm/storm'
+                    connection = 'scm:git:git://github.com/mlem/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:mlem/storm.git'
+                    url = 'https://github.com/mlem/storm'
                 }
                 licenses {
                     license {
@@ -201,6 +205,11 @@ publishing {
                         id = 'yooksi'
                         name = 'Matthew Cain'
                         email = 'yooks@tuta.io'
+                    }
+                    developer {
+                        id = 'mlem'
+                        name = 'Martin Lemanski'
+                        email = 'martin.lemanski@gmx.at'
                     }
                 }
             }
@@ -211,11 +220,11 @@ publishing {
             pom {
                 name = 'Zomboid Storm API'
                 description = 'Project Zomboid Storm API'
-                url = 'https://github.com/pzstorm/storm'
+                url = 'https://github.com/mlem/storm'
                 scm {
-                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
-                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
-                    url = 'https://github.com/pzstorm/storm'
+                    connection = 'scm:git:git://github.com/mlem/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:mlem/storm.git'
+                    url = 'https://github.com/mlem/storm'
                 }
                 licenses {
                     license {
@@ -228,6 +237,11 @@ publishing {
                         id = 'yooksi'
                         name = 'Matthew Cain'
                         email = 'yooks@tuta.io'
+                    }
+                    developer {
+                        id = 'mlem'
+                        name = 'Martin Lemanski'
+                        email = 'martin.lemanski@gmx.at'
                     }
                 }
             }

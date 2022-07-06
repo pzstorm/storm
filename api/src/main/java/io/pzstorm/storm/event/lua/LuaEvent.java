@@ -18,13 +18,13 @@
 
 package io.pzstorm.storm.event.lua;
 
+import java.io.IOException;
+
 import io.pzstorm.storm.event.ZomboidEvent;
 import se.krka.kahlua.luaj.compiler.LuaCompiler;
 import zombie.Lua.Event;
 import zombie.Lua.LuaEventManager;
 import zombie.Lua.LuaManager;
-
-import java.io.IOException;
 
 /**
  * <p>This class represents an in-game event dispatched to Lua mods. Lua events are handled by
@@ -55,12 +55,10 @@ public interface LuaEvent extends ZomboidEvent {
 		if (event.callbacks.size() == 0)
 		{
 
-			try
-			{
+			try {
 				event.callbacks.add(LuaCompiler.loadstring("", "console", LuaManager.env));
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}

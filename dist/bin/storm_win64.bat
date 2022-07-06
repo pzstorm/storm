@@ -118,7 +118,7 @@ set PZ_CLASSPATH=%PZ_HOME%\commons-compress-1.18.jar;^
 %PZ_HOME%
 
 @rem Setup the command line
-set CLASSPATH=%LIB_PATH%\storm-0.2.2.jar;^
+set CLASSPATH=%LIB_PATH%\storm-@stormVersion@.jar;^
 %LIB_PATH%\asm-9.1.jar;^
 %LIB_PATH%\asm-analysis-9.1.jar;^
 %LIB_PATH%\asm-tree-9.1.jar;^
