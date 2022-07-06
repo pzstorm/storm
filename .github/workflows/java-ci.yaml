@@ -15,7 +15,7 @@ jobs:
     name: Build and test on Linux
     runs-on: ubuntu-latest
     env:
-      PZ_VERSION: "41.50"
+      PZ_VERSION: "41.71"
     steps:
       # Checkout repository
       - uses: actions/checkout@v3
@@ -44,7 +44,7 @@ jobs:
         if: steps.pz-cache.outputs.cache-hit != 'true'
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          repo: "pzstorm/zomboid"
+          repo: "mlem/zomboid"
           version: "tags/v${{ env.PZ_VERSION }}"
           file: "zomboid-${{ env.PZ_VERSION }}.jar"
           target: "lib/zomboid-${{ env.PZ_VERSION }}.jar"
