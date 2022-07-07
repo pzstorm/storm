@@ -21,6 +21,7 @@ package io.pzstorm.storm.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.*;
@@ -112,6 +113,45 @@ public class AsmUtils {
 		return null;
 	}
 
+	public static AbstractInsnNode nextNonLabelLineNumberNode(AbstractInsnNode node) {
+		if(node.getNext() == null) {
+			return node;
+		}
+		if(node.getNext() instanceof LabelNode || node.getNext() instanceof LineNumberNode || node.getNext() instanceof FrameNode) {
+			return nextNonLabelLineNumberNode(node.getNext());
+		}
+		return node.getNext();
+	}
+
+	public static List<AbstractInsnNode> listWithoutLabelAndLineNumberNodes(List<AbstractInsnNode> nodes) {
+		return nodes.stream().filter(x->!(x instanceof LabelNode))
+				.filter(x-> !(x instanceof LineNumberNode))
+				.collect(Collectors.toList());
+	}
+
+	public static boolean matches(AbstractInsnNode node, List<AbstractInsnNode> match) {
+		if(match.size() == 0) {
+			return true;
+		}
+		if(node != null && AsmUtils.equalNodes(node, match.get(0))) {
+			return matches(nextNonLabelLineNumberNode(node), match.subList(1, match.size()));
+		}
+		return false;
+	}
+
+	public static @Nullable AbstractInsnNode getFirstNode(InsnList list, List<AbstractInsnNode> match) {
+
+		List<AbstractInsnNode> matchList = listWithoutLabelAndLineNumberNodes(match);
+		for(AbstractInsnNode instruction  : list.toArray()) {
+			if(instruction != null && AsmUtils.equalNodes(instruction, matchList.get(0))) {
+				if(matches(instruction.getNext(), matchList.subList(1, matchList.size()))) {
+					return instruction;
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Find and return first {@link LabelNode} that contains given list of instructions.
 	 * Note that {@link LineNumberNode} and {@link LabelNode} instructions will be excluded when
@@ -124,37 +164,17 @@ public class AsmUtils {
 	 */
 	public static @Nullable LabelNode getFirstMatchingLabelNode(InsnList list, List<AbstractInsnNode> match) {
 
-		//@formatter:off
-		for (int i1 = 0; i1 < list.size(); i1++)
-		{
-			AbstractInsnNode instruction = list.get(i1);
-			if (instruction instanceof LabelNode)
-			{
-				int i3 = i1 + 1;
-				boolean matchedInstructions = true;
-				for (int i2 = 0; i2 < match.size() && i3 < list.size(); i2++, i3++)
-				{
-					AbstractInsnNode a = list.get(i3);
-					// ignore line number nodes
-					if (!(a instanceof LineNumberNode))
-					{
-						AbstractInsnNode b = match.get(i2);
-						// ignore label and line number nodes
-						if (!(b instanceof LabelNode) && !(b instanceof LineNumberNode))
-						{
-							if (!AsmUtils.equalNodes(a, b)) {
-								matchedInstructions = false; break;
-							}
-						}
-						else i3 -= 1;	// when ignoring nodes counter variables
-					}					// need to be adjusted to compensate for
-					else i2 -= 1;		// the for-loop auto-incremental operation
-				}
-				if (matchedInstructions) {
-					return (LabelNode) instruction;
+		List<AbstractInsnNode> matchList = listWithoutLabelAndLineNumberNodes(match);
+		for(AbstractInsnNode instruction  : list.toArray()) {
+			if(instruction instanceof LabelNode) {
+				AbstractInsnNode firstNonLabelInstruction = nextNonLabelLineNumberNode(instruction);
+				if(firstNonLabelInstruction != null && AsmUtils.equalNodes(firstNonLabelInstruction, matchList.get(0))) {
+					if(matches(firstNonLabelInstruction.getNext(), matchList.subList(1, matchList.size()))) {
+						return (LabelNode) instruction;
+					}
 				}
 			}
-		}//@formatter:on
+		}
 		return null;
 	}
 

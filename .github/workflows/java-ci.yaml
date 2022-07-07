@@ -15,15 +15,15 @@ jobs:
     name: Build and test on Linux
     runs-on: ubuntu-latest
     env:
-      PZ_VERSION: "41.50"
+      PZ_VERSION: "41.71"
     steps:
       # Checkout repository
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Setup Java environment
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
       # Cache gradle temporary files
       - name: Cache gradle files
         uses: actions/cache@v2
@@ -44,7 +44,7 @@ jobs:
         if: steps.pz-cache.outputs.cache-hit != 'true'
         uses: dsaltares/fetch-gh-release-asset@master
         with:
-          repo: "pzstorm/zomboid"
+          repo: "mlem/zomboid"
           version: "tags/v${{ env.PZ_VERSION }}"
           file: "zomboid-${{ env.PZ_VERSION }}.jar"
           target: "lib/zomboid-${{ env.PZ_VERSION }}.jar"
@@ -64,6 +64,11 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           arguments: classes -s
+      # Assemble distribution
+      - name: Assemble distributions
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: distZip distTar -s
       # Run unit tests with gradle
       - name: Run Unit Tests
         uses: burrunan/gradle-cache-action@v1
@@ -76,3 +81,11 @@ jobs:
         with:
           name: test-report-${{ runner.os }}
           path: ./build/reports/tests/
+      # Upload dist artifacts as run artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: |
+            build/distributions/*.tar
+            build/distributions/*.zip

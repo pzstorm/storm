@@ -3,6 +3,7 @@
 
 import io.pzstorm.capsid.setup.VmParameter
 import io.pzstorm.capsid.setup.xml.LaunchRunConfig
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'io.pzstorm.capsid' version '0.4.2'
@@ -35,7 +36,7 @@ allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
     group 'io.github.pzstorm'
-    version '0.2.1'
+    version '0.2.2-mlem'
 }
 
 // make sure to configure zombie subproject first because other
@@ -47,17 +48,17 @@ subprojects.sort {
     it.apply plugin: 'maven-publish'
     it.apply plugin: 'net.ltgt.errorprone'
     it.apply plugin: 'com.diffplug.spotless'
-    it.apply from: "https://gist.githubusercontent.com/yooksi/${spotlessGistID}/raw/spotless.gradle"
+    it.apply from: "${project.projectDir}/spotless.gradle"
 
     it.java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
     // declare dependencies common to all subprojects
     it.dependencies {
         // https://mvnrepository.com/artifact/com.google.errorprone/error_prone_core
-        errorprone 'com.google.errorprone:error_prone_core:2.6.0'
+        errorprone 'com.google.errorprone:error_prone_core:2.14.0'
 
         // https://mvnrepository.com/artifact/com.google.errorprone/javac
         errorproneJavac('com.google.errorprone:javac:9+181-r4173-1')
@@ -126,6 +127,10 @@ tasks.createRunConfigurations.configure {
             vmParameterBuilder = vmParameterBuilder
                     .withJavaLibraryPaths(gameDir as String, "${gameDir}/linux64" as String, "${gameDir}/jre64/lib/amd64" as String)
                     .withLwjglLibraryPaths(gameDir)
+        } else if(os == org.gradle.internal.os.OperatingSystem.WINDOWS) {
+            vmParameterBuilder = vmParameterBuilder
+                    .withJavaLibraryPaths(gameDir as String, "${gameDir}/win64" as String, "${gameDir}/jre64/lib" as String)
+                    .withLwjglLibraryPaths(gameDir)
         }
         //@formatter:off
         LaunchRunConfig launchStorm = new LaunchRunConfig(
@@ -165,7 +170,10 @@ distributions.main {
             return false
         }
         // include additional distibution files
-        it.from 'dist'
+        it.from('dist') {
+            include '**/*.*'
+            filter(ReplaceTokens, tokens: [stormVersion: rootProject.version])
+        }
 
         // exclude generated launch scripts
         it.exclude '**/storm', '**/storm.bat'
@@ -180,11 +188,11 @@ publishing {
             pom {
                 name = 'Zomboid Storm Core'
                 description = 'Project Zomboid Storm Implementation'
-                url = 'https://github.com/pzstorm/storm'
+                url = 'https://github.com/mlem/storm'
                 scm {
-                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
-                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
-                    url = 'https://github.com/pzstorm/storm'
+                    connection = 'scm:git:git://github.com/mlem/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:mlem/storm.git'
+                    url = 'https://github.com/mlem/storm'
                 }
                 licenses {
                     license {
@@ -197,6 +205,11 @@ publishing {
                         id = 'yooksi'
                         name = 'Matthew Cain'
                         email = 'yooks@tuta.io'
+                    }
+                    developer {
+                        id = 'mlem'
+                        name = 'Martin Lemanski'
+                        email = 'martin.lemanski@gmx.at'
                     }
                 }
             }
@@ -207,11 +220,11 @@ publishing {
             pom {
                 name = 'Zomboid Storm API'
                 description = 'Project Zomboid Storm API'
-                url = 'https://github.com/pzstorm/storm'
+                url = 'https://github.com/mlem/storm'
                 scm {
-                    connection = 'scm:git:git://github.com/pzstorm/storm.git'
-                    developerConnection = 'scm:git:ssh://github.com:pzstorm/storm.git'
-                    url = 'https://github.com/pzstorm/storm'
+                    connection = 'scm:git:git://github.com/mlem/storm.git'
+                    developerConnection = 'scm:git:ssh://github.com:mlem/storm.git'
+                    url = 'https://github.com/mlem/storm'
                 }
                 licenses {
                     license {
@@ -225,7 +238,22 @@ publishing {
                         name = 'Matthew Cain'
                         email = 'yooks@tuta.io'
                     }
+                    developer {
+                        id = 'mlem'
+                        name = 'Martin Lemanski'
+                        email = 'martin.lemanski@gmx.at'
+                    }
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
             }
         }
     }
