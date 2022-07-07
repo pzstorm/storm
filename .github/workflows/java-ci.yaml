@@ -65,10 +65,10 @@ jobs:
         with:
           arguments: classes -s
       # Assemble distribution
-      - name: Run Unit Tests
+      - name: Assemble distributions
         uses: burrunan/gradle-cache-action@v1
         with:
-          arguments: distZip -s
+          arguments: distZip distTar -s
       # Run unit tests with gradle
       - name: Run Unit Tests
         uses: burrunan/gradle-cache-action@v1
@@ -82,7 +82,10 @@ jobs:
           name: test-report-${{ runner.os }}
           path: ./build/reports/tests/
       # Upload dist artifacts as run artifacts
-      - uses: actions/upload-artifact@v3
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: Package
-          path: build/distributions
+          path: |
+            build/distributions/*.tar
+            build/distributions/*.zip
