@@ -76,3 +76,14 @@ jobs:
         with:
           name: test-report-${{ runner.os }}
           path: ./build/reports/tests/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: build/distributions
+      - name: Publish package
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
