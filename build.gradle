@@ -35,8 +35,8 @@ boolean isCI = sIsCI != null ? Boolean.parseBoolean(sIsCI) : false
 allprojects {
     repositories { mavenCentral() }
     project.ext.set('CI', isCI)
-    group 'io.github.pzstorm'
-    version '0.2.2-mlem'
+    group 'at.mlem'
+    version '0.2.3'
 }
 
 // make sure to configure zombie subproject first because other
